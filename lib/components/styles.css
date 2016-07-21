@@ -1,0 +1,33 @@
+#topnav {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  border: 2px solid gray
+}
+
+.topnav-icons::before {
+  content: 'O'
+}
+
+#sidenav {
+  position: fixed;
+  top: 50%;
+  z-index: 1000;
+}
+
+#sidenav span {
+  display: block;
+}
+
+.sidenav-right {
+  right: 0;
+}
+.sidenav-left {
+  left: 0;
+}
+
+.hover {
+  color: red;
+}

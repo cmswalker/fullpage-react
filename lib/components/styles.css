@@ -1,33 +1,51 @@
-#topnav {
-  position: fixed;
-  width: 100%;
-  left: 0;
-  top: 0;
-  z-index: 1000;
-  border: 2px solid gray
-}
+.fullpage-react
+  .topnav, .topnav-bottom {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    top: 1%;
+    z-index: 1000;
+    border-bottom: 2px solid gray
+  }
 
-.topnav-icons::before {
-  content: 'O'
-}
+  .topnav-bottom {
+    top: 0;
+    bottom: 1%
+  }
 
-#sidenav {
-  position: fixed;
-  top: 50%;
-  z-index: 1000;
-}
+  .topnav-icons::before {
+    content: 'O'
+  }
 
-#sidenav span {
-  display: block;
-}
+  .sidenav {
+    position: fixed;
+    top: 50%;
+    z-index: 1000;
+  }
 
-.sidenav-right {
-  right: 0;
-}
-.sidenav-left {
-  left: 0;
-}
+  .sidenav span {
+    display: block;
+  }
 
-.hover {
-  color: red;
-}
+  .sidenav-right {
+    right: 1%;
+  }
+  .sidenav-left {
+    left: 1%;
+  }
+
+  .topnav-right {
+
+  }
+
+  .topnav-left {
+
+  }
+
+  .topnav-center {
+
+  }
+
+  .hover {
+    color: red;
+  }

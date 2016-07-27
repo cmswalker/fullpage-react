@@ -1,26 +1,28 @@
 const React = require('react');
 
-const {Fullpage, Slide, TopNav, TopNavButton, SideNav, SideNavButton} = require('../index');
+const {Fullpage, Slide, TopNav, SideNav} = require('../index');
 
-//TODO: rename topnav to header and make a real footer;
-//make hover styles work again!
+//TODO:
+//RENAME PUB SUB METHODS
+//make truthy classes non object/bools
+//sensitivity
+//renamve topNavOptions to just mainNav
+//try not to access refs, try to use SLIDE
 
 let fullPageOptions = {
-
-};
-
-let slideOptions = {
-
+  sensitivity: null,
+  threshold: null
 };
 
 let topNavOptions = {
-
+  footer: true,
+  align: 'left'
 };
 
 let sideNavOptions = {
-
+  //left vs right
+  //top
 };
-
 
 class FullpageReact extends React.Component {
   constructor(props) {
@@ -33,10 +35,11 @@ class FullpageReact extends React.Component {
         <TopNav {...topNavOptions}>
           <button ref={0}>slide 0</button>
           <button ref={1}>slide 1</button>
+          <button ref={2}>slide 2</button>
         </TopNav>
-        <Slide style={{background: '#61DAFB'}}></Slide>
-        <Slide style={{background: '#2B2C28'}}></Slide>
-        <Slide style={{background: '#EFCB68'}}></Slide>
+        <Slide style={{backgroundColor: '#61DAFB'}}></Slide>
+        <Slide style={{backgroundColor: '#2B2C28'}}></Slide>
+        <Slide style={{backgroundColor: '#EFCB68'}}></Slide>
         <SideNav {...sideNavOptions}>
           <button ref={0}>slide 0</button>
           <button ref={1}>slide 1</button>

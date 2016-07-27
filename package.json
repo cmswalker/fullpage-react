@@ -1,5 +1,5 @@
 {
-  "name": "fullpage-react",
+  "name": "react-fullpage",
   "version": "1.0.0",
   "description": "full page scrolling for react",
   "main": "index.js",
@@ -14,8 +14,8 @@
     "react-dom": "^15.1.0"
   },
   "dependencies": {
-    "react": "^15.1.0",
-    "react-dom": "^15.1.0"
+    "react": "^15.2.1",
+    "react-dom": "^15.2.1"
   },
   "devDependencies": {
     "babel-core": "^6.10.4",

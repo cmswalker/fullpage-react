@@ -15,14 +15,21 @@ let fullPageOptions = {
 
 let topNavOptions = {
   footer: false, //topNav can double as a footer
-  align: 'left' //also supports center and right alignment
+  align: 'left', //also supports center and right alignment
+  //styles to apply to children
+  activeStyles: {backgroundColor: 'white'},
+  nonActiveStyles: {backgroundColor: 'gray'}
 };
 
 // all children are spans by default, for stacked buttons,
 // just wrap your nested components/buttons in divs
 let sideNavOptions = {
   right: '2%', //left alignment is default
-  top: '50%' //top is 50% by default
+  top: '50%', //top is 50% by default
+
+  //styles to apply to children
+  activeStyles: {color: 'white'},
+  nonActiveStyles: {color: 'gray'}
 };
 
 let activeStyles = {
@@ -40,34 +47,31 @@ class FullpageReact extends React.Component {
   }
 
   updateActiveState(newActive) {
-    // this.setState({'active': newActive});
-    console.log('need to set state to ', newActive);
-    return;
+    this.setState({'active': newActive});
   }
 
-  componentDidUpdate(pP, pS) {
+  shouldComponentUpdate(nP, nS) {
+    return nS.active != this.state.active;
+  }
+
+  componentWillUpdate() {
+
   }
 
   render() {
-    console.log('rendered');
-    let activeColor = '';
-    let notActiveColor = '';
-
-    let sideNavButtonStyle = {
-      color: 'red'
-    };
-
-    let topNavButtonStyle = {
-
-    };
+    let navCount = 3;
+    let navArr = [];
+    for (let i = 0; i < 3; i++) {
+      navArr.push(i);
+    }
 
     return (
       <Fullpage active={this.updateActiveState}>
 
         <TopNav {...topNavOptions}>
-          <button ref={0}>slide 0</button>
-          <button ref={1}>slide 1</button>
-          <button ref={2}>slide 2</button>
+          {navArr.map((n, idx) => {
+            return <span key={idx} ref={idx} style={idx == this.state.active ? topNavOptions.activeStyles : topNavOptions.nonActiveStyles}>Slide {idx}</span>
+          }, this)}
         </TopNav>
 
         <Slide style={{backgroundColor: '#61DAFB'}}></Slide>
@@ -75,9 +79,9 @@ class FullpageReact extends React.Component {
         <Slide style={{backgroundColor: '#EFCB68'}}></Slide>
 
         <SideNav {...sideNavOptions}>
-          <div style={sideNavButtonStyle} ref={0}>&#x25CF;</div>
-          <div style={sideNavButtonStyle} ref={1}>&#x25CF;</div>
-          <div style={sideNavButtonStyle} ref={2}>&#x25CF;</div>
+          {navArr.map((n, idx) => {
+            return <div key={idx} ref={idx} style={idx == this.state.active ? sideNavOptions.activeStyles : sideNavOptions.nonActiveStyles}>&#x25CF;</div>
+          }, this)}
         </SideNav>
 
       </Fullpage>

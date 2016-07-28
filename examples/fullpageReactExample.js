@@ -33,7 +33,7 @@ class FullpageReact extends React.Component {
     return (
       <Fullpage>
         <TopNav {...topNavOptions}>
-          <button ref={0}>slide 0</button>
+          <button style={{cursor: 'pointer'}} ref={0}>slide 0</button>
           <button ref={1}>slide 1</button>
           <button ref={2}>slide 2</button>
         </TopNav>
@@ -43,7 +43,7 @@ class FullpageReact extends React.Component {
         <SideNav {...sideNavOptions}>
           <button ref={0}>slide 0</button>
           <button ref={1}>slide 1</button>
-          <button ref={2}>slide 2</button>
+          <button style={{cursor: 'pointer'}} ref={2}>slide 2</button>
         </SideNav>
       </Fullpage>
     );

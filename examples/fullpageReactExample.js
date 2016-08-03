@@ -14,10 +14,12 @@ let fullPageOptions = {
 };
 
 let topNavOptions = {
-  footer: false, //topNav can double as a footer
+  footer: false, //topNav can double as a footer if true
   align: 'left', //also supports center and right alignment
+
   //styles to apply to children
   activeStyles: {backgroundColor: 'white'},
+  hoverStyles: {backgroundColor: 'yellow'},
   nonActiveStyles: {backgroundColor: 'gray'}
 };
 
@@ -29,6 +31,7 @@ let sideNavOptions = {
 
   //styles to apply to children
   activeStyles: {color: 'white'},
+  hoverStyles: {color: 'yellow'},
   nonActiveStyles: {color: 'gray'}
 };
 
@@ -40,7 +43,8 @@ class FullpageReact extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      active: 0
+      active: 0,
+      hover: null
     };
 
     this.updateActiveState = this.updateActiveState.bind(this);
@@ -51,17 +55,26 @@ class FullpageReact extends React.Component {
   }
 
   shouldComponentUpdate(nP, nS) {
-    return nS.active != this.state.active;
+    //ensure hoverStyles and activeStyles update
+    return nS.active != this.state.active || nS.hover != this.state.hover;
   }
 
-  componentWillUpdate() {
+  onMouseOver(idx) {
+    this.setState({'hover': idx});
+  }
 
+  onMouseOut(e) {
+    this.setState({'hover': null});
+  }
+
+  compareStyles(component, idx) {
+    return idx == this.state.active ? component.activeStyles : idx == this.state.hover ? component.hoverStyles : component.nonActiveStyles
   }
 
   render() {
     let navCount = 3;
     let navArr = [];
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < navCount; i++) {
       navArr.push(i);
     }
 
@@ -70,17 +83,21 @@ class FullpageReact extends React.Component {
 
         <TopNav {...topNavOptions}>
           {navArr.map((n, idx) => {
-            return <span key={idx} ref={idx} style={idx == this.state.active ? topNavOptions.activeStyles : topNavOptions.nonActiveStyles}>Slide {idx}</span>
+            return <span key={idx} ref={idx} style={this.compareStyles(topNavOptions, idx)}
+              onMouseOver={() => this.onMouseOver(idx)} onMouseOut={() => this.onMouseOut(idx)}>Slide {idx}</span>
           }, this)}
         </TopNav>
 
-        <Slide style={{backgroundColor: '#61DAFB'}}></Slide>
+        <Slide style={{backgroundColor: '#61DAFB'}}>
+          <div id="title">Fullpage React</div>
+        </Slide>
         <Slide style={{backgroundColor: '#2B2C28'}}></Slide>
         <Slide style={{backgroundColor: '#EFCB68'}}></Slide>
 
         <SideNav {...sideNavOptions}>
           {navArr.map((n, idx) => {
-            return <div key={idx} ref={idx} style={idx == this.state.active ? sideNavOptions.activeStyles : sideNavOptions.nonActiveStyles}>&#x25CF;</div>
+            return <div key={idx} ref={idx} style={this.compareStyles(sideNavOptions, idx)}
+                     onMouseOver={() => this.onMouseOver(idx)} onMouseOut={() => this.onMouseOut(idx)}>&#x25CF;</div>
           }, this)}
         </SideNav>
 

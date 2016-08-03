@@ -30,7 +30,7 @@ module.exports = {
   },
   plugins: [
     new HtmlwebpackPlugin({
-      title: 'Full Page'
+      title: 'Fullpage React'
     })
   ]
 };

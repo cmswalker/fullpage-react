@@ -9,8 +9,8 @@ let fullPageOptions = {
   threshold: 100,
 
   // for touchStart/touchEnd/mobile scrolling
-  // represents the level of force required to generate a slide change on mobile, 200 is default
-  sensitivity: 200
+  // represents the level of force required to generate a slide change on mobile, 100 is default
+  sensitivity: 100
 };
 
 let topNavOptions = {

@@ -16,7 +16,7 @@ Each component from Fullpage-React should get its own block of options
 ```
 const React = require('react');
 
-const {Fullpage, Slide, TopNav, SideNav} = require('../index');
+const {Fullpage, Slide, TopNav, SideNav} = require('fullpage-react');
 
 let fullPageOptions = {
   // for mouse/wheel events

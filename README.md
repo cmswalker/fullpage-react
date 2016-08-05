@@ -7,7 +7,9 @@ A larger example setup can be found [here](https://github.com/cmswalker/fullpage
 ---
 
 ####Basic Setup
-
+```
+npm install fullpage-react
+```
 Each component from Fullpage-React should get its own block of options
 ######Component Options
 

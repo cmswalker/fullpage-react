@@ -73,6 +73,7 @@ class FullpageReact extends React.Component {
     for (let i = 0; i < navCount; i++) {
       navArr.push(i);
     }
+    console.log('render')
 
     return (
       <Fullpage active={this.updateActiveState}>
@@ -107,3 +108,5 @@ ReactDOM.render(
   />,
   document.getElementById('app')
 );
+
+export default FullpageReact

@@ -1,6 +1,6 @@
 const React = require('react');
 
-const {Fullpage, Slide, TopNav, SideNav} = require('../index');
+const {Fullpage, Slide, TopNav, SideNav} = require('../lib/index');
 require('./exampleStyles.styl');
 
 let fullPageOptions = {

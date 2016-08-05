@@ -6,10 +6,8 @@ module.exports = {
     index: path.join(__dirname, '/examples/index.js')
   },
   output: {
-    filename: '[name].js',
-    path: path.join(__dirname, '/static/'),
-    publicPath: '/',
-    chunkFilename: '[id].chunk.js'
+    filename: 'index.js',
+    path: __dirname
   },
   devServer: {
     inline: true,

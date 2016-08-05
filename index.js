@@ -1,3 +1,3 @@
-var FullpageReact = require('./dist/bundle');
+var FullpageReact = require('./dist/index');
 
 module.exports = FullpageReact;

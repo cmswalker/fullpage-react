@@ -35,10 +35,6 @@ let sideNavOptions = {
   nonActiveStyles: {color: 'gray'}
 };
 
-let activeStyles = {
-  color: 'white'
-};
-
 class FullpageReact extends React.Component {
   constructor(props) {
     super(props)

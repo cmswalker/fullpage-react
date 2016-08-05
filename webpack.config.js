@@ -1,15 +1,11 @@
 const path = require('path');
-const HtmlwebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
-    index: path.join(__dirname, '/examples/index.js')
+    index: path.join(__dirname, 'index.js')
   },
   output: {
-    filename: '[name].js',
-    path: path.join(__dirname, '/static/'),
-    publicPath: '/',
-    chunkFilename: '[id].chunk.js'
+    filename: path.join(__dirname, 'bundle.js')
   },
   devServer: {
     inline: true,
@@ -20,17 +16,12 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel',
+        loader: 'babel-loader',
         query: {
           presets: ['es2015', 'react']
         }
       },
       { test: /\.styl$/, loader: 'style-loader!css-loader!stylus-loader' }
     ]
-  },
-  plugins: [
-    new HtmlwebpackPlugin({
-      title: 'Fullpage React'
-    })
-  ]
+  }
 };

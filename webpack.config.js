@@ -1,5 +1,4 @@
 const path = require('path');
-const HtmlwebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -25,10 +24,5 @@ module.exports = {
       },
       { test: /\.styl$/, loader: 'style-loader!css-loader!stylus-loader' }
     ]
-  },
-  plugins: [
-    new HtmlwebpackPlugin({
-      title: 'Fullpage React'
-    })
-  ]
+  }
 };

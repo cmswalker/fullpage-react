@@ -97,3 +97,8 @@ class FullpageReact extends React.Component {
 
 module.exports = FullpageReact;
 ```
+
+---
+####Roadmap
+- Implement horizontal sliders
+- UI Tests

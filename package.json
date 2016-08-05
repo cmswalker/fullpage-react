@@ -9,6 +9,24 @@
   },
   "author": "cmswalker",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cmswalker/fullpage-react.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cmswalker/fullpage-react/issues"
+  },
+  "engines": {
+    "node": ">=4.4.3"
+  },
+  "keywords": [
+    "react",
+    "react-fullpage",
+    "fullpage",
+    "scroll",
+    "slide",
+    "slider"
+  ],
   "peerDependencies": {
     "react": "^15.1.0",
     "react-dom": "^15.1.0"

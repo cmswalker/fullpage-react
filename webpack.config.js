@@ -1,11 +1,10 @@
 const path = require('path');
 
 module.exports = {
-  entry: {
-    index: path.join(__dirname, 'index.js')
-  },
+  entry: path.join(__dirname, '/src/index.js'),
   output: {
-    filename: path.join(__dirname, 'bundle.js')
+    path: './',
+    filename: 'bundle.js'
   },
   devServer: {
     inline: true,
@@ -21,6 +20,7 @@ module.exports = {
           presets: ['es2015', 'react']
         }
       },
+      { test: /\.css$/, loader: 'style-loader!css-loader' },
       { test: /\.styl$/, loader: 'style-loader!css-loader!stylus-loader' }
     ]
   }

@@ -1,0 +1,76 @@
+$arrowPx = 50px
+$ice = #61DAFB
+$coal = #2B2C28
+$warm = #EFCB68
+
+body
+  text-align center
+  font-family Helvetica
+  font-size 1em
+
+  #title
+    color gray
+    padding-top 35%
+    font-size 5em
+
+  .arrow-up
+  .arrow-down
+  .arrow-right
+  .arrow-left
+    width 0
+    height 0
+    z-index 1
+
+  .arrow-down
+  .arrow-up
+    border-left $arrowPx solid transparent
+    border-right $arrowPx solid transparent
+
+  .arrow-up
+    border-top $arrowPx solid $ice
+  .arrow-up-2
+    border-top $arrowPx solid $coal
+  .arrow-down
+    border-bottom $arrowPx solid black
+
+  .arrow-left
+  .arrow-right
+    border-bottom $arrowPx solid transparent
+    border-top $arrowPx solid transparent
+
+  .arrow-left
+    border-right $arrowPx solid black
+  .arrow-right
+    border-left $arrowPx solid black
+
+  .abs-center
+  .abs-top
+  .abs-bottom
+    position absolute
+    margin-left auto
+    margin-right auto
+    left 0
+    right 0
+
+  .abs-top
+    top 0
+  .abs-bottom
+    bottom 0
+
+  .top-100
+    top 100%
+  .top-200
+    top 200%
+
+  .ice
+    color $ice
+  .ice-b
+    background-color $ice
+  .coal
+    color $coal
+  .coal-b
+    backround-color $coal
+  .warm
+    color $warm
+  .warm-b
+    background-color $warm

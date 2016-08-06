@@ -1,7 +1,8 @@
 const React = require('react');
-const ReactDOM = require('react-dom');
 
 const {Fullpage, Slide, TopNav, SideNav} = require('fullpage-react');
+require('normalize.css');
+require('./styles/main.styl');
 
 let fullPageOptions = {
   // for mouse/wheel events
@@ -73,7 +74,6 @@ class FullpageReact extends React.Component {
     for (let i = 0; i < navCount; i++) {
       navArr.push(i);
     }
-    console.log('render')
 
     return (
       <Fullpage active={this.updateActiveState}>
@@ -85,11 +85,17 @@ class FullpageReact extends React.Component {
           }, this)}
         </TopNav>
 
-        <Slide style={{backgroundColor: '#61DAFB'}}>
-          <div id="title">Fullpage React1</div>
+        <Slide id="slide1" style={{backgroundColor: '#61DAFB'}}>
+          <div id="title">Fullpage React</div>
         </Slide>
-        <Slide style={{backgroundColor: '#2B2C28'}}></Slide>
-        <Slide style={{backgroundColor: '#EFCB68'}}></Slide>
+        <Slide style={{backgroundColor: '#2B2C28'}}>
+          <div id="title">100% React components, no jQuery</div>
+          <div className="arrow-up abs-top top-100"></div>
+        </Slide>
+        <Slide style={{backgroundColor: '#EFCB68'}}>
+          <div id="title">Mobile friendly! Tap events for iOS and Android</div>
+          <div className="arrow-up arrow-up-2 abs-top top-200"></div>
+        </Slide>
 
         <SideNav {...sideNavOptions}>
           {navArr.map((n, idx) => {
@@ -103,10 +109,4 @@ class FullpageReact extends React.Component {
   }
 };
 
-ReactDOM.render(
-  <FullpageReact
-  />,
-  document.getElementById('app')
-);
-
-export default FullpageReact
+module.exports = FullpageReact;

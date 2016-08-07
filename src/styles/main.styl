@@ -69,6 +69,8 @@ mq-max = s(mq-query-min-fstr, bp-desktop-max)
 body
   text-align center
   font-family font-family-primary
+  a
+    color $ice
   div.slide
     font-size 1em
     @media mq-mobile
@@ -91,10 +93,14 @@ body
     padding-top 0px
     margin-top -30%
 
-
   #title
     color $gray
-    padding-top 50%
+    padding-top 300px
+    @media mq-mobile
+      padding-top 250px
+    // @media min-width bp-desktop-md-min
+    //   padding-top 50%
+    //   color green
 
   .arrow-up
   .arrow-down

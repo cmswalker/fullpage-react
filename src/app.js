@@ -96,7 +96,11 @@ class FullpageReact extends React.Component {
           <div className="arrow-up abs-top top-100"></div>
         </Slide>
         <Slide id="slide3" className="slide" style={{backgroundColor: '#EFCB68'}}>
-          <div id="title">Mobile friendly! Tap events for iOS and Android</div>
+          <div id="title">
+            Mobile friendly! Tap events for iOS and Android
+            <hr/>
+            <a href="https://github.com/cmswalker/fullpage-react">view source</a>
+          </div>
           <div className="arrow-up arrow-up-2 abs-top top-200"></div>
         </Slide>
 

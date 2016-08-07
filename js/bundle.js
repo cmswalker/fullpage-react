@@ -21565,7 +21565,10 @@
 	        ),
 	        React.createElement(
 	          Slide,
-	          { id: 'slide1', style: { backgroundColor: '#61DAFB' } },
+	          { id: 'slide1', className: 'slide', style: { backgroundColor: '#61DAFB' } },
+	          React.createElement('div', { className: 'arrow-up arrow-up-2 arrow-title-1' }),
+	          React.createElement('div', { className: 'arrow-up arrow-up-2 arrow-title-2' }),
+	          React.createElement('div', { className: 'arrow-up arrow-up-2 arrow-title-3' }),
 	          React.createElement(
 	            'div',
 	            { id: 'title' },
@@ -21574,7 +21577,7 @@
 	        ),
 	        React.createElement(
 	          Slide,
-	          { style: { backgroundColor: '#2B2C28' } },
+	          { id: 'slide2', className: 'slide', style: { backgroundColor: '#2B2C28' } },
 	          React.createElement(
 	            'div',
 	            { id: 'title' },
@@ -21584,7 +21587,7 @@
 	        ),
 	        React.createElement(
 	          Slide,
-	          { style: { backgroundColor: '#EFCB68' } },
+	          { id: 'slide3', className: 'slide', style: { backgroundColor: '#EFCB68' } },
 	          React.createElement(
 	            'div',
 	            { id: 'title' },
@@ -23112,7 +23115,7 @@
 
 
 	// module
-	exports.push([module.id, "body {\n  text-align: center;\n  font-family: Helvetica;\n  font-size: 1em;\n}\nbody #title {\n  color: #808080;\n  padding-top: 35%;\n  font-size: 5em;\n}\nbody .arrow-up,\nbody .arrow-down,\nbody .arrow-right,\nbody .arrow-left {\n  width: 0;\n  height: 0;\n  z-index: 1;\n}\nbody .arrow-down,\nbody .arrow-up {\n  border-left: 50px solid transparent;\n  border-right: 50px solid transparent;\n}\nbody .arrow-up {\n  border-top: 50px solid #61dafb;\n}\nbody .arrow-up-2 {\n  border-top: 50px solid #2b2c28;\n}\nbody .arrow-down {\n  border-bottom: 50px solid #000;\n}\nbody .arrow-left,\nbody .arrow-right {\n  border-bottom: 50px solid transparent;\n  border-top: 50px solid transparent;\n}\nbody .arrow-left {\n  border-right: 50px solid #000;\n}\nbody .arrow-right {\n  border-left: 50px solid #000;\n}\nbody .abs-center,\nbody .abs-top,\nbody .abs-bottom {\n  position: absolute;\n  margin-left: auto;\n  margin-right: auto;\n  left: 0;\n  right: 0;\n}\nbody .abs-top {\n  top: 0;\n}\nbody .abs-bottom {\n  bottom: 0;\n}\nbody .top-100 {\n  top: 100%;\n}\nbody .top-200 {\n  top: 200%;\n}\nbody .ice {\n  color: #61dafb;\n}\nbody .ice-b {\n  background-color: #61dafb;\n}\nbody .coal {\n  color: #2b2c28;\n}\nbody .coal-b {\n  backround-color: #2b2c28;\n}\nbody .warm {\n  color: #efcb68;\n}\nbody .warm-b {\n  background-color: #efcb68;\n}\n", ""]);
+	exports.push([module.id, "body {\n  text-align: center;\n  font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n}\nbody div.slide {\n  font-size: 1em;\n}\n@media only screen and (min-width: 0px) and (max-width: 559px) {\n  body div.slide {\n    font-size: 10vw;\n  }\n}\n@media only screen and (min-width: 560px) and (max-width: 759px) {\n  body div.slide {\n    font-size: 10vw;\n  }\n}\n@media only screen and (min-width: 760px) and (max-width: 959px) {\n  body div.slide {\n    font-size: 8vw;\n  }\n}\n@media only screen and (min-width: 960px) and (max-width: 1300px) {\n  body div.slide {\n    font-size: 8vw;\n  }\n}\n@media only screen and (min-width: 1300px) {\n  body div.slide {\n    font-size: 6vw;\n  }\n}\nbody .logo {\n  font-size: 4em;\n  font-family: monospace;\n  position: static;\n  padding-top: 10%;\n}\nbody .logo2 {\n  padding-top: 0px;\n  margin-top: -30%;\n}\nbody #title {\n  color: #808080;\n  padding-top: 50%;\n}\nbody .arrow-up,\nbody .arrow-down,\nbody .arrow-right,\nbody .arrow-left {\n  width: 0;\n  height: 1;\n}\nbody .arrow-down,\nbody .arrow-up {\n  border-left: 50px solid transparent;\n  border-right: 50px solid transparent;\n}\nbody .arrow-up {\n  border-top: 50px solid #61dafb;\n}\nbody .arrow-up-2 {\n  border-top: 50px solid #2b2c28;\n}\nbody .arrow-down {\n  border-bottom: 50px solid #000;\n}\nbody .arrow-left,\nbody .arrow-right {\n  border-bottom: 50px solid transparent;\n  border-top: 50px solid transparent;\n}\nbody .arrow-left {\n  border-right: 50px solid #000;\n}\nbody .arrow-right {\n  border-left: 50px solid #000;\n}\nbody .abs-center,\nbody .abs-top,\nbody .abs-bottom {\n  position: absolute;\n  margin-left: auto;\n  margin-right: auto;\n  left: 0;\n  right: 0;\n}\nbody .abs-top {\n  top: 0;\n}\nbody .abs-bottom {\n  bottom: 0;\n}\nbody .top-100 {\n  top: 100%;\n}\nbody .top-200 {\n  top: 200%;\n}\nbody .arrow-title-1,\nbody .arrow-title-2,\nbody .arrow-title-3 {\n  width: 0;\n  height: 1;\n  position: absolute;\n  margin-left: auto;\n  margin-right: auto;\n  left: 0;\n  right: 0;\n  top: 12%;\n  border-top: 50px solid #2b2c28;\n}\nbody .arrow-title-2 {\n  top: 16%;\n  border-top: 50px solid #808080;\n}\nbody .arrow-title-3 {\n  top: 20%;\n  border-top: 50px solid #efcb68;\n}\nbody .ice {\n  color: #61dafb;\n}\nbody .ice-b {\n  background-color: #61dafb;\n}\nbody .coal {\n  color: #2b2c28;\n}\nbody .coal-b {\n  backround-color: #2b2c28;\n}\nbody .warm {\n  color: #efcb68;\n}\nbody .warm-b {\n  background-color: #efcb68;\n}\n", ""]);
 
 	// exports
 

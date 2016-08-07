@@ -2,24 +2,106 @@ $arrowPx = 50px
 $ice = #61DAFB
 $coal = #2B2C28
 $warm = #EFCB68
+$gray = gray
+
+// Typography
+// -------------------------
+font-family-primary = "Helvetica Neue", Helvetica, Arial, sans-serif;
+// font-family-primary-extra-thin-italic = 'Averta-ExtrathinItalic', sans-serif
+// font-family-primary-thin = 'Averta-Thin', sans-serif
+// font-family-primary-thin-italic = 'Averta-ThinItalic', sans-serif
+// font-family-primary-light = 'Averta-Light', sans-serif
+// font-family-primary-light-italic = 'Averta-LightItalic', sans-serif
+// font-family-primary-regular = 'Averta-Regular', sans-serif
+// font-family-primary-regular-italic = 'Averta-RegularItalic', sans-serif
+// font-family-primary-semi-bold = 'Averta-Semibold', sans-serif
+// font-family-primary-semi-bold-italic = 'Averta-SemiboldItalic', sans-serif
+// font-family-primary-bold = 'Averta-Bold', sans-serif
+// font-family-primary-bold-italic = 'Averta-BoldItalic', sans-serif
+// font-family-primary-extra-bold = 'Averta-ExtraBold', sans-serif
+// font-family-primary-extra-bold-italic = 'Averta-ExtraBoldItalic', sans-serif
+
+font-size-xxsmall = 10px
+font-size-xsmall = 12px
+font-size-small = 14px
+font-size-medium = 16px
+font-size-xmedium = 18px
+font-size-large = 20px
+font-size-xlarge = 24px
+font-size-xxlarge = 28px
+font-size-xxxlarge = 32px
+font-size-grande = 36px
+font-size-xgrande = 40px
+font-size-xxgrande = 46px
+font-size-xxxgrande = 52px
+font-size-poster = 72px
+font-size-billboard = 128px
+
+// MEDIA QUERIES AND BREAKPOINTS
+bp-mobile-min = 320px
+bp-mobile-tweak-lower-max = 439px
+bp-mobile-tweak = 440px
+bp-mobile-max = 559px
+bp-tablet-min = 560px
+bp-tablet-tweak-lower-max = 659px
+bp-tablet-tweak = 660px
+bp-tablet-max = 759px
+bp-desktop-md-min = 760px
+bp-desktop-md-tweak-lower-max = 859px
+bp-desktop-md-tweak = 860px
+bp-desktop-md-max = 959px
+bp-desktop-min = 960px
+bp-desktop-tweak-lower-max = 1079px
+bp-desktop-tweak = 1080px
+bp-desktop-max = 1300px
+
+// media query formatting strings... use with built-in s() function
+mq-query-minmax-fstr = "only screen and (min-width: %s) and (max-width: %s)"
+mq-query-min-fstr = "only screen and (min-width: %s)"
+
+// media query strings... use like @media mq-mobile
+mq-mobile = s(mq-query-minmax-fstr, 0px, bp-mobile-max)
+mq-tablet = s(mq-query-minmax-fstr, bp-tablet-min, bp-tablet-max)
+mq-desktop-md = s(mq-query-minmax-fstr, bp-desktop-md-min, bp-desktop-md-max)
+mq-desktop = s(mq-query-minmax-fstr, bp-desktop-min, bp-desktop-max)
+mq-max = s(mq-query-min-fstr, bp-desktop-max)
 
 body
   text-align center
-  font-family Helvetica
-  font-size 1em
+  font-family font-family-primary
+  div.slide
+    font-size 1em
+    @media mq-mobile
+      font-size 10vw
+    @media mq-tablet
+      font-size 10vw
+    @media mq-desktop-md
+      font-size 8vw
+    @media mq-desktop
+      font-size 8vw
+    @media mq-max
+      font-size 6vw
+
+  .logo
+    font-size 4em
+    font-family monospace
+    position static
+    padding-top 10%
+  .logo2
+    padding-top 0px
+    margin-top -30%
+
 
   #title
-    color gray
-    padding-top 35%
-    font-size 5em
+    color $gray
+    padding-top 50%
 
   .arrow-up
   .arrow-down
   .arrow-right
   .arrow-left
     width 0
-    height 0
-    z-index 1
+    height 1
 
   .arrow-down
   .arrow-up
@@ -61,6 +143,25 @@ body
     top 100%
   .top-200
     top 200%
+
+  .arrow-title-1
+  .arrow-title-2
+  .arrow-title-3
+    width 0
+    height 1
+    position absolute
+    margin-left auto
+    margin-right auto
+    left 0
+    right 0
+    top 12%
+    border-top $arrowPx solid $coal
+  .arrow-title-2
+    top 16%
+    border-top $arrowPx solid $gray
+  .arrow-title-3
+    top 20%
+    border-top $arrowPx solid $warm
 
   .ice
     color $ice

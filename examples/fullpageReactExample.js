@@ -80,7 +80,7 @@ class FullpageReact extends React.Component {
         <TopNav className='topNav' {...topNavOptions}>
           {navArr.map((n, idx) => {
             return <span key={idx} ref={idx} style={this.compareStyles(topNavOptions, idx)}
-              onMouseOver={() => this.onMouseOver(idx)} onMouseOut={() => this.onMouseOut(idx)}>Slide {idx}</span>
+              onMouseOver={() => this.onMouseOver(idx)} onMouseOut={() => this.onMouseOut()}>Slide {idx}</span>
           }, this)}
         </TopNav>
 
@@ -93,7 +93,7 @@ class FullpageReact extends React.Component {
         <SideNav {...sideNavOptions}>
           {navArr.map((n, idx) => {
             return <div key={idx} ref={idx} style={this.compareStyles(sideNavOptions, idx)}
-                     onMouseOver={() => this.onMouseOver(idx)} onMouseOut={() => this.onMouseOut(idx)}>&#x25CF;</div>
+              onMouseOver={() => this.onMouseOver(idx)} onMouseOut={() => this.onMouseOut()}>&#x25CF;</div>
           }, this)}
         </SideNav>
 

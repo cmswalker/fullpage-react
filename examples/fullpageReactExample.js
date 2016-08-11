@@ -77,7 +77,7 @@ class FullpageReact extends React.Component {
     return (
       <Fullpage active={this.updateActiveState}>
 
-        <TopNav {...topNavOptions}>
+        <TopNav className='topNav' {...topNavOptions}>
           {navArr.map((n, idx) => {
             return <span key={idx} ref={idx} style={this.compareStyles(topNavOptions, idx)}
               onMouseOver={() => this.onMouseOver(idx)} onMouseOut={() => this.onMouseOut(idx)}>Slide {idx}</span>

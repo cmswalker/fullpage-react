@@ -1,12 +1,15 @@
 const path = require('path');
+const HtmlwebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
-    index: path.join(__dirname, '/lib/index.js')
+    index: path.join(__dirname, '/examples/index.js')
   },
   output: {
-    filename: 'bundle.js',
-    path: path.join(__dirname, 'src')
+    filename: '[name].js',
+    path: path.join(__dirname, '/static/'),
+    publicPath: '/',
+    chunkFilename: '[id].chunk.js'
   },
   devServer: {
     inline: true,
@@ -24,5 +27,10 @@ module.exports = {
       },
       { test: /\.styl$/, loader: 'style-loader!css-loader!stylus-loader' }
     ]
-  }
+  },
+  plugins: [
+    new HtmlwebpackPlugin({
+      title: 'Fullpage React'
+    })
+  ]
 };

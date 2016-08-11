@@ -8,7 +8,7 @@ var events = {
   active: 0
 };
 
-function sub(sub, action) {
+function pub(sub, action) {
   var name = sub.state.name;
 
   if (!cache[name]) {
@@ -17,7 +17,7 @@ function sub(sub, action) {
   }
 }
 
-function pub(sub, arg) {
+function sub(sub, arg) {
   if (events.active == arg) {
     return;
   }

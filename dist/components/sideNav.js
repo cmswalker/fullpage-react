@@ -12,6 +12,17 @@ var React = require('react');
 var Tappable = require('react-tappable');
 
 var events = require('../utils/events');
+var renderUtils = require('../utils/renderUtils');
+
+var styles = {
+  position: 'fixed',
+  zIndex: '1',
+  cursor: 'pointer',
+
+  //defaults
+  top: '50%',
+  left: '1%'
+};
 
 var sideNav = function (_React$Component) {
   _inherits(sideNav, _React$Component);
@@ -22,47 +33,45 @@ var sideNav = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(sideNav).call(this, props));
 
     _this.state = {
-      side: _this.props.side === 'right' ? 'right' : 'left'
+      side: _this.props.side === 'right' ? 'right' : 'left',
+      currentStyles: styles,
+      defaultClass: 'sideNav'
     };
 
     _this.goToSlide = _this.goToSlide.bind(_this);
+    _this.updateStyles = _this.updateStyles.bind(_this);
     return _this;
   }
 
   _createClass(sideNav, [{
+    key: 'updateStyles',
+    value: function updateStyles(styles) {
+      this.state.currentStyles = styles;
+    }
+  }, {
     key: 'goToSlide',
     value: function goToSlide(slide) {
-      events.pub('Fullpage', slide);
+      events.sub('Fullpage', slide);
     }
   }, {
     key: 'render',
     value: function render() {
       var _this2 = this;
 
-      var styles = {
-        position: 'fixed',
-        zIndex: '1',
-        cursor: 'pointer',
-
-        //defaults
-        top: '50%',
-        left: '1%'
-      };
-
       if (this.props.top) {
-        styles.top = this.props.top;
+        this.state.currentStyles.top = this.props.top;
       }
 
       if (this.props.right) {
-        styles.right = this.props.right;
-        delete styles.left;
+        this.state.currentStyles.right = this.props.right;
+        delete this.state.currentStyles.left;
       } else {
-        styles.left = this.props.left || styles.left;
+        this.state.currentStyles.left = this.props.left || styles.left;
       }
 
       return React.createElement(
         'div',
-        { style: styles },
+        { className: renderUtils.defaultClass.call(this), style: this.state.currentStyles },
         this.props.children.map(function (child, idx) {
           return React.createElement(
             Tappable,

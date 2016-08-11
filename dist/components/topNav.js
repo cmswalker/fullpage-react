@@ -12,6 +12,7 @@ var React = require('react');
 var Tappable = require('react-tappable');
 
 var events = require('../utils/events');
+var renderUtils = require('../utils/renderUtils');
 
 var TopNav = function (_React$Component) {
   _inherits(TopNav, _React$Component);
@@ -19,13 +20,18 @@ var TopNav = function (_React$Component) {
   function TopNav(props) {
     _classCallCheck(this, TopNav);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(TopNav).call(this, props));
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TopNav).call(this, props));
+
+    _this.state = {
+      defaultClass: _this.props.footer ? 'bottomNav' : 'topNav'
+    };
+    return _this;
   }
 
   _createClass(TopNav, [{
     key: 'goToSlide',
     value: function goToSlide(slide) {
-      events.pub('Fullpage', slide);
+      events.sub('Fullpage', slide);
     }
   }, {
     key: 'render',
@@ -56,7 +62,7 @@ var TopNav = function (_React$Component) {
 
       return React.createElement(
         'div',
-        { style: styles },
+        { className: renderUtils.defaultClass.call(this), style: styles },
         this.props.children.map(function (child, idx) {
           return React.createElement(
             Tappable,

@@ -15,6 +15,7 @@ var SideNav = require('./sideNav');
 
 var scrollTo = require('../utils/scrollTo');
 var events = require('../utils/events');
+var renderUtils = require('../utils/renderUtils');
 
 var Fullpage = function (_React$Component) {
   _inherits(Fullpage, _React$Component);
@@ -29,6 +30,7 @@ var Fullpage = function (_React$Component) {
     });
     _this.state = {
       name: 'Fullpage',
+      defaultClass: 'Fullpage',
       slides: [],
       slidesCount: slideChildren.length,
       activeSlide: 0,
@@ -49,7 +51,7 @@ var Fullpage = function (_React$Component) {
       document.addEventListener('touchstart', this.onTouchStart.bind(this));
       document.addEventListener('touchend', this.onTouchEnd.bind(this));
       window.addEventListener('resize', this.onResize.bind(this));
-      events.sub(this, this.scrollToSlide);
+      events.pub(this, this.scrollToSlide);
 
       //initialize slides
       this.onResize();
@@ -191,7 +193,7 @@ var Fullpage = function (_React$Component) {
     value: function render() {
       return React.createElement(
         'div',
-        { style: { height: this.state.height } },
+        { className: renderUtils.defaultClass.call(this), style: { height: this.state.height } },
         this.props.children
       );
     }

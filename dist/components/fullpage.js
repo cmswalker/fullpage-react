@@ -25,14 +25,13 @@ var Fullpage = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Fullpage).call(this, props));
 
-    var slideChildren = _this.props.children.filter(function (c) {
-      return c.type.name == 'Slide';
-    });
+    var slideChildren = getSlideCount(_this.props.children);
+
     _this.state = {
       name: 'Fullpage',
       defaultClass: 'Fullpage',
       slides: [],
-      slidesCount: slideChildren.length,
+      slidesCount: slideChildren,
       activeSlide: 0,
       lastActive: -1,
       downThreshold: -Math.abs(_this.props.threshold || 100),
@@ -206,5 +205,23 @@ var Fullpage = function (_React$Component) {
 Fullpage.propTypes = {
   children: React.PropTypes.node.isRequired
 };
+
+function getSlideCount(children) {
+  return children.reduce(function (result, c) {
+    if (Array.isArray(c)) {
+      return getSlideCount(c);
+    }
+
+    if (!c.type) {
+      return result;
+    }
+
+    if (c.type.name === 'Slide') {
+      return result = result + 1;
+    }
+
+    return result;
+  }, 0);
+}
 
 module.exports = Fullpage;

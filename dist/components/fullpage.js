@@ -16,6 +16,8 @@ var SideNav = require('./sideNav');
 var scrollTo = require('../utils/scrollTo');
 var events = require('../utils/events');
 var renderUtils = require('../utils/renderUtils');
+var BROWSER = renderUtils.browser();
+var BODY = BROWSER === 'Firefox' ? document.documentElement : document.body;
 
 var Fullpage = function (_React$Component) {
   _inherits(Fullpage, _React$Component);
@@ -52,7 +54,7 @@ var Fullpage = function (_React$Component) {
       window.addEventListener('resize', this.onResize.bind(this));
       events.pub(this, this.scrollToSlide);
 
-      //initialize slides
+      //initialize slides    
       this.onResize();
       this.scrollToSlide(0);
     }
@@ -82,6 +84,8 @@ var Fullpage = function (_React$Component) {
         slides.push(window.innerHeight * i);
       }
 
+      // this.state.slides = slides;
+      // this.state.height = window.innerHeight;
       this.setState({
         'slides': slides,
         'height': window.innerHeight
@@ -104,7 +108,7 @@ var Fullpage = function (_React$Component) {
       });
 
       var self = this;
-      scrollTo(document.body, self.state.slides[slide], 600, function () {
+      scrollTo(BODY, self.state.slides[slide], 600, function () {
         self.setState({ 'activeSlide': slide });
         self.setState({ 'scrollPending': false });
       });
@@ -152,7 +156,7 @@ var Fullpage = function (_React$Component) {
       }
 
       var scrollDown = (e.wheelDelta || -e.deltaY || e.detail) < this.state.downThreshold;
-      var scrollUp = (e.wheelDelta || e.deltaY || e.detail) > this.state.upThreshold;
+      var scrollUp = (e.wheelDelta || -e.deltaY || e.detail) > this.state.upThreshold;
 
       var activeSlide = this.state.activeSlide;
 
@@ -177,7 +181,7 @@ var Fullpage = function (_React$Component) {
       this.setState({ 'scrollPending': true });
 
       var self = this;
-      scrollTo(document.body, self.state.slides[activeSlide], 500, function () {
+      scrollTo(BODY, self.state.slides[activeSlide], 500, function () {
         self.setState({ 'activeSlide': activeSlide });
         self.setState({ 'lastActive': scrollDown ? activeSlide-- : activeSlide++ });
 

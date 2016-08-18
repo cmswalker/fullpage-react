@@ -1,5 +1,8 @@
 'use strict';
 
+var objectAssign = require('object-assign');
+Object.assign = Object.assign || objectAssign;
+
 function defaultClass() {
 	return this.props.className || this.state.defaultClass;
 }

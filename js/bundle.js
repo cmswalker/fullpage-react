@@ -190,17 +190,45 @@
 	} ())
 	function runTimeout(fun) {
 	    if (cachedSetTimeout === setTimeout) {
+	        //normal enviroments in sane situations
 	        return setTimeout(fun, 0);
-	    } else {
-	        return cachedSetTimeout.call(null, fun, 0);
 	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedSetTimeout(fun, 0);
+	    } catch(e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+	            return cachedSetTimeout.call(null, fun, 0);
+	        } catch(e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+	            return cachedSetTimeout.call(this, fun, 0);
+	        }
+	    }
+
+
 	}
 	function runClearTimeout(marker) {
 	    if (cachedClearTimeout === clearTimeout) {
-	        clearTimeout(marker);
-	    } else {
-	        cachedClearTimeout.call(null, marker);
+	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
 	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedClearTimeout(marker);
+	    } catch (e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+	            return cachedClearTimeout.call(null, marker);
+	        } catch (e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+	            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+	            return cachedClearTimeout.call(this, marker);
+	        }
+	    }
+
+
+
 	}
 	var queue = [];
 	var draining = false;
@@ -21454,8 +21482,8 @@
 	var TopNav = _require.TopNav;
 	var SideNav = _require.SideNav;
 
-	__webpack_require__(189);
-	__webpack_require__(193);
+	__webpack_require__(190);
+	__webpack_require__(194);
 
 	var fullPageOptions = {
 	  // for mouse/wheel events
@@ -21643,9 +21671,9 @@
 	'use strict';
 
 	var Fullpage = __webpack_require__(178);
-	var Slide = __webpack_require__(188);
+	var Slide = __webpack_require__(189);
 	var TopNav = __webpack_require__(179);
-	var SideNav = __webpack_require__(186);
+	var SideNav = __webpack_require__(187);
 
 	module.exports = {
 	  Fullpage: Fullpage,
@@ -21671,10 +21699,13 @@
 	var React = __webpack_require__(1);
 
 	var TopNav = __webpack_require__(179);
-	var SideNav = __webpack_require__(186);
+	var SideNav = __webpack_require__(187);
 
-	var scrollTo = __webpack_require__(187);
+	var scrollTo = __webpack_require__(188);
 	var events = __webpack_require__(185);
+	var renderUtils = __webpack_require__(186);
+	var BROWSER = renderUtils.browser();
+	var BODY = BROWSER === 'Firefox' ? document.documentElement : document.body;
 
 	var Fullpage = function (_React$Component) {
 	  _inherits(Fullpage, _React$Component);
@@ -21684,13 +21715,13 @@
 
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Fullpage).call(this, props));
 
-	    var slideChildren = _this.props.children.filter(function (c) {
-	      return c.type.name == 'Slide';
-	    });
+	    var slideChildren = getSlideCount(_this.props.children);
+
 	    _this.state = {
 	      name: 'Fullpage',
+	      defaultClass: 'Fullpage',
 	      slides: [],
-	      slidesCount: slideChildren.length,
+	      slidesCount: slideChildren,
 	      activeSlide: 0,
 	      lastActive: -1,
 	      downThreshold: -Math.abs(_this.props.threshold || 100),
@@ -21709,9 +21740,9 @@
 	      document.addEventListener('touchstart', this.onTouchStart.bind(this));
 	      document.addEventListener('touchend', this.onTouchEnd.bind(this));
 	      window.addEventListener('resize', this.onResize.bind(this));
-	      events.sub(this, this.scrollToSlide);
+	      events.pub(this, this.scrollToSlide);
 
-	      //initialize slides
+	      //initialize slides    
 	      this.onResize();
 	      this.scrollToSlide(0);
 	    }
@@ -21741,6 +21772,8 @@
 	        slides.push(window.innerHeight * i);
 	      }
 
+	      // this.state.slides = slides;
+	      // this.state.height = window.innerHeight;
 	      this.setState({
 	        'slides': slides,
 	        'height': window.innerHeight
@@ -21763,7 +21796,7 @@
 	      });
 
 	      var self = this;
-	      scrollTo(document.body, self.state.slides[slide], 600, function () {
+	      scrollTo(BODY, self.state.slides[slide], 600, function () {
 	        self.setState({ 'activeSlide': slide });
 	        self.setState({ 'scrollPending': false });
 	      });
@@ -21811,7 +21844,7 @@
 	      }
 
 	      var scrollDown = (e.wheelDelta || -e.deltaY || e.detail) < this.state.downThreshold;
-	      var scrollUp = (e.wheelDelta || e.deltaY || e.detail) > this.state.upThreshold;
+	      var scrollUp = (e.wheelDelta || -e.deltaY || e.detail) > this.state.upThreshold;
 
 	      var activeSlide = this.state.activeSlide;
 
@@ -21836,7 +21869,7 @@
 	      this.setState({ 'scrollPending': true });
 
 	      var self = this;
-	      scrollTo(document.body, self.state.slides[activeSlide], 500, function () {
+	      scrollTo(BODY, self.state.slides[activeSlide], 500, function () {
 	        self.setState({ 'activeSlide': activeSlide });
 	        self.setState({ 'lastActive': scrollDown ? activeSlide-- : activeSlide++ });
 
@@ -21851,7 +21884,7 @@
 	    value: function render() {
 	      return React.createElement(
 	        'div',
-	        { style: { height: this.state.height } },
+	        { className: renderUtils.defaultClass.call(this), style: { height: this.state.height } },
 	        this.props.children
 	      );
 	    }
@@ -21864,6 +21897,24 @@
 	Fullpage.propTypes = {
 	  children: React.PropTypes.node.isRequired
 	};
+
+	function getSlideCount(children) {
+	  return children.reduce(function (result, c) {
+	    if (Array.isArray(c)) {
+	      return getSlideCount(c);
+	    }
+
+	    if (!c.type) {
+	      return result;
+	    }
+
+	    if (c.type.name === 'Slide') {
+	      return result = result + 1;
+	    }
+
+	    return result;
+	  }, 0);
+	}
 
 	module.exports = Fullpage;
 
@@ -21885,6 +21936,7 @@
 	var Tappable = __webpack_require__(180);
 
 	var events = __webpack_require__(185);
+	var renderUtils = __webpack_require__(186);
 
 	var TopNav = function (_React$Component) {
 	  _inherits(TopNav, _React$Component);
@@ -21892,13 +21944,18 @@
 	  function TopNav(props) {
 	    _classCallCheck(this, TopNav);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(TopNav).call(this, props));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TopNav).call(this, props));
+
+	    _this.state = {
+	      defaultClass: _this.props.footer ? 'bottomNav' : 'topNav'
+	    };
+	    return _this;
 	  }
 
 	  _createClass(TopNav, [{
 	    key: 'goToSlide',
 	    value: function goToSlide(slide) {
-	      events.pub('Fullpage', slide);
+	      events.sub('Fullpage', slide);
 	    }
 	  }, {
 	    key: 'render',
@@ -21929,7 +21986,7 @@
 
 	      return React.createElement(
 	        'div',
-	        { style: styles },
+	        { className: renderUtils.defaultClass.call(this), style: styles },
 	        this.props.children.map(function (child, idx) {
 	          return React.createElement(
 	            Tappable,
@@ -22541,7 +22598,7 @@
 	  active: 0
 	};
 
-	function sub(sub, action) {
+	function pub(sub, action) {
 	  var name = sub.state.name;
 
 	  if (!cache[name]) {
@@ -22550,7 +22607,7 @@
 	  }
 	}
 
-	function pub(sub, arg) {
+	function sub(sub, arg) {
 	  if (events.active == arg) {
 	    return;
 	  }
@@ -22567,6 +22624,47 @@
 
 	'use strict';
 
+	var objectAssign = __webpack_require__(4);
+	Object.assign = Object.assign || objectAssign;
+
+	function defaultClass() {
+		return this.props.className || this.state.defaultClass;
+	}
+
+	function browser() {
+		// Return cached result if avalible, else get result then cache it.
+		if (browser.prototype._cachedResult) return browser.prototype._cachedResult;
+
+		// Opera 8.0+ (UA detection to detect Blink/v8-powered Opera)
+		var isOpera = !!window.opr && !!opr.addons || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+
+		// Firefox 1.0+
+		var isFirefox = typeof InstallTrigger !== 'undefined';
+
+		// At least Safari 3+: "[object HTMLElementConstructor]"
+		var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+
+		// Chrome 1+
+		var isChrome = !!window.chrome && !isOpera;
+
+		// At least IE6
+		var isIE = /*@cc_on!@*/false || !!document.documentMode;
+
+		// Edge 20+
+		var isEdge = !isIE && !!window.StyleMedia;
+
+		return browser.prototype._cachedResult = isOpera ? 'Opera' : isFirefox ? 'Firefox' : isSafari ? 'Safari' : isChrome ? 'Chrome' : isIE ? 'IE' : isEdge ? 'Edge' : "Other";
+	};
+
+	exports.defaultClass = defaultClass;
+	exports.browser = browser;
+
+/***/ },
+/* 187 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -22579,6 +22677,17 @@
 	var Tappable = __webpack_require__(180);
 
 	var events = __webpack_require__(185);
+	var renderUtils = __webpack_require__(186);
+
+	var styles = {
+	  position: 'fixed',
+	  zIndex: '1',
+	  cursor: 'pointer',
+
+	  //defaults
+	  top: '50%',
+	  left: '1%'
+	};
 
 	var sideNav = function (_React$Component) {
 	  _inherits(sideNav, _React$Component);
@@ -22589,47 +22698,45 @@
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(sideNav).call(this, props));
 
 	    _this.state = {
-	      side: _this.props.side === 'right' ? 'right' : 'left'
+	      side: _this.props.side === 'right' ? 'right' : 'left',
+	      currentStyles: styles,
+	      defaultClass: 'sideNav'
 	    };
 
 	    _this.goToSlide = _this.goToSlide.bind(_this);
+	    _this.updateStyles = _this.updateStyles.bind(_this);
 	    return _this;
 	  }
 
 	  _createClass(sideNav, [{
+	    key: 'updateStyles',
+	    value: function updateStyles(styles) {
+	      this.state.currentStyles = styles;
+	    }
+	  }, {
 	    key: 'goToSlide',
 	    value: function goToSlide(slide) {
-	      events.pub('Fullpage', slide);
+	      events.sub('Fullpage', slide);
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
 
-	      var styles = {
-	        position: 'fixed',
-	        zIndex: '1',
-	        cursor: 'pointer',
-
-	        //defaults
-	        top: '50%',
-	        left: '1%'
-	      };
-
 	      if (this.props.top) {
-	        styles.top = this.props.top;
+	        this.state.currentStyles.top = this.props.top;
 	      }
 
 	      if (this.props.right) {
-	        styles.right = this.props.right;
-	        delete styles.left;
+	        this.state.currentStyles.right = this.props.right;
+	        delete this.state.currentStyles.left;
 	      } else {
-	        styles.left = this.props.left || styles.left;
+	        this.state.currentStyles.left = this.props.left || styles.left;
 	      }
 
 	      return React.createElement(
 	        'div',
-	        { style: styles },
+	        { className: renderUtils.defaultClass.call(this), style: this.state.currentStyles },
 	        this.props.children.map(function (child, idx) {
 	          return React.createElement(
 	            Tappable,
@@ -22649,7 +22756,7 @@
 	module.exports = sideNav;
 
 /***/ },
-/* 187 */
+/* 188 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -22690,7 +22797,7 @@
 	};
 
 /***/ },
-/* 188 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22739,16 +22846,16 @@
 	module.exports = Slide;
 
 /***/ },
-/* 189 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(190);
+	var content = __webpack_require__(191);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(192)(content, {});
+	var update = __webpack_require__(193)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -22765,10 +22872,10 @@
 	}
 
 /***/ },
-/* 190 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(191)();
+	exports = module.exports = __webpack_require__(192)();
 	// imports
 
 
@@ -22779,7 +22886,7 @@
 
 
 /***/ },
-/* 191 */
+/* 192 */
 /***/ function(module, exports) {
 
 	/*
@@ -22835,7 +22942,7 @@
 
 
 /***/ },
-/* 192 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -23087,16 +23194,16 @@
 
 
 /***/ },
-/* 193 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(194);
+	var content = __webpack_require__(195);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(192)(content, {});
+	var update = __webpack_require__(193)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -23113,10 +23220,10 @@
 	}
 
 /***/ },
-/* 194 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(191)();
+	exports = module.exports = __webpack_require__(192)();
 	// imports
 
 

@@ -34,3 +34,4 @@ function browser() {
 
 exports.defaultClass = defaultClass;
 exports.browser = browser;
+exports.elementBrowsers = ['Firefox', 'IE', 'Edge'];

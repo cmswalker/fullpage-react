@@ -17,7 +17,9 @@ var scrollTo = require('../utils/scrollTo');
 var events = require('../utils/events');
 var renderUtils = require('../utils/renderUtils');
 var BROWSER = renderUtils.browser();
-var BODY = BROWSER === 'Firefox' ? document.documentElement : document.body;
+var ELEMENT_BROWSERS = renderUtils.elementBrowsers;
+
+var BODY = !!~ELEMENT_BROWSERS.indexOf(BROWSER) ? document.documentElement : document.body;
 
 var Fullpage = function (_React$Component) {
   _inherits(Fullpage, _React$Component);

@@ -86,16 +86,24 @@ var Fullpage = function (_React$Component) {
         slides.push(window.innerHeight * i);
       }
 
-      // this.state.slides = slides;
-      // this.state.height = window.innerHeight;
       this.setState({
         'slides': slides,
         'height': window.innerHeight
       });
+
+      this.scrollToSlide(this.state.activeSlide, true);
     }
   }, {
     key: 'scrollToSlide',
-    value: function scrollToSlide(slide, dir) {
+    value: function scrollToSlide(slide, override) {
+      if (override) {
+        var self = this;
+        return scrollTo.call(this, BODY, self.state.slides[slide], 100, function () {
+          self.setState({ 'activeSlide': slide });
+          self.setState({ 'scrollPending': false });
+        });
+      }
+
       if (this.state.scrollPending) {
         return;
       }

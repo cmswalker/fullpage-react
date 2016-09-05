@@ -1,5 +1,5 @@
 {
-  "name": "fullpage-react",
+  "name": "fullpage-react-gh-pages",
   "version": "1.0.0",
   "description": "full page scrolling for react",
   "main": "index.js",
@@ -10,7 +10,7 @@
   "author": "cmswalker",
   "license": "MIT",
   "dependencies": {
-    "fullpage-react": "^1.0.10",
+    "fullpage-react": "^1.0.12",
     "normalize.css": "^4.2.0",
     "react": "^15.3.0",
     "react-dom": "^15.3.0"

@@ -1,6 +1,6 @@
 {
   "name": "fullpage-react",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "full page scrolling for react",
   "main": "index.js",
   "scripts": {

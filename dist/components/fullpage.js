@@ -12,6 +12,7 @@ var React = require('react');
 
 var TopNav = require('./topNav');
 var SideNav = require('./sideNav');
+var Slide = require('./slide');
 
 var scrollTo = require('../utils/scrollTo');
 var events = require('../utils/events');
@@ -37,7 +38,7 @@ var Fullpage = function (_React$Component) {
   function Fullpage(props) {
     _classCallCheck(this, Fullpage);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Fullpage).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Fullpage.__proto__ || Object.getPrototypeOf(Fullpage)).call(this, props));
 
     var slideChildren = getSlideCount(_this.props.children);
 
@@ -240,7 +241,7 @@ function getSlideCount(children) {
       return result;
     }
 
-    if (c.type.name === 'Slide') {
+    if (c.type === Slide) {
       return result = result + 1;
     }
 

@@ -16,10 +16,20 @@ var SideNav = require('./sideNav');
 var scrollTo = require('../utils/scrollTo');
 var events = require('../utils/events');
 var renderUtils = require('../utils/renderUtils');
-var BROWSER = renderUtils.browser();
-var ELEMENT_BROWSERS = renderUtils.elementBrowsers;
 
-var BODY = !!~ELEMENT_BROWSERS.indexOf(BROWSER) ? document.documentElement : document.body;
+var BROWSER = null;
+var ELEMENT_BROWSERS = null;
+var BODY = null;
+
+var getBody = function getBody() {
+  if (!BODY) {
+    BROWSER = renderUtils.browser();
+    ELEMENT_BROWSERS = renderUtils.elementBrowsers;
+    BODY = !!~ELEMENT_BROWSERS.indexOf(BROWSER) ? document.documentElement : document.body;
+  }
+
+  return BODY;
+};
 
 var Fullpage = function (_React$Component) {
   _inherits(Fullpage, _React$Component);
@@ -27,7 +37,7 @@ var Fullpage = function (_React$Component) {
   function Fullpage(props) {
     _classCallCheck(this, Fullpage);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Fullpage).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Fullpage.__proto__ || Object.getPrototypeOf(Fullpage)).call(this, props));
 
     var slideChildren = getSlideCount(_this.props.children);
 
@@ -98,7 +108,7 @@ var Fullpage = function (_React$Component) {
     value: function scrollToSlide(slide, override) {
       if (override) {
         var self = this;
-        return scrollTo.call(this, BODY, self.state.slides[slide], 100, function () {
+        return scrollTo.call(this, getBody(), self.state.slides[slide], 100, function () {
           self.setState({ 'activeSlide': slide });
           self.setState({ 'scrollPending': false });
         });
@@ -118,7 +128,7 @@ var Fullpage = function (_React$Component) {
       });
 
       var self = this;
-      scrollTo(BODY, self.state.slides[slide], 600, function () {
+      scrollTo(getBody(), self.state.slides[slide], 600, function () {
         self.setState({ 'activeSlide': slide });
         self.setState({ 'scrollPending': false });
       });
@@ -191,7 +201,7 @@ var Fullpage = function (_React$Component) {
       this.setState({ 'scrollPending': true });
 
       var self = this;
-      scrollTo(BODY, self.state.slides[activeSlide], 500, function () {
+      scrollTo(getBody(), self.state.slides[activeSlide], 500, function () {
         self.setState({ 'activeSlide': activeSlide });
         self.setState({ 'lastActive': scrollDown ? activeSlide-- : activeSlide++ });
 

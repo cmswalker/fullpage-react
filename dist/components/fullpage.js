@@ -240,7 +240,7 @@ function getSlideCount(children) {
       return result;
     }
 
-    if (c.type.name === 'Slide') {
+    if (c.type === 'Slide' || c.type.name === 'Slide') {
       return result = result + 1;
     }
 

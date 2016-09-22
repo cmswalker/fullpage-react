@@ -12,6 +12,7 @@ var React = require('react');
 
 var TopNav = require('./topNav');
 var SideNav = require('./sideNav');
+var Slide = require('./slide');
 
 var scrollTo = require('../utils/scrollTo');
 var events = require('../utils/events');
@@ -240,7 +241,7 @@ function getSlideCount(children) {
       return result;
     }
 
-    if (c.type === 'Slide' || c.type.name === 'Slide') {
+    if (c.type === Slide) {
       return result = result + 1;
     }
 

@@ -29,10 +29,10 @@
     "slider"
   ],
   "dependencies": {
+    "object-assign": "^4.1.0",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
-    "react-tappable": "^0.8.3",
-    "object-assign": "^4.1.0"
+    "react-tappable": "^0.8.4"
   },
   "devDependencies": {
     "babel-cli": "^6.11.4",

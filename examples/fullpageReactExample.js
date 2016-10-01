@@ -38,7 +38,7 @@ let sideNavOptions = {
 
 class FullpageReact extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       active: 0,
       hover: null
@@ -71,7 +71,7 @@ class FullpageReact extends React.Component {
   render() {
     let navCount = 3;
     let navArr = [];
-    for (let i = 0; i < navCount; i++) {
+    for (var i = 0; i < navCount; i++) {
       navArr.push(i);
     }
 
@@ -79,7 +79,7 @@ class FullpageReact extends React.Component {
       <Fullpage active={this.updateActiveState}>
 
         <TopNav className='topNav' {...topNavOptions}>
-          {navArr.map((n, idx) => {
+          {navArr.map((n, idx) => {            
             return <span key={idx} ref={idx} style={this.compareStyles(topNavOptions, idx)}
               onMouseOver={() => this.onMouseOver(idx)} onMouseOut={() => this.onMouseOut()}>Slide {idx}</span>
           }, this)}

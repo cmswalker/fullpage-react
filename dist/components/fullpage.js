@@ -17,20 +17,16 @@ var Slide = require('./slide');
 var scrollTo = require('../utils/scrollTo');
 var events = require('../utils/events');
 var renderUtils = require('../utils/renderUtils');
+var keyIndex = {
+  37: 'left',
+  38: -1,
+  39: 'right',
+  40: 1
+};
 
 var BROWSER = null;
 var ELEMENT_BROWSERS = null;
 var BODY = null;
-
-var getBody = function getBody() {
-  if (!BODY) {
-    BROWSER = renderUtils.browser();
-    ELEMENT_BROWSERS = renderUtils.elementBrowsers;
-    BODY = !!~ELEMENT_BROWSERS.indexOf(BROWSER) ? document.documentElement : document.body;
-  }
-
-  return BODY;
-};
 
 var Fullpage = function (_React$Component) {
   _inherits(Fullpage, _React$Component);
@@ -64,6 +60,7 @@ var Fullpage = function (_React$Component) {
       document.addEventListener('wheel', this.onScroll.bind(this));
       document.addEventListener('touchstart', this.onTouchStart.bind(this));
       document.addEventListener('touchend', this.onTouchEnd.bind(this));
+      document.addEventListener('keydown', this.checkKey.bind(this));
       window.addEventListener('resize', this.onResize.bind(this));
       events.pub(this, this.scrollToSlide);
 
@@ -77,6 +74,7 @@ var Fullpage = function (_React$Component) {
       document.removeEventListener('wheel', this.onScroll);
       document.removeEventListener('touchstart', this.onTouchStart);
       document.removeEventListener('touchend', this.onTouchEnd);
+      document.removeEventListener('keydown', this.checkKey);
       window.removeEventListener('resize', this.onResize);
     }
   }, {
@@ -87,6 +85,24 @@ var Fullpage = function (_React$Component) {
     value: function componentDidUpdate(pP, pS) {
       events.active = this.state.activeSlide;
       this.props.active(this.state.activeSlide);
+    }
+  }, {
+    key: 'checkKey',
+    value: function checkKey(e) {
+      var direction = null;
+      e = e || window.event;
+      if (keyIndex[e.keyCode]) {
+        direction = keyIndex[e.keyCode];
+      } else {
+        return false;
+      }
+
+      //can remove this when carousel is implemented    
+      if (typeof direction !== 'number') {
+        return false;
+      }
+
+      this.scrollToSlide(this.state.activeSlide + direction);
     }
   }, {
     key: 'onResize',
@@ -107,11 +123,12 @@ var Fullpage = function (_React$Component) {
   }, {
     key: 'scrollToSlide',
     value: function scrollToSlide(slide, override) {
+      var _this2 = this;
+
       if (override) {
-        var self = this;
-        return scrollTo.call(this, getBody(), self.state.slides[slide], 100, function () {
-          self.setState({ 'activeSlide': slide });
-          self.setState({ 'scrollPending': false });
+        return scrollTo.call(this, getBody(), this.state.slides[slide], 100, function () {
+          _this2.setState({ 'activeSlide': slide });
+          _this2.setState({ 'scrollPending': false });
         });
       }
 
@@ -171,6 +188,8 @@ var Fullpage = function (_React$Component) {
   }, {
     key: 'onScroll',
     value: function onScroll(e) {
+      var _this3 = this;
+
       e.preventDefault();
       if (this.state.scrollPending) {
         return;
@@ -201,14 +220,13 @@ var Fullpage = function (_React$Component) {
 
       this.setState({ 'scrollPending': true });
 
-      var self = this;
-      scrollTo(getBody(), self.state.slides[activeSlide], 500, function () {
-        self.setState({ 'activeSlide': activeSlide });
-        self.setState({ 'lastActive': scrollDown ? activeSlide-- : activeSlide++ });
+      scrollTo(getBody(), this.state.slides[activeSlide], 500, function () {
+        _this3.setState({ 'activeSlide': activeSlide });
+        _this3.setState({ 'lastActive': scrollDown ? activeSlide-- : activeSlide++ });
 
         setTimeout(function () {
-          self.setState({ 'scrollPending': false });
-        }, self.state.upThreshold * 2);
+          _this3.setState({ 'scrollPending': false });
+        }, _this3.state.upThreshold * 2);
       });
       return this.setState({ 'scrollPending': true });
     }
@@ -248,5 +266,15 @@ function getSlideCount(children) {
     return result;
   }, 0);
 }
+
+var getBody = function getBody() {
+  if (!BODY) {
+    BROWSER = renderUtils.browser();
+    ELEMENT_BROWSERS = renderUtils.elementBrowsers;
+    BODY = !!~ELEMENT_BROWSERS.indexOf(BROWSER) ? document.documentElement : document.body;
+  }
+
+  return BODY;
+};
 
 module.exports = Fullpage;

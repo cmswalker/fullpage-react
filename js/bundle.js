@@ -21671,7 +21671,7 @@
 	'use strict';
 
 	var Fullpage = __webpack_require__(178);
-	var Slide = __webpack_require__(189);
+	var Slide = __webpack_require__(188);
 	var TopNav = __webpack_require__(179);
 	var SideNav = __webpack_require__(187);
 
@@ -21700,12 +21700,21 @@
 
 	var TopNav = __webpack_require__(179);
 	var SideNav = __webpack_require__(187);
+	var Slide = __webpack_require__(188);
 
-	var scrollTo = __webpack_require__(188);
+	var scrollTo = __webpack_require__(189);
 	var events = __webpack_require__(185);
 	var renderUtils = __webpack_require__(186);
-	var BROWSER = renderUtils.browser();
-	var BODY = BROWSER === 'Firefox' ? document.documentElement : document.body;
+	var keyIndex = {
+	  37: 'left',
+	  38: -1,
+	  39: 'right',
+	  40: 1
+	};
+
+	var BROWSER = null;
+	var ELEMENT_BROWSERS = null;
+	var BODY = null;
 
 	var Fullpage = function (_React$Component) {
 	  _inherits(Fullpage, _React$Component);
@@ -21739,6 +21748,7 @@
 	      document.addEventListener('wheel', this.onScroll.bind(this));
 	      document.addEventListener('touchstart', this.onTouchStart.bind(this));
 	      document.addEventListener('touchend', this.onTouchEnd.bind(this));
+	      document.addEventListener('keydown', this.checkKey.bind(this));
 	      window.addEventListener('resize', this.onResize.bind(this));
 	      events.pub(this, this.scrollToSlide);
 
@@ -21752,6 +21762,7 @@
 	      document.removeEventListener('wheel', this.onScroll);
 	      document.removeEventListener('touchstart', this.onTouchStart);
 	      document.removeEventListener('touchend', this.onTouchEnd);
+	      document.removeEventListener('keydown', this.checkKey);
 	      window.removeEventListener('resize', this.onResize);
 	    }
 	  }, {
@@ -21764,6 +21775,24 @@
 	      this.props.active(this.state.activeSlide);
 	    }
 	  }, {
+	    key: 'checkKey',
+	    value: function checkKey(e) {
+	      var direction = null;
+	      e = e || window.event;
+	      if (keyIndex[e.keyCode]) {
+	        direction = keyIndex[e.keyCode];
+	      } else {
+	        return false;
+	      }
+
+	      //can remove this when carousel is implemented    
+	      if (typeof direction !== 'number') {
+	        return false;
+	      }
+
+	      this.scrollToSlide(this.state.activeSlide + direction);
+	    }
+	  }, {
 	    key: 'onResize',
 	    value: function onResize() {
 	      var slides = [];
@@ -21772,16 +21801,25 @@
 	        slides.push(window.innerHeight * i);
 	      }
 
-	      // this.state.slides = slides;
-	      // this.state.height = window.innerHeight;
 	      this.setState({
 	        'slides': slides,
 	        'height': window.innerHeight
 	      });
+
+	      this.scrollToSlide(this.state.activeSlide, true);
 	    }
 	  }, {
 	    key: 'scrollToSlide',
-	    value: function scrollToSlide(slide, dir) {
+	    value: function scrollToSlide(slide, override) {
+	      var _this2 = this;
+
+	      if (override) {
+	        return scrollTo.call(this, getBody(), this.state.slides[slide], 100, function () {
+	          _this2.setState({ 'activeSlide': slide });
+	          _this2.setState({ 'scrollPending': false });
+	        });
+	      }
+
 	      if (this.state.scrollPending) {
 	        return;
 	      }
@@ -21796,7 +21834,7 @@
 	      });
 
 	      var self = this;
-	      scrollTo(BODY, self.state.slides[slide], 600, function () {
+	      scrollTo(getBody(), self.state.slides[slide], 600, function () {
 	        self.setState({ 'activeSlide': slide });
 	        self.setState({ 'scrollPending': false });
 	      });
@@ -21838,6 +21876,8 @@
 	  }, {
 	    key: 'onScroll',
 	    value: function onScroll(e) {
+	      var _this3 = this;
+
 	      e.preventDefault();
 	      if (this.state.scrollPending) {
 	        return;
@@ -21868,14 +21908,13 @@
 
 	      this.setState({ 'scrollPending': true });
 
-	      var self = this;
-	      scrollTo(BODY, self.state.slides[activeSlide], 500, function () {
-	        self.setState({ 'activeSlide': activeSlide });
-	        self.setState({ 'lastActive': scrollDown ? activeSlide-- : activeSlide++ });
+	      scrollTo(getBody(), this.state.slides[activeSlide], 500, function () {
+	        _this3.setState({ 'activeSlide': activeSlide });
+	        _this3.setState({ 'lastActive': scrollDown ? activeSlide-- : activeSlide++ });
 
 	        setTimeout(function () {
-	          self.setState({ 'scrollPending': false });
-	        }, self.state.upThreshold * 2);
+	          _this3.setState({ 'scrollPending': false });
+	        }, _this3.state.upThreshold * 2);
 	      });
 	      return this.setState({ 'scrollPending': true });
 	    }
@@ -21908,13 +21947,23 @@
 	      return result;
 	    }
 
-	    if (c.type.name === 'Slide') {
+	    if (c.type === Slide) {
 	      return result = result + 1;
 	    }
 
 	    return result;
 	  }, 0);
 	}
+
+	var getBody = function getBody() {
+	  if (!BODY) {
+	    BROWSER = renderUtils.browser();
+	    ELEMENT_BROWSERS = renderUtils.elementBrowsers;
+	    BODY = !!~ELEMENT_BROWSERS.indexOf(BROWSER) ? document.documentElement : document.body;
+	  }
+
+	  return BODY;
+	};
 
 	module.exports = Fullpage;
 
@@ -22548,6 +22597,10 @@
 					handlers: this.handlers
 				}, this.handlers());
 
+				delete newComponentProps.activeDelay;
+				delete newComponentProps.classBase;
+				delete newComponentProps.classes;
+				delete newComponentProps.handlers;
 				delete newComponentProps.onTap;
 				delete newComponentProps.onPress;
 				delete newComponentProps.onPinchStart;
@@ -22658,6 +22711,7 @@
 
 	exports.defaultClass = defaultClass;
 	exports.browser = browser;
+	exports.elementBrowsers = ['Firefox', 'IE', 'Edge'];
 
 /***/ },
 /* 187 */
@@ -22757,47 +22811,6 @@
 
 /***/ },
 /* 188 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	module.exports = scrollTo;
-
-	function scrollTo(element, to, duration, callback) {
-	    var start = element.scrollTop,
-	        change = to - start,
-	        currentTime = 0,
-	        increment = 10;
-
-	    animateScroll(callback);
-
-	    function animateScroll(callback) {
-	        currentTime += increment;
-	        var val = Math.easeInOutQuad(currentTime, start, change, duration);
-	        element.scrollTop = val;
-	        if (currentTime < duration) {
-	            setTimeout(function () {
-	                animateScroll(callback);
-	            }, increment);
-	        } else {
-	            return callback();
-	        }
-	    };
-	}
-
-	//t = current time
-	//b = start value
-	//c = change in value
-	//d = duration
-	Math.easeInOutQuad = function (t, b, c, d) {
-	    t /= d / 2;
-	    if (t < 1) return c / 2 * t * t + b;
-	    t--;
-	    return -c / 2 * (t * (t - 2) - 1) + b;
-	};
-
-/***/ },
-/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22844,6 +22857,47 @@
 	};
 
 	module.exports = Slide;
+
+/***/ },
+/* 189 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = scrollTo;
+
+	function scrollTo(element, to, duration, callback) {
+	    var start = element.scrollTop,
+	        change = to - start,
+	        currentTime = 0,
+	        increment = 10;
+
+	    animateScroll(callback);
+
+	    function animateScroll(callback) {
+	        currentTime += increment;
+	        var val = Math.easeInOutQuad(currentTime, start, change, duration);
+	        element.scrollTop = val;
+	        if (currentTime < duration) {
+	            setTimeout(function () {
+	                animateScroll(callback);
+	            }, increment);
+	        } else {
+	            return callback();
+	        }
+	    };
+	}
+
+	//t = current time
+	//b = start value
+	//c = change in value
+	//d = duration
+	Math.easeInOutQuad = function (t, b, c, d) {
+	    t /= d / 2;
+	    if (t < 1) return c / 2 * t * t + b;
+	    t--;
+	    return -c / 2 * (t * (t - 2) - 1) + b;
+	};
 
 /***/ },
 /* 190 */

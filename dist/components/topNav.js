@@ -20,7 +20,7 @@ var TopNav = function (_React$Component) {
   function TopNav(props) {
     _classCallCheck(this, TopNav);
 
-    var _this = _possibleConstructorReturn(this, (TopNav.__proto__ || Object.getPrototypeOf(TopNav)).call(this, props));
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TopNav).call(this, props));
 
     _this.state = {
       defaultClass: _this.props.footer ? 'bottomNav' : 'topNav'

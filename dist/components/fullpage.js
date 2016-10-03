@@ -34,7 +34,7 @@ var Fullpage = function (_React$Component) {
   function Fullpage(props) {
     _classCallCheck(this, Fullpage);
 
-    var _this = _possibleConstructorReturn(this, (Fullpage.__proto__ || Object.getPrototypeOf(Fullpage)).call(this, props));
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Fullpage).call(this, props));
 
     var slideChildren = getSlideCount(_this.props.children);
 

@@ -34,7 +34,108 @@ var Fullpage = function (_React$Component) {
   function Fullpage(props) {
     _classCallCheck(this, Fullpage);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Fullpage).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Fullpage.__proto__ || Object.getPrototypeOf(Fullpage)).call(this, props));
+
+    _this.checkKey = function (e) {
+      var direction = null;
+      e = e || window.event;
+      if (keyIndex[e.keyCode]) {
+        direction = keyIndex[e.keyCode];
+      } else {
+        return false;
+      }
+
+      //can remove this when carousel is implemented    
+      if (typeof direction !== 'number') {
+        return false;
+      }
+
+      _this.scrollToSlide(_this.state.activeSlide + direction);
+    };
+
+    _this.onResize = function () {
+      var slides = [];
+
+      for (var i = 0; i < _this.state.slidesCount; i++) {
+        slides.push(window.innerHeight * i);
+      }
+
+      _this.setState({
+        'slides': slides,
+        'height': window.innerHeight
+      });
+
+      _this.scrollToSlide(_this.state.activeSlide, true);
+    };
+
+    _this.onTouchStart = function (e) {
+      _this.setState({ 'touchStart': e.touches[0].clientY });
+      e.preventDefault();
+    };
+
+    _this.onTouchEnd = function (e) {
+      var touchEnd = e.changedTouches[0].clientY;
+
+      if (_this.state.touchStart > touchEnd + Math.abs(_this.state.touchSensitivity)) {
+
+        if (_this.state.activeSlide == _this.state.slidesCount - 1) {
+          // prevent down going down
+          return;
+        }
+
+        return _this.scrollToSlide(_this.state.activeSlide + 1);
+      } else {
+
+        if (_this.state.activeSlide == 0) {
+          // prevent up going up
+          return;
+        }
+
+        _this.scrollToSlide(_this.state.activeSlide - 1);
+      }
+    };
+
+    _this.onScroll = function (e) {
+      e.preventDefault();
+      if (_this.state.scrollPending) {
+        return;
+      }
+
+      var scrollDown = (e.wheelDelta || -e.deltaY || e.detail) < _this.state.downThreshold;
+      var scrollUp = (e.wheelDelta || -e.deltaY || e.detail) > _this.state.upThreshold;
+
+      var activeSlide = _this.state.activeSlide;
+
+      if (scrollDown) {
+        if (activeSlide == _this.state.slidesCount - 1) {
+          // prevent down going down
+          return _this.setState({ 'scrollPending': false });
+        }
+
+        activeSlide = activeSlide + 1;
+      } else if (scrollUp) {
+        if (!activeSlide) {
+          // prevent up going up
+          return _this.setState({ 'scrollPending': false });
+        }
+
+        activeSlide = activeSlide - 1;
+      } else {
+        return _this.setState({ 'scrollPending': false });
+      }
+
+      _this.setState({ 'scrollPending': true });
+
+      scrollTo(getBody(), _this.state.slides[activeSlide], 500, function () {
+        _this.setState({ 'activeSlide': activeSlide });
+        _this.setState({ 'lastActive': scrollDown ? activeSlide-- : activeSlide++ });
+
+        setTimeout(function () {
+          _this.setState({ 'scrollPending': false });
+        }, _this.state.upThreshold * 2);
+      });
+      return _this.setState({ 'scrollPending': true });
+    };
 
     var slideChildren = getSlideCount(_this.props.children);
 
@@ -57,11 +158,11 @@ var Fullpage = function (_React$Component) {
   _createClass(Fullpage, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      document.addEventListener('wheel', this.onScroll.bind(this));
-      document.addEventListener('touchstart', this.onTouchStart.bind(this));
-      document.addEventListener('touchend', this.onTouchEnd.bind(this));
-      document.addEventListener('keydown', this.checkKey.bind(this));
-      window.addEventListener('resize', this.onResize.bind(this));
+      document.addEventListener('wheel', this.onScroll);
+      document.addEventListener('touchstart', this.onTouchStart);
+      document.addEventListener('touchend', this.onTouchEnd);
+      document.addEventListener('keydown', this.checkKey);
+      window.addEventListener('resize', this.onResize);
       events.pub(this, this.scrollToSlide);
 
       //initialize slides    
@@ -85,40 +186,6 @@ var Fullpage = function (_React$Component) {
     value: function componentDidUpdate(pP, pS) {
       events.active = this.state.activeSlide;
       this.props.active(this.state.activeSlide);
-    }
-  }, {
-    key: 'checkKey',
-    value: function checkKey(e) {
-      var direction = null;
-      e = e || window.event;
-      if (keyIndex[e.keyCode]) {
-        direction = keyIndex[e.keyCode];
-      } else {
-        return false;
-      }
-
-      //can remove this when carousel is implemented    
-      if (typeof direction !== 'number') {
-        return false;
-      }
-
-      this.scrollToSlide(this.state.activeSlide + direction);
-    }
-  }, {
-    key: 'onResize',
-    value: function onResize() {
-      var slides = [];
-
-      for (var i = 0; i < this.state.slidesCount; i++) {
-        slides.push(window.innerHeight * i);
-      }
-
-      this.setState({
-        'slides': slides,
-        'height': window.innerHeight
-      });
-
-      this.scrollToSlide(this.state.activeSlide, true);
     }
   }, {
     key: 'scrollToSlide',
@@ -152,83 +219,9 @@ var Fullpage = function (_React$Component) {
       });
     }
   }, {
-    key: 'onTouchStart',
-    value: function onTouchStart(e) {
-      this.setState({ 'touchStart': e.touches[0].clientY });
-      e.preventDefault();
-    }
-  }, {
-    key: 'onTouchEnd',
-    value: function onTouchEnd(e) {
-      var touchEnd = e.changedTouches[0].clientY;
-
-      if (this.state.touchStart > touchEnd + Math.abs(this.state.touchSensitivity)) {
-
-        if (this.state.activeSlide == this.state.slidesCount - 1) {
-          // prevent down going down
-          return;
-        }
-
-        return this.scrollToSlide(this.state.activeSlide + 1);
-      } else {
-
-        if (this.state.activeSlide == 0) {
-          // prevent up going up
-          return;
-        }
-
-        this.scrollToSlide(this.state.activeSlide - 1);
-      }
-    }
-  }, {
     key: 'onArrowClick',
     value: function onArrowClick() {
       this.scrollToSlide(this.state.activeSlide + 1);
-    }
-  }, {
-    key: 'onScroll',
-    value: function onScroll(e) {
-      var _this3 = this;
-
-      e.preventDefault();
-      if (this.state.scrollPending) {
-        return;
-      }
-
-      var scrollDown = (e.wheelDelta || -e.deltaY || e.detail) < this.state.downThreshold;
-      var scrollUp = (e.wheelDelta || -e.deltaY || e.detail) > this.state.upThreshold;
-
-      var activeSlide = this.state.activeSlide;
-
-      if (scrollDown) {
-        if (activeSlide == this.state.slidesCount - 1) {
-          // prevent down going down
-          return this.setState({ 'scrollPending': false });
-        }
-
-        activeSlide = activeSlide + 1;
-      } else if (scrollUp) {
-        if (!activeSlide) {
-          // prevent up going up
-          return this.setState({ 'scrollPending': false });
-        }
-
-        activeSlide = activeSlide - 1;
-      } else {
-        return this.setState({ 'scrollPending': false });
-      }
-
-      this.setState({ 'scrollPending': true });
-
-      scrollTo(getBody(), this.state.slides[activeSlide], 500, function () {
-        _this3.setState({ 'activeSlide': activeSlide });
-        _this3.setState({ 'lastActive': scrollDown ? activeSlide-- : activeSlide++ });
-
-        setTimeout(function () {
-          _this3.setState({ 'scrollPending': false });
-        }, _this3.state.upThreshold * 2);
-      });
-      return this.setState({ 'scrollPending': true });
     }
   }, {
     key: 'render',

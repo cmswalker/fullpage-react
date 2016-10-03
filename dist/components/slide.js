@@ -18,7 +18,7 @@ var Slide = function (_React$Component) {
   function Slide() {
     _classCallCheck(this, Slide);
 
-    return _possibleConstructorReturn(this, (Slide.__proto__ || Object.getPrototypeOf(Slide)).call(this));
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(Slide).call(this));
   }
 
   _createClass(Slide, [{

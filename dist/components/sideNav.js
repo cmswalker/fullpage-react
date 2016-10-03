@@ -30,7 +30,7 @@ var sideNav = function (_React$Component) {
   function sideNav(props) {
     _classCallCheck(this, sideNav);
 
-    var _this = _possibleConstructorReturn(this, (sideNav.__proto__ || Object.getPrototypeOf(sideNav)).call(this, props));
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(sideNav).call(this, props));
 
     _this.state = {
       side: _this.props.side === 'right' ? 'right' : 'left',

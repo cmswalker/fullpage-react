@@ -34,7 +34,7 @@ var Fullpage = function (_React$Component) {
   function Fullpage(props) {
     _classCallCheck(this, Fullpage);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Fullpage).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Fullpage.__proto__ || Object.getPrototypeOf(Fullpage)).call(this, props));
 
     var slideChildren = getSlideCount(_this.props.children);
 
@@ -51,17 +51,23 @@ var Fullpage = function (_React$Component) {
       touchSensitivity: _this.props.sensitivity || 100,
       scrollPending: false
     };
+
+    _this.onScroll = _this.onScroll.bind(_this);
+    _this.onTouchStart = _this.onTouchStart.bind(_this);
+    _this.onTouchEnd = _this.onTouchEnd.bind(_this);
+    _this.checkKey = _this.checkKey.bind(_this);
+    _this.onResize = _this.onResize.bind(_this);
     return _this;
   }
 
   _createClass(Fullpage, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      document.addEventListener('wheel', this.onScroll.bind(this));
-      document.addEventListener('touchstart', this.onTouchStart.bind(this));
-      document.addEventListener('touchend', this.onTouchEnd.bind(this));
-      document.addEventListener('keydown', this.checkKey.bind(this));
-      window.addEventListener('resize', this.onResize.bind(this));
+      document.addEventListener('wheel', this.onScroll);
+      document.addEventListener('touchstart', this.onTouchStart);
+      document.addEventListener('touchend', this.onTouchEnd);
+      document.addEventListener('keydown', this.checkKey);
+      window.addEventListener('resize', this.onResize);
       events.pub(this, this.scrollToSlide);
 
       //initialize slides    

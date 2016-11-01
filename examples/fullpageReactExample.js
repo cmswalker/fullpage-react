@@ -1,6 +1,6 @@
 const React = require('react');
 
-const {Fullpage, Slide, TopNav, SideNav} = require('../lib/index');
+const {Fullpage, Slide, TopNav, SideNav, Slider, HSlide} = require('../lib/index');
 
 require('./exampleStyles.styl');
 
@@ -87,6 +87,10 @@ class FullpageReact extends React.Component {
 
         <Slide style={{backgroundColor: '#61DAFB'}}>
           <div id="title">Fullpage React</div>
+          <Slider>
+            <HSlide>1</HSlide>
+            <HSlide>2</HSlide>
+          </Slider>
         </Slide>
         <Slide style={{backgroundColor: '#2B2C28'}}></Slide>
         <Slide style={{backgroundColor: '#EFCB68'}}></Slide>

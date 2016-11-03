@@ -79,17 +79,18 @@ class FullpageReact extends React.Component {
       <Fullpage active={this.updateActiveState}>
 
         <TopNav className='topNav' {...topNavOptions}>
-          {navArr.map((n, idx) => {            
+          {navArr.map((n, idx) => {
             return <span key={idx} ref={idx} style={this.compareStyles(topNavOptions, idx)}
               onMouseOver={() => this.onMouseOver(idx)} onMouseOut={() => this.onMouseOut()}>Slide {idx}</span>
           }, this)}
         </TopNav>
 
         <Slide style={{backgroundColor: '#61DAFB'}}>
-          <div id="title">Fullpage React</div>
           <Slider>
-            <HSlide>1</HSlide>
-            <HSlide>2</HSlide>
+            <HSlide><div id="title">Fullpage React 1</div></HSlide>
+            <HSlide><div id="title">Fullpage React 2</div></HSlide>
+            <HSlide><div id="title">Fullpage React 3</div></HSlide>
+            <HSlide><div id="title">Fullpage React 4</div></HSlide>
           </Slider>
         </Slide>
         <Slide style={{backgroundColor: '#2B2C28'}}></Slide>

@@ -3,9 +3,11 @@
   "version": "1.0.17",
   "description": "full page scrolling for react",
   "main": "index.js",
+  "eslintConfig": "./.eslint.json",
   "scripts": {
     "start": "webpack-dev-server",
     "build": "babel lib -d dist",
+    "babel-version": "babel --version",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "cmswalker",
@@ -18,7 +20,7 @@
     "url": "https://github.com/cmswalker/fullpage-react/issues"
   },
   "engines": {
-    "node": ">=4.4.6"
+    "node": ">=4.4.3"
   },
   "keywords": [
     "react",
@@ -35,12 +37,12 @@
     "react-tappable": "^0.8.4"
   },
   "devDependencies": {
-    "babel-cli": "^6.11.4",
-    "babel-core": "^6.10.4",
+    "babel-cli": "^6.5.2",
+    "babel-core": "^6.18.2",
     "babel-eslint": "^7.1.0",
     "babel-loader": "^6.2.4",
     "babel-preset-es2015": "^6.9.0",
-    "babel-preset-react": "^6.11.1",
+    "babel-preset-react": "^6.16.0",
     "css-loader": "^0.23.1",
     "eslint": "^3.10.0",
     "eslint-plugin-react": "^6.6.0",

@@ -36,6 +36,10 @@ let sideNavOptions = {
   nonActiveStyles: {color: 'gray'}
 };
 
+let sliderOptions = {
+  infinite: true
+};
+
 class FullpageReact extends React.Component {
   constructor(props) {
     super(props);
@@ -86,7 +90,7 @@ class FullpageReact extends React.Component {
         </TopNav>
 
         <Slide style={{backgroundColor: '#61DAFB'}}>
-          <Slider>
+          <Slider {...sliderOptions}>
             <HSlide><div id="title">Fullpage React 1</div></HSlide>
             <HSlide><div id="title">Fullpage React 2</div></HSlide>
             <HSlide><div id="title">Fullpage React 3</div></HSlide>

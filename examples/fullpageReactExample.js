@@ -79,7 +79,7 @@ class FullpageReact extends React.Component {
       <Fullpage active={this.updateActiveState}>
 
         <TopNav className='topNav' {...topNavOptions}>
-          {navArr.map((n, idx) => {            
+          {navArr.map((n, idx) => {
             return <span key={idx} ref={idx} style={this.compareStyles(topNavOptions, idx)}
               onMouseOver={() => this.onMouseOver(idx)} onMouseOut={() => this.onMouseOut()}>Slide {idx}</span>
           }, this)}
@@ -101,6 +101,6 @@ class FullpageReact extends React.Component {
       </Fullpage>
     );
   }
-};
+}
 
 module.exports = FullpageReact;

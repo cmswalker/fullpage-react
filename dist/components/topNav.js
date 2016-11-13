@@ -20,7 +20,7 @@ var TopNav = function (_React$Component) {
   function TopNav(props) {
     _classCallCheck(this, TopNav);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TopNav).call(this, props));
+    var _this = _possibleConstructorReturn(this, (TopNav.__proto__ || Object.getPrototypeOf(TopNav)).call(this, props));
 
     _this.state = {
       defaultClass: _this.props.footer ? 'bottomNav' : 'topNav'
@@ -29,6 +29,9 @@ var TopNav = function (_React$Component) {
   }
 
   _createClass(TopNav, [{
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nP, nS) {}
+  }, {
     key: 'goToSlide',
     value: function goToSlide(slide) {
       events.sub('Fullpage', slide);
@@ -77,6 +80,11 @@ var TopNav = function (_React$Component) {
   return TopNav;
 }(React.Component);
 
-;
+TopNav.propTypes = {
+  children: React.PropTypes.node,
+  style: React.PropTypes.object,
+  footer: React.PropTypes.bool,
+  align: React.PropTypes.string
+};
 
 module.exports = TopNav;

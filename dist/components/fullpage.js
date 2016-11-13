@@ -9,24 +9,13 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var React = require('react');
-
-var TopNav = require('./topNav');
-var SideNav = require('./sideNav');
 var Slide = require('./slide');
 
 var scrollTo = require('../utils/scrollTo');
 var events = require('../utils/events');
 var renderUtils = require('../utils/renderUtils');
-var keyIndex = {
-  37: 'left',
-  38: -1,
-  39: 'right',
-  40: 1
-};
-
-var BROWSER = null;
-var ELEMENT_BROWSERS = null;
-var BODY = null;
+var KEY_IDX = renderUtils.KEY_IDX;
+var GET_BODY = renderUtils.GET_BODY;
 
 var Fullpage = function (_React$Component) {
   _inherits(Fullpage, _React$Component);
@@ -34,7 +23,7 @@ var Fullpage = function (_React$Component) {
   function Fullpage(props) {
     _classCallCheck(this, Fullpage);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Fullpage).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Fullpage.__proto__ || Object.getPrototypeOf(Fullpage)).call(this, props));
 
     var slideChildren = getSlideCount(_this.props.children);
 
@@ -70,9 +59,8 @@ var Fullpage = function (_React$Component) {
       window.addEventListener('resize', this.onResize);
       events.pub(this, this.scrollToSlide);
 
-      //initialize slides    
+      //initialize slides
       this.onResize();
-      this.scrollToSlide(0);
     }
   }, {
     key: 'componentWillUnmount',
@@ -84,8 +72,10 @@ var Fullpage = function (_React$Component) {
       window.removeEventListener('resize', this.onResize);
     }
   }, {
-    key: 'componentWillUpdate',
-    value: function componentWillUpdate(nP, nS) {}
+    key: 'shouldComponentUpdate',
+    value: function shouldComponentUpdate(nP, nS) {
+      return true;
+    }
   }, {
     key: 'componentDidUpdate',
     value: function componentDidUpdate(pP, pS) {
@@ -97,13 +87,13 @@ var Fullpage = function (_React$Component) {
     value: function checkKey(e) {
       var direction = null;
       e = e || window.event;
-      if (keyIndex[e.keyCode]) {
-        direction = keyIndex[e.keyCode];
+      if (KEY_IDX[e.keyCode]) {
+        direction = KEY_IDX[e.keyCode];
       } else {
         return false;
       }
 
-      //can remove this when carousel is implemented    
+      //can remove this when carousel is implemented
       if (typeof direction !== 'number') {
         return false;
       }
@@ -132,7 +122,7 @@ var Fullpage = function (_React$Component) {
       var _this2 = this;
 
       if (override) {
-        return scrollTo.call(this, getBody(), this.state.slides[slide], 100, function () {
+        return scrollTo.call(this, GET_BODY(), this.state.slides[slide], 100, function () {
           _this2.setState({ 'activeSlide': slide });
           _this2.setState({ 'scrollPending': false });
         });
@@ -151,10 +141,9 @@ var Fullpage = function (_React$Component) {
         'scrollPending': true
       });
 
-      var self = this;
-      scrollTo(getBody(), self.state.slides[slide], 600, function () {
-        self.setState({ 'activeSlide': slide });
-        self.setState({ 'scrollPending': false });
+      scrollTo(GET_BODY(), this.state.slides[slide], 600, function () {
+        _this2.setState({ 'activeSlide': slide });
+        _this2.setState({ 'scrollPending': false });
       });
     }
   }, {
@@ -176,15 +165,14 @@ var Fullpage = function (_React$Component) {
         }
 
         return this.scrollToSlide(this.state.activeSlide + 1);
-      } else {
-
-        if (this.state.activeSlide == 0) {
-          // prevent up going up
-          return;
-        }
-
-        this.scrollToSlide(this.state.activeSlide - 1);
       }
+
+      if (this.state.activeSlide == 0) {
+        // prevent up going up
+        return;
+      }
+
+      this.scrollToSlide(this.state.activeSlide - 1);
     }
   }, {
     key: 'onArrowClick',
@@ -204,6 +192,10 @@ var Fullpage = function (_React$Component) {
       var scrollDown = (e.wheelDelta || -e.deltaY || e.detail) < this.state.downThreshold;
       var scrollUp = (e.wheelDelta || -e.deltaY || e.detail) > this.state.upThreshold;
 
+      if (!scrollDown && !scrollUp) {
+        return this.setState({ 'scrollPending': false });
+      }
+
       var activeSlide = this.state.activeSlide;
 
       if (scrollDown) {
@@ -220,13 +212,11 @@ var Fullpage = function (_React$Component) {
         }
 
         activeSlide = activeSlide - 1;
-      } else {
-        return this.setState({ 'scrollPending': false });
       }
 
       this.setState({ 'scrollPending': true });
 
-      scrollTo(getBody(), this.state.slides[activeSlide], 500, function () {
+      scrollTo(GET_BODY(), this.state.slides[activeSlide], 500, function () {
         _this3.setState({ 'activeSlide': activeSlide });
         _this3.setState({ 'lastActive': scrollDown ? activeSlide-- : activeSlide++ });
 
@@ -250,9 +240,11 @@ var Fullpage = function (_React$Component) {
   return Fullpage;
 }(React.Component);
 
-;
 Fullpage.propTypes = {
-  children: React.PropTypes.node.isRequired
+  children: React.PropTypes.node.isRequired,
+  threshold: React.PropTypes.number,
+  sensitivity: React.PropTypes.number,
+  active: React.PropTypes.func
 };
 
 function getSlideCount(children) {
@@ -272,15 +264,5 @@ function getSlideCount(children) {
     return result;
   }, 0);
 }
-
-var getBody = function getBody() {
-  if (!BODY) {
-    BROWSER = renderUtils.browser();
-    ELEMENT_BROWSERS = renderUtils.elementBrowsers;
-    BODY = !!~ELEMENT_BROWSERS.indexOf(BROWSER) ? document.documentElement : document.body;
-  }
-
-  return BODY;
-};
 
 module.exports = Fullpage;

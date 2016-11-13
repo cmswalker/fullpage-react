@@ -1,0 +1,68 @@
+{
+  "env": {
+      "es6": true,
+      "node": true,
+      "browser": true
+  },
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "installedESLint": true,
+  "parserOptions": {
+      "ecmaVersion": 6,
+      "ecmaFeatures": {
+          "experimentalObjectRestSpread": true,
+          "jsx": true
+      },
+      "sourceType": "module"
+  },
+  "plugins": [
+      "react"
+  ],
+  "globals": {
+
+  },
+  "rules": {
+      "indent": [
+          0,
+          "tab"
+      ],
+      "linebreak-style": [
+          "error",
+          "unix"
+      ],
+      "quotes": [
+          "error",
+          "single"
+      ],
+      "semi": [
+          0,
+          "never"
+      ],
+      "curly": 2,
+      "dot-notation": 0,
+      "comma-style": [
+        2,
+        "last"
+      ],
+      "no-unused-expressions": 2,
+      "no-unused-vars": [
+        "error",
+        {
+          "vars": "all",
+          "args": "after-used",
+          "varsIgnorePattern": "config|MRError"
+        }
+      ],
+      "no-trailing-spaces": "error",
+      "brace-style": "error",
+      "keyword-spacing": ["error", { "after": true, "before": true }],
+      "comma-dangle": ["error", "never"],
+      "no-console": ["error", {"allow": ["warn", "error", "origin"]}],
+      "no-debugger": "error",
+      "no-unreachable": "error",
+      "no-dupe-args": "error",
+      "no-dupe-keys": "error",
+      "no-func-assign": "error",
+      "no-sparse-arrays": "error",
+      "space-before-blocks": "error"
+  }
+}

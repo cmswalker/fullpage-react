@@ -80,7 +80,7 @@ class FullpageReact extends React.Component {
     }
 
     return (
-      <Fullpage active={this.updateActiveState}>
+      <Fullpage active={this.updateActiveState} {...fullPageOptions}>
 
         <TopNav className='topNav' {...topNavOptions}>
           {navArr.map((n, idx) => {
@@ -110,6 +110,6 @@ class FullpageReact extends React.Component {
       </Fullpage>
     );
   }
-};
+}
 
 module.exports = FullpageReact;

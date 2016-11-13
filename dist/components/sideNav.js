@@ -24,16 +24,16 @@ var styles = {
   left: '1%'
 };
 
-var sideNav = function (_React$Component) {
-  _inherits(sideNav, _React$Component);
+var SideNav = function (_React$Component) {
+  _inherits(SideNav, _React$Component);
 
-  function sideNav(props) {
-    _classCallCheck(this, sideNav);
+  function SideNav(props) {
+    _classCallCheck(this, SideNav);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(sideNav).call(this, props));
+    var _this = _possibleConstructorReturn(this, (SideNav.__proto__ || Object.getPrototypeOf(SideNav)).call(this, props));
 
     _this.state = {
-      side: _this.props.side === 'right' ? 'right' : 'left',
+      side: _this.props.right ? 'right' : 'left',
       currentStyles: styles,
       defaultClass: 'sideNav'
     };
@@ -43,10 +43,10 @@ var sideNav = function (_React$Component) {
     return _this;
   }
 
-  _createClass(sideNav, [{
+  _createClass(SideNav, [{
     key: 'updateStyles',
     value: function updateStyles(styles) {
-      this.state.currentStyles = styles;
+      this.setState({ currentStyles: styles });
     }
   }, {
     key: 'goToSlide',
@@ -54,20 +54,44 @@ var sideNav = function (_React$Component) {
       events.sub('Fullpage', slide);
     }
   }, {
-    key: 'render',
-    value: function render() {
-      var _this2 = this;
-
+    key: 'componentWillMount',
+    value: function componentWillMount() {
       if (this.props.top) {
-        this.state.currentStyles.top = this.props.top;
+        this.setState(function (prevState, props) {
+          var styles = prevState.currentStyles;
+          styles.top = props.top;
+
+          return {
+            currentStyles: styles
+          };
+        });
       }
 
       if (this.props.right) {
-        this.state.currentStyles.right = this.props.right;
-        delete this.state.currentStyles.left;
+        this.setState(function (prevState, props) {
+          var styles = prevState.currentStyles;
+          styles.right = props.right;
+          delete styles.left;
+
+          return {
+            currentStyles: styles
+          };
+        });
       } else {
-        this.state.currentStyles.left = this.props.left || styles.left;
+        this.setState(function (prevState, props) {
+          var styles = prevState.currentStyles;
+          styles.left = props.left;
+
+          return {
+            currentStyles: styles
+          };
+        });
       }
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
 
       return React.createElement(
         'div',
@@ -83,9 +107,15 @@ var sideNav = function (_React$Component) {
     }
   }]);
 
-  return sideNav;
+  return SideNav;
 }(React.Component);
 
-;
+SideNav.propTypes = {
+  children: React.PropTypes.node,
+  style: React.PropTypes.object,
+  top: React.PropTypes.string,
+  left: React.PropTypes.string,
+  right: React.PropTypes.string
+};
 
-module.exports = sideNav;
+module.exports = SideNav;

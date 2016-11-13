@@ -4,34 +4,58 @@ var objectAssign = require('object-assign');
 Object.assign = Object.assign || objectAssign;
 
 function defaultClass() {
-	return this.props.className || this.state.defaultClass;
+  return this.props.className || this.state.defaultClass;
 }
 
 function browser() {
-	// Return cached result if avalible, else get result then cache it.
-	if (browser.prototype._cachedResult) return browser.prototype._cachedResult;
+  // Return cached result if avalible, else get result then cache it.
+  if (browser.prototype._cachedResult) {
+    return browser.prototype._cachedResult;
+  }
 
-	// Opera 8.0+ (UA detection to detect Blink/v8-powered Opera)
-	var isOpera = !!window.opr && !!opr.addons || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+  // Opera 8.0+ (UA detection to detect Blink/v8-powered Opera)
+  var isOpera = !!window.opr && !!window.opr.addons || !!window.opera || !!~navigator.userAgent.indexOf(' OPR/');
 
-	// Firefox 1.0+
-	var isFirefox = typeof InstallTrigger !== 'undefined';
+  // Firefox 1.0+
+  var isFirefox = typeof InstallTrigger !== 'undefined';
 
-	// At least Safari 3+: "[object HTMLElementConstructor]"
-	var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+  // At least Safari 3+: "[object HTMLElementConstructor]"
+  var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
 
-	// Chrome 1+
-	var isChrome = !!window.chrome && !isOpera;
+  // Chrome 1+
+  var isChrome = !!window.chrome && !isOpera;
 
-	// At least IE6
-	var isIE = /*@cc_on!@*/false || !!document.documentMode;
+  // At least IE6
+  var isIE = /*@cc_on!@*/false || !!document.documentMode;
 
-	// Edge 20+
-	var isEdge = !isIE && !!window.StyleMedia;
+  // Edge 20+
+  var isEdge = !isIE && !!window.StyleMedia;
 
-	return browser.prototype._cachedResult = isOpera ? 'Opera' : isFirefox ? 'Firefox' : isSafari ? 'Safari' : isChrome ? 'Chrome' : isIE ? 'IE' : isEdge ? 'Edge' : "Other";
+  return browser.prototype._cachedResult = isOpera ? 'Opera' : isFirefox ? 'Firefox' : isSafari ? 'Safari' : isChrome ? 'Chrome' : isIE ? 'IE' : isEdge ? 'Edge' : 'Other';
+}
+
+var ELEMENT_BROWSERS = new Set(['Firefox', 'IE', 'Edge']);
+var KEY_IDX = {
+  37: 'left',
+  38: -1,
+  39: 'right',
+  40: 1
+};
+
+//for those that use react-universal, we defer all body/document related settings until the browser is hit
+var BROWSER = null;
+var BODY = null;
+var GET_BODY = function GET_BODY() {
+  if (!BODY) {
+    BROWSER = browser();
+    BODY = ELEMENT_BROWSERS.has(BROWSER) ? document.documentElement : document.body;
+  }
+
+  return BODY;
 };
 
 exports.defaultClass = defaultClass;
 exports.browser = browser;
-exports.elementBrowsers = ['Firefox', 'IE', 'Edge'];
+exports.ELEMENT_BROWSERS = ELEMENT_BROWSERS;
+exports.KEY_IDX = KEY_IDX;
+exports.GET_BODY = GET_BODY;

@@ -92,15 +92,14 @@ class FullpageReact extends React.Component {
           <div id="title">Fullpage React</div>
         </Slide>
         <Slide id="slide2" className="slide" style={{backgroundColor: '#2B2C28'}}>
-          <div id="title">100% React components, no jQuery</div>
+          <div className="sub-title">100% React components, no jQuery</div>
           <div className="arrow-up abs-top top-100"></div>
         </Slide>
         <Slide id="slide3" className="slide" style={{backgroundColor: '#EFCB68'}}>
-          <div id="title">
-            Mobile friendly! Tap events for iOS and Android
-            <hr/>
-            <a href="https://github.com/cmswalker/fullpage-react">view source</a>
+          <div className="sub-title">
+            Mobile friendly! Tap events for iOS and Android            
           </div>
+          <a href="https://github.com/cmswalker/fullpage-react">view source</a>
           <div className="arrow-up arrow-up-2 abs-top top-200"></div>
         </Slide>
 

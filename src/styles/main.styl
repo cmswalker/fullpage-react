@@ -68,10 +68,13 @@ mq-max = s(mq-query-min-fstr, bp-desktop-max)
 
 body
   text-align center
-  font-family font-family-primary
+  font-family font-family-primary  
   a
     color $ice
   div.slide
+    padding-right 3%
+    padding-left 3%
+    
     font-size 1em
     @media mq-mobile
       font-size 10vw
@@ -82,25 +85,29 @@ body
     @media mq-desktop
       font-size 8vw
     @media mq-max
-      font-size 6vw
+      font-size 6vw        
 
-  .logo
-    font-size 4em
-    font-family monospace
-    position static
-    padding-top 10%
-  .logo2
-    padding-top 0px
-    margin-top -30%
+    .logo
+      font-size 4em
+      font-family monospace
+      position static
+      padding-top 10%
 
-  #title
-    color $gray
-    padding-top 300px
-    @media mq-mobile
-      padding-top 250px
-    // @media min-width bp-desktop-md-min
-    //   padding-top 50%
-    //   color green
+    .logo2
+      padding-top 0px
+      margin-top -30%
+
+    #title
+      color $gray
+      padding-top 300px
+      @media mq-mobile
+        padding-top 250px
+        
+    .sub-title
+      padding-top 200px
+      color $gray
+      @media mq-mobile
+        padding-top 150px
 
   .arrow-up
   .arrow-down

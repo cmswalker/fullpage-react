@@ -1,6 +1,6 @@
 {
   "name": "fullpage-react",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "description": "full page scrolling for react",
   "main": "index.js",
   "eslintConfig": "./.eslint.json",

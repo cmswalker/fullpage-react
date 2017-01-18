@@ -79,6 +79,15 @@ class FullpageReact extends React.Component {
       navArr.push(i);
     }
 
+    let foo = <Fullpage></Fullpage>;
+    let prev = <div>PREV</div>
+    let next = <div>NEXT</div>
+    console.log('prev', prev);
+    sliderOptions.elements = {
+      prev,
+      next
+    };
+
     return (
       <Fullpage active={this.updateActiveState} {...fullPageOptions}>
 
@@ -113,3 +122,7 @@ class FullpageReact extends React.Component {
 }
 
 module.exports = FullpageReact;
+
+function log() {
+  console.log('hi')
+}

@@ -1,6 +1,6 @@
 {
   "name": "fullpage-react",
-  "version": "1.0.18",
+  "version": "1.0.20",
   "description": "full page scrolling for react",
   "main": "index.js",
   "eslintConfig": "./.eslint.json",
@@ -32,8 +32,8 @@
   ],
   "dependencies": {
     "object-assign": "^4.1.0",
-    "react": "^15.3.0",
-    "react-dom": "^15.3.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
     "react-tappable": "^0.8.4"
   },
   "devDependencies": {

@@ -104,3 +104,7 @@ class FullpageReact extends React.Component {
 }
 
 module.exports = FullpageReact;
+
+function log() {
+  console.log('hi')
+}

@@ -49,6 +49,29 @@ var KEY_IDX = {
 //for those that use react-universal, we defer all body/document related settings until the browser is hit
 var BROWSER = null;
 var BODY = null;
+var OS = null;
+var GET_OS = function GET_OS() {
+  if (!OS) {
+    OS = 'OTHER';
+    var _navigator = window.navigator || {};
+    var platform = _navigator.platform || '';
+    var code = platform.toLowerCase();
+
+    if (code.indexOf('win') >= 0) {
+      OS = 'WINDOWS';
+    }
+  }
+
+  return OS;
+};
+
+var GET_BROWSER = function GET_BROWSER() {
+  if (!BROWSER) {
+    BROWSER = browser();
+  }
+  return BROWSER;
+};
+
 var GET_BODY = function GET_BODY() {
   if (!BODY) {
     BROWSER = browser();
@@ -63,3 +86,5 @@ exports.browser = browser;
 exports.ELEMENT_BROWSERS = ELEMENT_BROWSERS;
 exports.KEY_IDX = KEY_IDX;
 exports.GET_BODY = GET_BODY;
+exports.GET_OS = GET_OS;
+exports.GET_BROWSER = GET_BROWSER;

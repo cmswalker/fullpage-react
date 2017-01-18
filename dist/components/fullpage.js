@@ -208,6 +208,10 @@ var Fullpage = function (_React$Component) {
         return;
       }
 
+      var one = e.wheelDelta;
+      var two = e.deltaY;
+      var three = e.detail;
+
       var scrollDown = (e.wheelDelta || -e.deltaY || e.detail) < this.state.downThreshold;
       var scrollUp = (e.wheelDelta || -e.deltaY || e.detail) > this.state.upThreshold;
 

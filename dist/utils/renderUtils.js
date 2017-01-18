@@ -31,10 +31,14 @@ function browser() {
   // Edge 20+
   var isEdge = !isIE && !!window.StyleMedia;
 
-  return browser.prototype._cachedResult = isOpera ? 'Opera' : isFirefox ? 'Firefox' : isSafari ? 'Safari' : isChrome ? 'Chrome' : isIE ? 'IE' : isEdge ? 'Edge' : 'Other';
+  return isOpera ? 'Opera' : isFirefox ? 'Firefox' : isSafari ? 'Safari' : isChrome ? 'Chrome' : isIE ? 'IE' : isEdge ? 'Edge' : 'Other';
 }
 
-var ELEMENT_BROWSERS = new Set(['Firefox', 'IE', 'Edge']);
+var ELEMENT_BROWSERS = {
+  Firefox: true,
+  IE: true,
+  Edge: true
+};
 var KEY_IDX = {
   37: 'left',
   38: -1,
@@ -48,7 +52,7 @@ var BODY = null;
 var GET_BODY = function GET_BODY() {
   if (!BODY) {
     BROWSER = browser();
-    BODY = ELEMENT_BROWSERS.has(BROWSER) ? document.documentElement : document.body;
+    BODY = ELEMENT_BROWSERS[BROWSER] ? document.documentElement : document.body;
   }
 
   return BODY;

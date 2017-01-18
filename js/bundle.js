@@ -21691,7 +21691,7 @@
 
 	var Fullpage = __webpack_require__(181);
 	var Slide = __webpack_require__(182);
-	var TopNav = __webpack_require__(186);
+	var TopNav = __webpack_require__(191);
 	var SideNav = __webpack_require__(192);
 
 	module.exports = {
@@ -21718,11 +21718,15 @@
 	var React = __webpack_require__(1);
 	var Slide = __webpack_require__(182);
 
-	var scrollTo = __webpack_require__(183);
-	var events = __webpack_require__(184);
-	var renderUtils = __webpack_require__(185);
+	var scrollTo = __webpack_require__(188);
+	var events = __webpack_require__(189);
+	var renderUtils = __webpack_require__(190);
 	var KEY_IDX = renderUtils.KEY_IDX;
 	var GET_BODY = renderUtils.GET_BODY;
+
+
+	var touchArr = [];
+	var latestTouch;
 
 	var Fullpage = function (_React$Component) {
 	  _inherits(Fullpage, _React$Component);
@@ -21760,7 +21764,7 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      document.addEventListener('wheel', this.onScroll);
-	      document.addEventListener('touchstart', this.onTouchStart);
+	      document.addEventListener('touchmove', this.onTouchStart);
 	      document.addEventListener('touchend', this.onTouchEnd);
 	      document.addEventListener('keydown', this.checkKey);
 	      window.addEventListener('resize', this.onResize);
@@ -21773,7 +21777,7 @@
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
 	      document.removeEventListener('wheel', this.onScroll);
-	      document.removeEventListener('touchstart', this.onTouchStart);
+	      document.removeEventListener('touchmove', this.onTouchStart);
 	      document.removeEventListener('touchend', this.onTouchEnd);
 	      document.removeEventListener('keydown', this.checkKey);
 	      window.removeEventListener('resize', this.onResize);
@@ -21856,8 +21860,16 @@
 	  }, {
 	    key: 'onTouchStart',
 	    value: function onTouchStart(e) {
-	      this.setState({ 'touchStart': e.touches[0].clientY });
 	      e.preventDefault();
+	      var t = e.touches[0].clientY;
+	      latestTouch = t;
+	      touchArr.push(t);
+
+	      if (touchArr.length > 10) {
+	        this.setState({ 'touchStart': touchArr[0] });
+	        touchArr = [];
+	        return;
+	      }
 	    }
 	  }, {
 	    key: 'onTouchEnd',
@@ -21867,11 +21879,11 @@
 	      var sensitivity = this.state.touchSensitivity;
 
 	      //prevent standard taps creating false positives;
-	      if (Math.abs(touchEnd - touchStart) < sensitivity) {
+	      if (latestTouch !== touchEnd) {
 	        return;
 	      }
 
-	      if (touchStart > touchEnd + Math.abs(sensitivity)) {
+	      if (!touchStart || touchStart > touchEnd + Math.abs(sensitivity / 2)) {
 
 	        if (this.state.activeSlide == this.state.slidesCount - 1) {
 	          // prevent down going down
@@ -21998,14 +22010,17 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var React = __webpack_require__(1);
+	var Tappable = __webpack_require__(183);
+
+	var noOp = function noOp() {};
 
 	var Slide = function (_React$Component) {
 	  _inherits(Slide, _React$Component);
 
-	  function Slide() {
+	  function Slide(props) {
 	    _classCallCheck(this, Slide);
 
-	    return _possibleConstructorReturn(this, (Slide.__proto__ || Object.getPrototypeOf(Slide)).call(this));
+	    return _possibleConstructorReturn(this, (Slide.__proto__ || Object.getPrototypeOf(Slide)).call(this, props));
 	  }
 
 	  _createClass(Slide, [{
@@ -22014,7 +22029,9 @@
 	      return React.createElement(
 	        'div',
 	        _extends({}, this.props, { style: Object.assign({}, this.props.style, { height: '100%' }) }),
-	        this.props.children
+	        (Array.isArray(this.props.children) ? this.props.children : [this.props.children]).map(function (child, idx) {
+	          return child;
+	        }, this)
 	      );
 	    }
 	  }]);
@@ -22031,255 +22048,16 @@
 
 /***/ },
 /* 183 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	module.exports = scrollTo;
-
-	function scrollTo(element, to, duration, callback) {
-	  var start = element.scrollTop,
-	      change = to - start,
-	      currentTime = 0,
-	      increment = 10;
-
-	  animateScroll(callback);
-
-	  function animateScroll(callback) {
-	    currentTime += increment;
-	    var val = Math.easeInOutQuad(currentTime, start, change, duration);
-	    element.scrollTop = val;
-	    if (currentTime < duration) {
-	      setTimeout(function () {
-	        animateScroll(callback);
-	      }, increment);
-	    } else {
-	      return callback();
-	    }
-	  }
-	}
-
-	//t = current time
-	//b = start value
-	//c = change in value
-	//d = duration
-	Math.easeInOutQuad = function (t, b, c, d) {
-	  t /= d / 2;
-	  if (t < 1) {
-	    return c / 2 * t * t + b;
-	  }
-
-	  t--;
-	  return -c / 2 * (t * (t - 2) - 1) + b;
-	};
-
-/***/ },
-/* 184 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	var cache = {};
-
-	var events = {
-	  sub: sub,
-	  pub: pub,
-	  active: 0
-	};
-
-	function pub(sub, action) {
-	  var name = sub.state.name;
-
-	  if (!cache[name]) {
-	    cache[name] = {};
-	    cache[name].action = action.bind(sub);
-	  }
-	}
-
-	function sub(sub, arg) {
-	  if (events.active == arg) {
-	    return;
-	  }
-
-	  cache[sub].action(arg);
-	  events.active = arg;
-	}
-
-	module.exports = events;
-
-/***/ },
-/* 185 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var objectAssign = __webpack_require__(4);
-	Object.assign = Object.assign || objectAssign;
-
-	function defaultClass() {
-	  return this.props.className || this.state.defaultClass;
-	}
-
-	function browser() {
-	  // Return cached result if avalible, else get result then cache it.
-	  if (browser.prototype._cachedResult) {
-	    return browser.prototype._cachedResult;
-	  }
-
-	  // Opera 8.0+ (UA detection to detect Blink/v8-powered Opera)
-	  var isOpera = !!window.opr && !!window.opr.addons || !!window.opera || !!~navigator.userAgent.indexOf(' OPR/');
-
-	  // Firefox 1.0+
-	  var isFirefox = typeof InstallTrigger !== 'undefined';
-
-	  // At least Safari 3+: "[object HTMLElementConstructor]"
-	  var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
-
-	  // Chrome 1+
-	  var isChrome = !!window.chrome && !isOpera;
-
-	  // At least IE6
-	  var isIE = /*@cc_on!@*/false || !!document.documentMode;
-
-	  // Edge 20+
-	  var isEdge = !isIE && !!window.StyleMedia;
-
-	  return browser.prototype._cachedResult = isOpera ? 'Opera' : isFirefox ? 'Firefox' : isSafari ? 'Safari' : isChrome ? 'Chrome' : isIE ? 'IE' : isEdge ? 'Edge' : 'Other';
-	}
-
-	var ELEMENT_BROWSERS = new Set(['Firefox', 'IE', 'Edge']);
-	var KEY_IDX = {
-	  37: 'left',
-	  38: -1,
-	  39: 'right',
-	  40: 1
-	};
-
-	//for those that use react-universal, we defer all body/document related settings until the browser is hit
-	var BROWSER = null;
-	var BODY = null;
-	var GET_BODY = function GET_BODY() {
-	  if (!BODY) {
-	    BROWSER = browser();
-	    BODY = ELEMENT_BROWSERS.has(BROWSER) ? document.documentElement : document.body;
-	  }
-
-	  return BODY;
-	};
-
-	exports.defaultClass = defaultClass;
-	exports.browser = browser;
-	exports.ELEMENT_BROWSERS = ELEMENT_BROWSERS;
-	exports.KEY_IDX = KEY_IDX;
-	exports.GET_BODY = GET_BODY;
-
-/***/ },
-/* 186 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var React = __webpack_require__(1);
-	var Tappable = __webpack_require__(187);
-
-	var events = __webpack_require__(184);
-	var renderUtils = __webpack_require__(185);
-
-	var TopNav = function (_React$Component) {
-	  _inherits(TopNav, _React$Component);
-
-	  function TopNav(props) {
-	    _classCallCheck(this, TopNav);
-
-	    var _this = _possibleConstructorReturn(this, (TopNav.__proto__ || Object.getPrototypeOf(TopNav)).call(this, props));
-
-	    _this.state = {
-	      defaultClass: _this.props.footer ? 'bottomNav' : 'topNav'
-	    };
-	    return _this;
-	  }
-
-	  _createClass(TopNav, [{
-	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps(nP, nS) {}
-	  }, {
-	    key: 'goToSlide',
-	    value: function goToSlide(slide) {
-	      events.sub('Fullpage', slide);
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _this2 = this;
-
-	      var styles = {
-	        position: 'fixed',
-	        width: '100%',
-	        zIndex: '1',
-	        cursor: 'pointer',
-
-	        //defaults
-	        textAlign: 'left',
-	        top: '0'
-	      };
-
-	      if (this.props.footer) {
-	        styles.bottom = '0';
-	        delete styles.top;
-	      }
-
-	      if (this.props.align === 'right') {
-	        styles.textAlign = 'right';
-	      } else if (this.props.align === 'center') {
-	        styles.textAlign = 'center';
-	      }
-
-	      return React.createElement(
-	        'div',
-	        { className: renderUtils.defaultClass.call(this), style: styles },
-	        this.props.children.map(function (child, idx) {
-	          return React.createElement(
-	            Tappable,
-	            { key: idx, onTap: _this2.goToSlide.bind(_this2, child.ref), onClick: _this2.goToSlide.bind(_this2, child.ref) },
-	            child
-	          );
-	        }, this)
-	      );
-	    }
-	  }]);
-
-	  return TopNav;
-	}(React.Component);
-
-	TopNav.propTypes = {
-	  children: React.PropTypes.node,
-	  style: React.PropTypes.object,
-	  footer: React.PropTypes.bool,
-	  align: React.PropTypes.string
-	};
-
-	module.exports = TopNav;
-
-/***/ },
-/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var TappableMixin = __webpack_require__(188);
-	var PinchableMixin = __webpack_require__(189);
-	var getComponent = __webpack_require__(190);
-	var touchStyles = __webpack_require__(191);
+	var TappableMixin = __webpack_require__(184);
+	var PinchableMixin = __webpack_require__(185);
+	var getComponent = __webpack_require__(186);
+	var touchStyles = __webpack_require__(187);
 
 	var Component = getComponent([TappableMixin, PinchableMixin]);
 
@@ -22292,7 +22070,7 @@
 	});
 
 /***/ },
-/* 188 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22642,7 +22420,7 @@
 	module.exports = Mixin;
 
 /***/ },
-/* 189 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22753,7 +22531,7 @@
 	module.exports = Mixin;
 
 /***/ },
-/* 190 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22761,7 +22539,7 @@
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var React = __webpack_require__(1);
-	var touchStyles = __webpack_require__(191);
+	var touchStyles = __webpack_require__(187);
 
 	/**
 	 * Tappable Component
@@ -22833,7 +22611,7 @@
 	};
 
 /***/ },
-/* 191 */
+/* 187 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -22852,6 +22630,245 @@
 	module.exports = touchStyles;
 
 /***/ },
+/* 188 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = scrollTo;
+
+	function scrollTo(element, to, duration, callback) {
+	  var start = element.scrollTop,
+	      change = to - start,
+	      currentTime = 0,
+	      increment = 10;
+
+	  animateScroll(callback);
+
+	  function animateScroll(callback) {
+	    currentTime += increment;
+	    var val = Math.easeInOutQuad(currentTime, start, change, duration);
+	    element.scrollTop = val;
+	    if (currentTime < duration) {
+	      setTimeout(function () {
+	        animateScroll(callback);
+	      }, increment);
+	    } else {
+	      return callback();
+	    }
+	  }
+	}
+
+	//t = current time
+	//b = start value
+	//c = change in value
+	//d = duration
+	Math.easeInOutQuad = function (t, b, c, d) {
+	  t /= d / 2;
+	  if (t < 1) {
+	    return c / 2 * t * t + b;
+	  }
+
+	  t--;
+	  return -c / 2 * (t * (t - 2) - 1) + b;
+	};
+
+/***/ },
+/* 189 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	var cache = {};
+
+	var events = {
+	  sub: sub,
+	  pub: pub,
+	  active: 0
+	};
+
+	function pub(sub, action) {
+	  var name = sub.state.name;
+
+	  if (!cache[name]) {
+	    cache[name] = {};
+	    cache[name].action = action.bind(sub);
+	  }
+	}
+
+	function sub(sub, arg) {
+	  if (events.active == arg) {
+	    return;
+	  }
+
+	  cache[sub].action(arg);
+	  events.active = arg;
+	}
+
+	module.exports = events;
+
+/***/ },
+/* 190 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var objectAssign = __webpack_require__(4);
+	Object.assign = Object.assign || objectAssign;
+
+	function defaultClass() {
+	  return this.props.className || this.state.defaultClass;
+	}
+
+	function browser() {
+	  // Return cached result if avalible, else get result then cache it.
+	  if (browser.prototype._cachedResult) {
+	    return browser.prototype._cachedResult;
+	  }
+
+	  // Opera 8.0+ (UA detection to detect Blink/v8-powered Opera)
+	  var isOpera = !!window.opr && !!window.opr.addons || !!window.opera || !!~navigator.userAgent.indexOf(' OPR/');
+
+	  // Firefox 1.0+
+	  var isFirefox = typeof InstallTrigger !== 'undefined';
+
+	  // At least Safari 3+: "[object HTMLElementConstructor]"
+	  var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+
+	  // Chrome 1+
+	  var isChrome = !!window.chrome && !isOpera;
+
+	  // At least IE6
+	  var isIE = /*@cc_on!@*/false || !!document.documentMode;
+
+	  // Edge 20+
+	  var isEdge = !isIE && !!window.StyleMedia;
+
+	  return browser.prototype._cachedResult = isOpera ? 'Opera' : isFirefox ? 'Firefox' : isSafari ? 'Safari' : isChrome ? 'Chrome' : isIE ? 'IE' : isEdge ? 'Edge' : 'Other';
+	}
+
+	var ELEMENT_BROWSERS = new Set(['Firefox', 'IE', 'Edge']);
+	var KEY_IDX = {
+	  37: 'left',
+	  38: -1,
+	  39: 'right',
+	  40: 1
+	};
+
+	//for those that use react-universal, we defer all body/document related settings until the browser is hit
+	var BROWSER = null;
+	var BODY = null;
+	var GET_BODY = function GET_BODY() {
+	  if (!BODY) {
+	    BROWSER = browser();
+	    BODY = ELEMENT_BROWSERS.has(BROWSER) ? document.documentElement : document.body;
+	  }
+
+	  return BODY;
+	};
+
+	exports.defaultClass = defaultClass;
+	exports.browser = browser;
+	exports.ELEMENT_BROWSERS = ELEMENT_BROWSERS;
+	exports.KEY_IDX = KEY_IDX;
+	exports.GET_BODY = GET_BODY;
+
+/***/ },
+/* 191 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var React = __webpack_require__(1);
+	var Tappable = __webpack_require__(183);
+
+	var events = __webpack_require__(189);
+	var renderUtils = __webpack_require__(190);
+
+	var TopNav = function (_React$Component) {
+	  _inherits(TopNav, _React$Component);
+
+	  function TopNav(props) {
+	    _classCallCheck(this, TopNav);
+
+	    var _this = _possibleConstructorReturn(this, (TopNav.__proto__ || Object.getPrototypeOf(TopNav)).call(this, props));
+
+	    _this.state = {
+	      defaultClass: _this.props.footer ? 'bottomNav' : 'topNav'
+	    };
+	    return _this;
+	  }
+
+	  _createClass(TopNav, [{
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nP, nS) {}
+	  }, {
+	    key: 'goToSlide',
+	    value: function goToSlide(slide) {
+	      events.sub('Fullpage', slide);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      var styles = {
+	        position: 'fixed',
+	        width: '100%',
+	        zIndex: '1',
+	        cursor: 'pointer',
+
+	        //defaults
+	        textAlign: 'left',
+	        top: '0'
+	      };
+
+	      if (this.props.footer) {
+	        styles.bottom = '0';
+	        delete styles.top;
+	      }
+
+	      if (this.props.align === 'right') {
+	        styles.textAlign = 'right';
+	      } else if (this.props.align === 'center') {
+	        styles.textAlign = 'center';
+	      }
+
+	      return React.createElement(
+	        'div',
+	        { className: renderUtils.defaultClass.call(this), style: styles },
+	        this.props.children.map(function (child, idx) {
+	          return React.createElement(
+	            Tappable,
+	            { key: idx, onTap: _this2.goToSlide.bind(_this2, child.ref), onClick: _this2.goToSlide.bind(_this2, child.ref) },
+	            child
+	          );
+	        }, this)
+	      );
+	    }
+	  }]);
+
+	  return TopNav;
+	}(React.Component);
+
+	TopNav.propTypes = {
+	  children: React.PropTypes.node,
+	  style: React.PropTypes.object,
+	  footer: React.PropTypes.bool,
+	  align: React.PropTypes.string
+	};
+
+	module.exports = TopNav;
+
+/***/ },
 /* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -22866,10 +22883,10 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var React = __webpack_require__(1);
-	var Tappable = __webpack_require__(187);
+	var Tappable = __webpack_require__(183);
 
-	var events = __webpack_require__(184);
-	var renderUtils = __webpack_require__(185);
+	var events = __webpack_require__(189);
+	var renderUtils = __webpack_require__(190);
 
 	var styles = {
 	  position: 'fixed',

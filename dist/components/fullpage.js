@@ -17,6 +17,10 @@ var renderUtils = require('../utils/renderUtils');
 var KEY_IDX = renderUtils.KEY_IDX;
 var GET_BODY = renderUtils.GET_BODY;
 
+
+var touchArr = [];
+var latestTouch;
+
 var Fullpage = function (_React$Component) {
   _inherits(Fullpage, _React$Component);
 
@@ -53,7 +57,7 @@ var Fullpage = function (_React$Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       document.addEventListener('wheel', this.onScroll);
-      document.addEventListener('touchstart', this.onTouchStart);
+      document.addEventListener('touchmove', this.onTouchStart);
       document.addEventListener('touchend', this.onTouchEnd);
       document.addEventListener('keydown', this.checkKey);
       window.addEventListener('resize', this.onResize);
@@ -66,7 +70,7 @@ var Fullpage = function (_React$Component) {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
       document.removeEventListener('wheel', this.onScroll);
-      document.removeEventListener('touchstart', this.onTouchStart);
+      document.removeEventListener('touchmove', this.onTouchStart);
       document.removeEventListener('touchend', this.onTouchEnd);
       document.removeEventListener('keydown', this.checkKey);
       window.removeEventListener('resize', this.onResize);
@@ -149,8 +153,16 @@ var Fullpage = function (_React$Component) {
   }, {
     key: 'onTouchStart',
     value: function onTouchStart(e) {
-      this.setState({ 'touchStart': e.touches[0].clientY });
       e.preventDefault();
+      var t = e.touches[0].clientY;
+      latestTouch = t;
+      touchArr.push(t);
+
+      if (touchArr.length > 10) {
+        this.setState({ 'touchStart': touchArr[0] });
+        touchArr = [];
+        return;
+      }
     }
   }, {
     key: 'onTouchEnd',
@@ -160,11 +172,11 @@ var Fullpage = function (_React$Component) {
       var sensitivity = this.state.touchSensitivity;
 
       //prevent standard taps creating false positives;
-      if (Math.abs(touchEnd - touchStart) < sensitivity) {
+      if (latestTouch !== touchEnd) {
         return;
       }
 
-      if (touchStart > touchEnd + Math.abs(sensitivity)) {
+      if (!touchStart || touchStart > touchEnd + Math.abs(sensitivity / 2)) {
 
         if (this.state.activeSlide == this.state.slidesCount - 1) {
           // prevent down going down

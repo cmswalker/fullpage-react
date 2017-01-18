@@ -11,14 +11,17 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var React = require('react');
+var Tappable = require('react-tappable');
+
+var noOp = function noOp() {};
 
 var Slide = function (_React$Component) {
   _inherits(Slide, _React$Component);
 
-  function Slide() {
+  function Slide(props) {
     _classCallCheck(this, Slide);
 
-    return _possibleConstructorReturn(this, (Slide.__proto__ || Object.getPrototypeOf(Slide)).call(this));
+    return _possibleConstructorReturn(this, (Slide.__proto__ || Object.getPrototypeOf(Slide)).call(this, props));
   }
 
   _createClass(Slide, [{
@@ -27,7 +30,9 @@ var Slide = function (_React$Component) {
       return React.createElement(
         'div',
         _extends({}, this.props, { style: Object.assign({}, this.props.style, { height: '100%' }) }),
-        this.props.children
+        (Array.isArray(this.props.children) ? this.props.children : [this.props.children]).map(function (child, idx) {
+          return child;
+        }, this)
       );
     }
   }]);

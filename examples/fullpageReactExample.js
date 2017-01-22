@@ -1,6 +1,6 @@
 const React = require('react');
 
-const {Fullpage, Slide, TopNav, SideNav} = require('../lib/index');
+const {Fullpage, Slide, TopNav, SideNav, HorizontalSlider} = require('../lib/index');
 
 //TODO: use the nodes on fullpage vs document
 //TODO: surface onclick goTo functionality HERE
@@ -72,9 +72,9 @@ class FullpageReact extends React.Component {
   }
 
   render() {
-    let navCount = 3;
-    let navArr = [];
-    for (var i = 0; i < navCount; i++) {
+    var navCount = 3;
+    var navArr = [];
+    for (let i = 0; i < navCount; i++) {
       navArr.push(i);
     }
 
@@ -87,11 +87,17 @@ class FullpageReact extends React.Component {
               onMouseOver={() => this.onMouseOver(idx)} onMouseOut={() => this.onMouseOut()}>Slide {idx}</span>
           }, this)}
         </TopNav>
-
         <Slide style={{backgroundColor: '#61DAFB'}}>
           <div id="title">Fullpage React</div>
         </Slide>
-        <Slide style={{backgroundColor: '#2B2C28'}}></Slide>
+        <Slide style={{backgroundColor: 'green'}}>
+          <HorizontalSlider style={{textAlign: 'center', fontSize: '30px'}}>
+            <Slide>1</Slide>
+            <Slide>2</Slide>
+            <Slide>3</Slide>
+          </HorizontalSlider>
+        </Slide>
+
         <Slide style={{backgroundColor: '#EFCB68'}}></Slide>
 
         <SideNav {...sideNavOptions}>

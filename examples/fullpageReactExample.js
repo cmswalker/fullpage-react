@@ -2,6 +2,9 @@ const React = require('react');
 
 const {Fullpage, Slide, TopNav, SideNav} = require('../lib/index');
 
+//TODO: use the nodes on fullpage vs document
+//TODO: surface onclick goTo functionality HERE
+
 require('./exampleStyles.styl');
 
 let fullPageOptions = {
@@ -105,6 +108,6 @@ class FullpageReact extends React.Component {
 
 module.exports = FullpageReact;
 
-function log() {
-  console.log('hi')
+function log(msg) {
+  console.log(msg)
 }

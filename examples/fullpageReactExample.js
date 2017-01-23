@@ -90,6 +90,9 @@ class FullpageReact extends React.Component {
         <Slide style={{backgroundColor: '#61DAFB'}}>
           <div id="title">Fullpage React</div>
         </Slide>
+        <Slide style={{backgroundColor: 'red'}}></Slide>
+        <Slide style={{backgroundColor: 'blue'}}></Slide>
+        <Slide style={{backgroundColor: 'black'}}></Slide>
         <Slide style={{backgroundColor: 'green'}}>
           <HorizontalSlider style={{textAlign: 'center', fontSize: '30px'}}>
             <Slide>1</Slide>

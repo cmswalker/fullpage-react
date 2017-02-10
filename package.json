@@ -25,6 +25,7 @@
   "keywords": [
     "react",
     "react-fullpage",
+    "fullpage-react",
     "fullpage",
     "scroll",
     "slide",
@@ -32,11 +33,11 @@
   ],
   "dependencies": {
     "object-assign": "^4.1.0",
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2",
     "react-tappable": "^0.8.4"
   },
   "devDependencies": {
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
     "babel-cli": "^6.5.2",
     "babel-core": "^6.18.2",
     "babel-eslint": "^7.1.0",
@@ -51,6 +52,7 @@
     "style-loader": "^0.13.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^2.1.1",
-    "webpack": "1.12.2"
+    "webpack": "1.12.2",
+    "webpack-dev-server": "^1.16.2"
   }
 }

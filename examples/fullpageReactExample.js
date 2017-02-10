@@ -1,9 +1,9 @@
 const React = require('react');
 
-const {Fullpage, Slide, TopNav, SideNav, HorizontalSlider} = require('../lib/index');
+const {Fullpage, Slide, TopNav, SideNav, HorizontalSlider, HorizontalNav, UIEvents} = require('../lib/index');
 
-//TODO: use the nodes on fullpage vs document
-//TODO: surface onclick goTo functionality HERE
+//TODO: global function for fullpage that will change the slide;
+//TODO: can it work for multiple horizontals?
 
 require('./exampleStyles.styl');
 
@@ -39,19 +39,36 @@ let sideNavOptions = {
   nonActiveStyles: {color: 'gray'}
 };
 
+
+let horizontalNavOptions = {
+  header: false, //topNav can double as a footer if true
+  align: 'center', //also supports center and right alignment
+
+  //styles to apply to children
+  activeStyles: {backgroundColor: 'white'},
+  hoverStyles: {backgroundColor: 'yellow'},
+  nonActiveStyles: {backgroundColor: 'gray'}
+};
+
+function fullpageChangeEvent(slide) {
+  // console.log('EVT', slide);
+}
+
+function horizontalChangeEvent(name, slide) {
+  // console.log('EVT', arguments);
+}
+
 class FullpageReact extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      active: 0,
+      fullPageActive: 0,
       hover: null
     };
-
-    this.updateActiveState = this.updateActiveState.bind(this);
   }
 
-  updateActiveState(newActive) {
-    this.setState({'active': newActive});
+  updateHorizontalActive(newActive) {
+    this.setState({activeSlide: newActive});
   }
 
   shouldComponentUpdate(nP, nS) {
@@ -71,6 +88,24 @@ class FullpageReact extends React.Component {
     return idx == this.state.active ? component.activeStyles : idx == this.state.hover ? component.hoverStyles : component.nonActiveStyles
   }
 
+  //TODO: these could be taken down to the next-level of fullpage and the schema, but how to call them from here?
+
+  fullpageCb(fullPageActive) {
+    this.setState({fullPageActive: fullPageActive});
+  }
+
+  horizontalCb(horizontalActive) {
+    this.setState({horizontalActive: horizontalActive});
+  }
+
+  getCurrentFullPageActive() {
+    return this.state.fullPageActive;
+  }
+
+  getCurrentHorizontalActive() {
+    return this.state.horizontalActive;
+  }
+
   render() {
     var navCount = 3;
     var navArr = [];
@@ -79,7 +114,7 @@ class FullpageReact extends React.Component {
     }
 
     return (
-      <Fullpage active={this.updateActiveState} {...fullPageOptions}>
+      <Fullpage onVerticalSlideChange={fullpageChangeEvent} {...fullPageOptions}>
 
         <TopNav className='topNav' {...topNavOptions}>
           {navArr.map((n, idx) => {
@@ -87,16 +122,30 @@ class FullpageReact extends React.Component {
               onMouseOver={() => this.onMouseOver(idx)} onMouseOut={() => this.onMouseOut()}>Slide {idx}</span>
           }, this)}
         </TopNav>
-        <HorizontalSlider style={{textAlign: 'center', fontSize: '30px'}}>
-          <Slide>1</Slide>
-          <Slide>2</Slide>
-          <Slide>3</Slide>
-        </HorizontalSlider>
+
         <Slide style={{backgroundColor: '#61DAFB'}}>
-          <div id="title">Fullpage React</div>
+          <div id="title">___</div>
         </Slide>
-        <Slide style={{backgroundColor: 'red'}}></Slide>
-        <Slide style={{backgroundColor: 'blue'}}></Slide>
+
+        <HorizontalSlider name={'horizontalSlider1'} onHorizontalChange={horizontalChangeEvent} style={{textAlign: 'center', fontSize: '30px'}}>
+          <HorizontalNav style={{position: 'absolute', paddingTop: '50%'}}>
+            {[1,2,3].map((n, idx) => {
+              return <span key={idx}>idx</span>
+            })}
+          </HorizontalNav>
+          <Slide style={{backgroundColor: 'green'}}>1</Slide>
+          <Slide style={{backgroundColor: 'white'}}>2</Slide>
+          <Slide style={{backgroundColor: 'purple'}}>3</Slide>
+        </HorizontalSlider>
+
+        <HorizontalSlider name={'horizontalSlider2'} onHorizontalChange={horizontalChangeEvent} style={{textAlign: 'left', fontSize: '30px'}}>
+          <Slide style={{backgroundColor: 'orange'}}>1</Slide>
+          <Slide style={{backgroundColor: 'yellow'}}>2</Slide>
+          <Slide style={{backgroundColor: 'purple'}}>3</Slide>
+        </HorizontalSlider>
+
+        <Slide style={{backgroundColor: '#61DAFB'}}></Slide>
+        <Slide style={{backgroundColor: 'green'}}></Slide>
 
         <SideNav {...sideNavOptions}>
           {navArr.map((n, idx) => {
@@ -111,7 +160,3 @@ class FullpageReact extends React.Component {
 }
 
 module.exports = FullpageReact;
-
-function log(msg) {
-  console.log(msg)
-}

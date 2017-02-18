@@ -1,17 +1,21 @@
 const React = require('react');
 
-const {Fullpage, Slide, TopNav, SideNav} = require('../lib/index');
+const {Fullpage, Slide, TopNav, SideNav, HorizontalSlider, changeHorizontalSlide, changeFullpageSlide} = require('../lib/index');
 
 require('./exampleStyles.styl');
 
 let fullPageOptions = {
   // for mouse/wheel events
   // represents the level of force required to generate a slide change on non-mobile, 100 is default
-  threshold: 100,
+  scrollSensitivity: 100,
 
   // for touchStart/touchEnd/mobile scrolling
   // represents the level of force required to generate a slide change on mobile, 100 is default
-  sensitivity: 100
+  touchSensitivity: 100,
+  scrollSpeed: 300,
+  // resetSlides: true,
+  // infinite: true,
+  hideScrollBars: true
 };
 
 let topNavOptions = {
@@ -36,6 +40,14 @@ let sideNavOptions = {
   nonActiveStyles: {color: 'gray'}
 };
 
+let horizontalSliderProps = {
+  name: 'horizontalSlider1',
+  scrollSpeed: 300,
+  style: {textAlign: 'center', fontSize: '30px'},
+  infinite: true,
+  // resetSlides: true
+};
+
 class FullpageReact extends React.Component {
   constructor(props) {
     super(props);
@@ -43,59 +55,57 @@ class FullpageReact extends React.Component {
       active: 0,
       hover: null
     };
-
-    this.updateActiveState = this.updateActiveState.bind(this);
   }
 
-  updateActiveState(newActive) {
-    this.setState({'active': newActive});
+  onFullpageChange(state) {
+    console.log('fullpage change completed', state.activeSlide);
   }
 
-  shouldComponentUpdate(nP, nS) {
-    //ensure hoverStyles and activeStyles update
-    return nS.active != this.state.active || nS.hover != this.state.hover;
-  }
-
-  onMouseOver(idx) {
-    this.setState({'hover': idx});
-  }
-
-  onMouseOut(e) {
-    this.setState({'hover': null});
-  }
-
-  compareStyles(component, idx) {
-    return idx == this.state.active ? component.activeStyles : idx == this.state.hover ? component.hoverStyles : component.nonActiveStyles
+  onHorizontalChange(slideName, state) {
+    console.log('horizontal change completed for ', slideName, state.activeSlide);
   }
 
   render() {
     let navCount = 3;
     let navArr = [];
+
     for (var i = 0; i < navCount; i++) {
       navArr.push(i);
     }
 
     return (
-      <Fullpage active={this.updateActiveState} {...fullPageOptions}>
+      <Fullpage onFullpageChange={this.onFullpageChange} onHorizontalChange={this.onHorizontalChange} {...fullPageOptions}>
 
-        <TopNav className='topNav' {...topNavOptions}>
-          {navArr.map((n, idx) => {
-            return <span key={idx} ref={idx} style={this.compareStyles(topNavOptions, idx)}
-              onMouseOver={() => this.onMouseOver(idx)} onMouseOut={() => this.onMouseOut()}>Slide {idx}</span>
-          }, this)}
+        <TopNav {...topNavOptions}>
+          <button onClick={changeHorizontalSlide.bind(null, 'horizontal-1', 'PREV')}>foo bar</button>
+          <button onClick={changeHorizontalSlide.bind(null, 'horizontal-1', 'NEXT')}>foo bar</button>
         </TopNav>
 
-        <Slide style={{backgroundColor: '#61DAFB'}}>
-          <div id="title">Fullpage React</div>
+        <HorizontalSlider {...horizontalSliderProps} >
+          <Slide horizontal={true} style={{backgroundColor: 'green'}}>1</Slide>
+          <Slide horizontal={true} style={{backgroundColor: 'gray'}}>2</Slide>
+          <Slide horizontal={true} style={{backgroundColor: 'purple'}}>3</Slide>
+        </HorizontalSlider>
+
+        <Slide style={{backgroundColor: 'red'}}>
+          <video width="500px" controls="true" className="video-container" autoPlay="true" loop="" muted="true" data-reactid=".0.1.0.0">
+            <source type="video/mp4" data-reactid=".0.1.0.0.0" src="https://media.w3.org/2010/05/sintel/trailer.mp4"></source>
+          </video>
         </Slide>
-        <Slide style={{backgroundColor: '#2B2C28'}}></Slide>
-        <Slide style={{backgroundColor: '#EFCB68'}}></Slide>
+
+        <Slide style={{backgroundColor: 'orange'}}>
+        </Slide>
+
+        <Slide style={{backgroundColor: 'yellow'}}>
+        </Slide>
+
+        <Slide style={{backgroundColor: 'green'}}>
+          <img src="http://ichef-1.bbci.co.uk/news/660/cpsprodpb/1325A/production/_88762487_junk_food.jpg"/>
+        </Slide>
 
         <SideNav {...sideNavOptions}>
-          {navArr.map((n, idx) => {
-            return <div key={idx} ref={idx} style={this.compareStyles(sideNavOptions, idx)}
-              onMouseOver={() => this.onMouseOver(idx)} onMouseOut={() => this.onMouseOut()}>&#x25CF;</div>
-          }, this)}
+          <button style={{cursor: 'pointer'}} onTap={changeFullpageSlide.bind(null, 'PREV')}>foo bar</button>
+          <button onTap={changeFullpageSlide.bind(null, 'NEXT')}>foo bar</button>
         </SideNav>
 
       </Fullpage>
@@ -104,7 +114,3 @@ class FullpageReact extends React.Component {
 }
 
 module.exports = FullpageReact;
-
-function log() {
-  console.log('hi')
-}

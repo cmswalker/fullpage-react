@@ -1,6 +1,6 @@
 const React = require('react');
 
-const {Fullpage, Slide, TopNav, SideNav, HorizontalSlider, changeHorizontalSlide, changeFullpageSlide} = require('../lib/index');
+const {Fullpage, Slide, HorizontalSlider, changeHorizontalSlide, changeFullpageSlide} = require('../lib/index');
 
 require('./exampleStyles.styl');
 
@@ -12,32 +12,36 @@ let fullPageOptions = {
   // for touchStart/touchEnd/mobile scrolling
   // represents the level of force required to generate a slide change on mobile, 100 is default
   touchSensitivity: 100,
-  scrollSpeed: 300,
-  // resetSlides: true,
-  // infinite: true,
+  scrollSpeed: 900,
+  resetSlides: false,
+  infinite: true,
   hideScrollBars: true
 };
 
-let topNavOptions = {
-  footer: false, //topNav can double as a footer if true
-  align: 'left', //also supports center and right alignment
+let topNavStyle = {
+  position: 'fixed',
+  width: '100%',
+  zIndex: '1',
+  cursor: 'pointer',
 
-  //styles to apply to children
-  activeStyles: {backgroundColor: 'white'},
-  hoverStyles: {backgroundColor: 'yellow'},
-  nonActiveStyles: {backgroundColor: 'gray'}
+  //defaults
+  textAlign: 'left',
+  top: '0'
 };
 
 // all children are spans by default, for stacked buttons,
 // just wrap your nested components/buttons in divs
-let sideNavOptions = {
-  right: '2%', //left alignment is default
-  top: '50%', //top is 50% by default
-
-  //styles to apply to children
-  activeStyles: {color: 'white'},
-  hoverStyles: {color: 'yellow'},
-  nonActiveStyles: {color: 'gray'}
+let horizontalNavPlaceholder = {
+  position: 'relative',
+  left: '50%',
+  top: '50%',
+  zIndex: 1
+};
+let horizontalNavStyle = {
+  position: 'relative',
+  // left: '50%',
+  top: '50%',
+  // zIndex: '1'
 };
 
 let horizontalSliderProps = {
@@ -45,53 +49,79 @@ let horizontalSliderProps = {
   scrollSpeed: 300,
   style: {textAlign: 'center', fontSize: '30px'},
   infinite: true,
-  // resetSlides: true
+  resetSlides: false
 };
 
 class FullpageReact extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      active: 0,
-      hover: null
+      active: {
+        Fullpage: 0,
+        horizontalSlider1: 0,
+      },
+      previous: {
+        Fullpage: 0,
+        horizontalSlider1: 0
+      }
     };
+
+    this.onSlideChangeStart = this.onSlideChangeStart.bind(this);
+    this.onSlideChangeEnd = this.onSlideChangeEnd.bind(this);
   }
 
-  onFullpageChange(state) {
-    console.log('fullpage change completed', state.activeSlide);
+  onSlideChangeStart(name, state) {
+    // console.log('slide STARTED for', name, state.activeSlide);
+    var sliderState = { previous: {} };
+    sliderState.previous[name] = state.activeSlide;
+    this.setState(sliderState);
   }
 
-  onHorizontalChange(slideName, state) {
-    console.log('horizontal change completed for ', slideName, state.activeSlide);
+  onSlideChangeEnd(name, state) {
+    // console.log('slide ENDED for', name, state.activeSlide);
+    var sliderState = { active: {} };
+    sliderState.active[name] = state.activeSlide;
+    // horizontalNavStyle.position = 'fixed';
+    // console.log('updated', horizontalNavStyle)
+    this.setState(sliderState);
   }
 
   render() {
-    let navCount = 3;
-    let navArr = [];
+    const { state } = this;
 
-    for (var i = 0; i < navCount; i++) {
-      navArr.push(i);
-    }
+    let asdf = horizontalNavStyle;
+
+    // if (state.active.Fullpage === 1) {
+    //   asdf =horizontalNavStyle;
+    // } else {
+    //   asdf = horizontalNavPlaceholder;
+    // }
+
+    let horizontalNav = (
+      <div style={Object.assign({}, asdf)}>
+        <button onClick={changeHorizontalSlide.bind(null, 'horizontalSlider1', 'PREV')}>a</button>
+        <button onClick={changeHorizontalSlide.bind(null, 'horizontalSlider1', 'NEXT')}>b</button>
+      </div>
+    );
 
     return (
-      <Fullpage onFullpageChange={this.onFullpageChange} onHorizontalChange={this.onHorizontalChange} {...fullPageOptions}>
+      <Fullpage onSlideChangeStart={this.onSlideChangeStart} onSlideChangeEnd={this.onSlideChangeEnd} {...fullPageOptions}>
 
-        <TopNav {...topNavOptions}>
-          <button onClick={changeHorizontalSlide.bind(null, 'horizontal-1', 'PREV')}>foo bar</button>
-          <button onClick={changeHorizontalSlide.bind(null, 'horizontal-1', 'NEXT')}>foo bar</button>
-        </TopNav>
 
-        <HorizontalSlider {...horizontalSliderProps} >
-          <Slide horizontal={true} style={{backgroundColor: 'green'}}>1</Slide>
-          <Slide horizontal={true} style={{backgroundColor: 'gray'}}>2</Slide>
-          <Slide horizontal={true} style={{backgroundColor: 'purple'}}>3</Slide>
-        </HorizontalSlider>
 
         <Slide style={{backgroundColor: 'red'}}>
           <video width="500px" controls="true" className="video-container" autoPlay="true" loop="" muted="true" data-reactid=".0.1.0.0">
             <source type="video/mp4" data-reactid=".0.1.0.0.0" src="https://media.w3.org/2010/05/sintel/trailer.mp4"></source>
           </video>
         </Slide>
+
+        <HorizontalSlider {...horizontalSliderProps} >
+          <Slide horizontal={true} style={{backgroundColor: 'green'}}>1
+          </Slide>
+          <Slide horizontal={true} style={{backgroundColor: 'gray'}}>2</Slide>
+          <Slide horizontal={true} style={{backgroundColor: 'purple'}}>3</Slide>
+          {horizontalNav}
+        </HorizontalSlider>
 
         <Slide style={{backgroundColor: 'orange'}}>
         </Slide>
@@ -102,11 +132,6 @@ class FullpageReact extends React.Component {
         <Slide style={{backgroundColor: 'green'}}>
           <img src="http://ichef-1.bbci.co.uk/news/660/cpsprodpb/1325A/production/_88762487_junk_food.jpg"/>
         </Slide>
-
-        <SideNav {...sideNavOptions}>
-          <button style={{cursor: 'pointer'}} onTap={changeFullpageSlide.bind(null, 'PREV')}>foo bar</button>
-          <button onTap={changeFullpageSlide.bind(null, 'NEXT')}>foo bar</button>
-        </SideNav>
 
       </Fullpage>
     );

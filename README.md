@@ -7,14 +7,18 @@ A larger example setup can be found [here](https://github.com/cmswalker/fullpage
 ---
 
 #### Basic Setup
-View on [NPM](https://www.npmjs.com/package/fullpage-react)
+
+[NPM](https://www.npmjs.com/package/fullpage-react)
+
 ```
 npm install fullpage-react
 ```
 
 All styling can be done via inline or stylesheets.
 Each component from Fullpage-React requires its own block of options
+
 ###### Component Option Boilerplate
+
 ```
 const {Fullpage, Slide, HorizontalSlider, Overlay} = require('fullpage-react');
 
@@ -60,6 +64,7 @@ let horizontalSliderProps = {
 ```
 
 ###### Event Triggers & Callbacks
+
 The Fullpage Component takes 2 optional event callback functions, each function returns the slide name, whether it's the overally Fullpage slider which is triggered via Vertical slides. Or one of various horizontal sliders you choose to use.
 
 Example [here](https://github.com/cmswalker/fullpage-react/blob/master/examples/fullpageReactExample.js)
@@ -114,9 +119,10 @@ let topNav = (
 ```
 
 ######Overlay Component
-```
+
 This component is completely optional, but it provides some styling and helpers in order to provide overlaying nav bars, for example
 
+```
 let topNavStyle = {
   textAlign: 'center',
   position: 'fixed',

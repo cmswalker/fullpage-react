@@ -11,11 +11,11 @@ require('./exampleStyles.styl');
 
 let fullPageOptions = {
   // for mouse/wheel events
-  // represents the level of force required to generate a slide change on non-mobile, 100 is default
+  // represents the level of force required to generate a slide change on non-mobile, 10 is default
   scrollSensitivity: 2,
 
   // for touchStart/touchEnd/mobile scrolling
-  // represents the level of force required to generate a slide change on mobile, 100 is default
+  // represents the level of force required to generate a slide change on mobile, 10 is default
   touchSensitivity: 2,
   scrollSpeed: 500,
   resetSlides: true,
@@ -42,7 +42,8 @@ let horizontalSliderProps = {
   scrollSpeed: 500,
   infinite: true,
   resetSlides: false,
-  scrollSensitivity: 2
+  scrollSensitivity: 2,
+  touchSensitivity: 2
 };
 
 class FullpageReact extends React.Component {

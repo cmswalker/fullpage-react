@@ -1,163 +1,153 @@
-#Fullpage-React
+# Fullpage-React
 
 Demo can be found [here](https://cmswalker.github.io/fullpage-react/)
 
-A larger example setup can be found [here](https://github.com/cmswalker/fullpage-react/blob/gh-pages/examples/fullpageReactExample.js)
+A larger example setup can be found [here](https://github.com/cmswalker/fullpage-react/blob/master/examples/fullpageReactExample.js)
 
 ---
 
-####Basic Setup
+#### Basic Setup
+View on [NPM](https://www.npmjs.com/package/fullpage-react)
 ```
 npm install fullpage-react
 ```
+
+All styling can be done via inline or stylesheets.
 Each component from Fullpage-React requires its own block of options
-######Component Option Boilerplate
-
+###### Component Option Boilerplate
 ```
-const React = require('react');
-
-const {Fullpage, Slide, TopNav, SideNav} = require('fullpage-react');
+const {Fullpage, Slide, HorizontalSlider, Overlay} = require('fullpage-react');
 
 let fullPageOptions = {
   // for mouse/wheel events
-  // represents the level of force required to generate a slide change on non-mobile, 100 is default
-  threshold: 100,
+  // represents the level of force required to generate a slide change on non-mobile, 10 is default
+  scrollSensitivity: 2,
 
   // for touchStart/touchEnd/mobile scrolling
-  // represents the level of force required to generate a slide change on mobile, 100 is default
-  sensitivity: 100
+  // represents the level of force required to generate a slide change on mobile, 10 is default
+  touchSensitivity: 2,
+  scrollSpeed: 500,
+
+  // when the final scroll is reached, this option allows the user to scroll backward to the original slide if they try to progress
+  // similar to infinite but the user will see a longer & reversed animation
+  resetSlides: true,
+  // auto-apply styles to hide scrollbars
+  hideScrollBars: true
 };
 
-let topNavOptions = {
-  footer: false, //topNav can double as a footer if true
-  align: 'left', //also supports center and right alignment
+let horizontalSliderProps = {
+  name: 'horizontalSlider1',
+  scrollSpeed: 500,
 
-  //styles to apply to children
-  activeStyles: {backgroundColor: 'white'},
-  hoverStyles: {backgroundColor: 'yellow'},
-  nonActiveStyles: {backgroundColor: 'gray'}
+  // infinite scrolling!
+  infinite: true,
+  resetSlides: false,
+  scrollSensitivity: 2,
+  touchSensitivity: 2
 };
 
-// all children are spans by default, for stacked buttons,
-// just wrap your nested components/buttons in divs
-let sideNavOptions = {
-  right: '2%', //left alignment is default
-  top: '50%', //top is 50% by default
+<Fullpage {...fullPageOptions} >
+  <Slide> Slide 1 </Slide>
 
-  //styles to apply to children
-  activeStyles: {color: 'white'},
-  hoverStyles: {color: 'yellow'},
-  nonActiveStyles: {color: 'gray'}
-};
-```
-######Fullpage Component Boilerplate
+  <HorizontalSlider {...horizontalSliderProps} >
+    <Slide> Slide 2.1 </Slide>
+    <Slide> Slide 2.2 </Slide>
+  </HorizontalSlider>
 
-The Component Itself Allows all content to be placed within Slide components as well as whatever iterators you want for TopNav and SideNav.
-
-*NOTE: In the render method, navCount should equal the same amount of Slides you wish to use in order to ensure proper nav click/hover behavior*
+  <Slide> Slide 3 </Slide>
+</Fullpage>
 
 ```
-class FullpageReact extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {active: 0};
 
-    this.updateActiveState = this.updateActiveState.bind(this);
-  }
+###### Event Triggers & Callbacks
+The Fullpage Component takes 2 optional event callback functions, each function returns the slide name, whether it's the overally Fullpage slider which is triggered via Vertical slides. Or one of various horizontal sliders you choose to use.
 
-  updateActiveState(newActive) {
-    this.setState({'active': newActive});
-  }
+Example [here](https://github.com/cmswalker/fullpage-react/blob/master/examples/fullpageReactExample.js)
 
-  shouldComponentUpdate(nP, nS) {
-    //ensure hoverStyles and activeStyles update
-    return nS.active != this.state.active;
-  }
+```
+<Fullpage onSlideChangeStart={this.onSlideChangeStart} onSlideChangeEnd={this.onSlideChangeEnd} >
+</Fullpage>
+```
 
-  onMouseOver(idx) {
-    this.setState({'hover': idx});
-  }
+There are also 2 functions that are used for non scroll based slide delegation. These each take a slide number or the arguments `NEXT` or `PREV` which will make the slider act accordingly
 
-  onMouseOut(e) {
-    this.setState({'hover': null});
-  }
+Example [here](https://github.com/cmswalker/fullpage-react/blob/master/examples/fullpageReactExample.js)
 
-  compareStyles(component, idx) {
-    return idx == this.state.active ? component.activeStyles : idx == this.state.hover ? component.hoverStyles : component.nonActiveStyles
-  }
+```
+const {changeHorizontalSlide, changeFullpageSlide} = require('fullpage-react');
 
-  render() {
-    let navCount = 3;
-    let navArr = [];
-    for (let i = 0; i < navCount; i++) {
-      navArr.push(i);
-    }
+let prevSlide = changeFullpageSlide.bind(null, 'PREV');
+let nextSlide = changeFullpageSlide.bind(null, 'NEXT');
+let backToTop = changeFullpageSlide.bind(null, 0);
 
-    return (
-      <Fullpage active={this.updateActiveState}>
-
-        <TopNav {...topNavOptions}>
-          {navArr.map((n, idx) => {
-            return <span key={idx} ref={idx}>Slide {idx}</span>
-          }, this)}
-        </TopNav>
-
-        <Slide style={{backgroundColor: '#61DAFB'}}>
-          <div id="title">Fullpage React</div>
-        </Slide>
-        <Slide style={{backgroundColor: '#2B2C28'}}></Slide>
-        <Slide style={{backgroundColor: '#EFCB68'}}></Slide>
-
-        <SideNav {...sideNavOptions}>
-          {navArr.map((n, idx) => {
-            return <div key={idx} ref={idx}>&#x25CF;</div>
-          }, this)}
-        </SideNav>
-
-      </Fullpage>
-    );
-  }
+let topNavStyle = {
+  textAlign: 'center',
+  position: 'fixed',
+  width: '100%',
+  cursor: 'pointer',
+  zIndex: 10,
+  backgroundColor: 'rgba(255, 255, 255, 0.4)',
+  top: '0px'
 };
 
-module.exports = FullpageReact;
-```
-######Rendering/Customization
-Active/Hover state can be applied either functionally like in this demo, or just by passing classNames or Ids to your iterators.
+let topNav = (
+  <Overlay style={topNavStyle}>
+    <Tappable onTap={prevSlide}>
+      <button>Previous Slide</button>
+    </Tappable>
+    <Tappable onTap={backToTop}>
+      <button>Back to Top</button>
+    </Tappable>
+    <Tappable onTap={nextSlide}>
+      <button>Next Slide</button>
+    </Tappable>
+  </Overlay>
+);
 
-example:
-This method works for those that prefer to change user interaction with Nav within react itself.
-```
-<TopNav className='topNav' {...topNavOptions}>
-  {navArr.map((n, idx) => {
-    return <span key={idx} ref={idx} style={this.compareStyles(topNavOptions, idx)}
-      onMouseOver={() => this.onMouseOver(idx)} onMouseOut={() => this.onMouseOut()}>Slide {idx}</span>
-  }, this)}
-</TopNav>
-```
-But this works just fine too, if you'd rather handle it from the DOM/CSS
-```
-<TopNav className='topNav' {...topNavOptions}>
-  {navArr.map((n, idx) => {
-    return <span className="topNavButton" key={idx} ref={idx}>Slide {idx}</span>
-  }, this)}
-</TopNav>
+<Fullpage onSlideChangeStart={this.onSlideChangeStart} onSlideChangeEnd={this.onSlideChangeEnd} >
+  {topNav}
+  <Slide>1</Slide>
+  <Slide>2</Slide>
+  <Slide>3</Slide>
+</Fullpage>
 
-//CSS
-.topNavButton:hover {
-  color: green;
-}
 ```
 
-Each Component from Fullpage-React contains a class to grab after render by default but these can be overridden.
+######Overlay Component
 ```
-<TopNav className='myCustomTopNav' {...topNavOptions}> //defaults to 'topNav' if none is provided
-  {navArr.map((n, idx) => {
-    return <span key={idx} ref={idx}>Slide {idx}</span>
-  }, this)}
-</TopNav>
-```
+This component is completely optional, but it provides some styling and helpers in order to provide overlaying nav bars, for example
 
----
-####Roadmap
-- Implement horizontal sliders
-- UI Tests
+let topNavStyle = {
+  textAlign: 'center',
+  position: 'fixed',
+  width: '100%',
+  cursor: 'pointer',
+  zIndex: 10,
+  backgroundColor: 'rgba(255, 255, 255, 0.4)',
+  top: '0px'
+};
+
+let topNav = (
+  <Overlay style={topNavStyle}>
+    <Tappable onTap={prevSlide}>
+      <button>Previous Slide</button>
+    </Tappable>
+    <Tappable onTap={backToTop}>
+      <button>Back to Top</button>
+    </Tappable>
+    <Tappable onTap={nextSlide}>
+      <button>Next Slide</button>
+    </Tappable>
+  </Overlay>
+);
+
+<Fullpage {...fullPageOptions}>
+
+  {topNav}
+
+  <Slide>
+    <p>Slide 1</p>
+  </Slide>
+
+</Fullpage>
+```

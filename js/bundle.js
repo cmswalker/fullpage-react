@@ -346,8 +346,15 @@
 /* 4 */
 /***/ function(module, exports) {
 
+	/*
+	object-assign
+	(c) Sindre Sorhus
+	@license MIT
+	*/
+
 	'use strict';
 	/* eslint-disable no-unused-vars */
+	var getOwnPropertySymbols = Object.getOwnPropertySymbols;
 	var hasOwnProperty = Object.prototype.hasOwnProperty;
 	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 
@@ -368,7 +375,7 @@
 			// Detect buggy property enumeration order in older V8 versions.
 
 			// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-			var test1 = new String('abc');  // eslint-disable-line
+			var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
 			test1[5] = 'de';
 			if (Object.getOwnPropertyNames(test1)[0] === '5') {
 				return false;
@@ -397,7 +404,7 @@
 			}
 
 			return true;
-		} catch (e) {
+		} catch (err) {
 			// We don't expect any of the above to throw, but better to be safe.
 			return false;
 		}
@@ -417,8 +424,8 @@
 				}
 			}
 
-			if (Object.getOwnPropertySymbols) {
-				symbols = Object.getOwnPropertySymbols(from);
+			if (getOwnPropertySymbols) {
+				symbols = getOwnPropertySymbols(from);
 				for (var i = 0; i < symbols.length; i++) {
 					if (propIsEnumerable.call(from, symbols[i])) {
 						to[symbols[i]] = from[symbols[i]];
@@ -21486,55 +21493,73 @@
 
 	'use strict';
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactTappable = __webpack_require__(179);
+
+	var _reactTappable2 = _interopRequireDefault(_reactTappable);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //check issues and make sure all is good!
 
-	var React = __webpack_require__(1);
-
-	var _require = __webpack_require__(179),
+	var _require = __webpack_require__(184),
 	    Fullpage = _require.Fullpage,
 	    Slide = _require.Slide,
-	    TopNav = _require.TopNav,
-	    SideNav = _require.SideNav;
+	    HorizontalSlider = _require.HorizontalSlider,
+	    Overlay = _require.Overlay,
+	    changeHorizontalSlide = _require.changeHorizontalSlide,
+	    changeFullpageSlide = _require.changeFullpageSlide;
 
-	__webpack_require__(193);
-	__webpack_require__(197);
+	__webpack_require__(200);
+	__webpack_require__(204);
+	__webpack_require__(206);
 
 	var fullPageOptions = {
 	  // for mouse/wheel events
-	  // represents the level of force required to generate a slide change on non-mobile, 100 is default
-	  threshold: 100,
+	  // represents the level of force required to generate a slide change on non-mobile, 10 is default
+	  scrollSensitivity: 2,
 
 	  // for touchStart/touchEnd/mobile scrolling
-	  // represents the level of force required to generate a slide change on mobile, 100 is default
-	  sensitivity: 100
+	  // represents the level of force required to generate a slide change on mobile, 10 is default
+	  touchSensitivity: 2,
+	  scrollSpeed: 500,
+	  resetSlides: true,
+	  hideScrollBars: true
 	};
 
-	var topNavOptions = {
-	  footer: false, //topNav can double as a footer if true
-	  align: 'left', //also supports center and right alignment
-
-	  //styles to apply to children
-	  activeStyles: { backgroundColor: 'white' },
-	  hoverStyles: { backgroundColor: 'yellow' },
-	  nonActiveStyles: { backgroundColor: 'gray' }
+	var topNavStyle = {
+	  textAlign: 'left',
+	  position: 'fixed',
+	  width: '100%',
+	  cursor: 'pointer',
+	  zIndex: 10,
+	  backgroundColor: 'rgba(255, 255, 255, 0.4)',
+	  top: '0px'
 	};
 
-	// all children are spans by default, for stacked buttons,
-	// just wrap your nested components/buttons in divs
-	var sideNavOptions = {
-	  right: '2%', //left alignment is default
-	  top: '50%', //top is 50% by default
+	var horizontalNavStyle = {
+	  position: 'relative',
+	  top: '50%'
+	};
 
-	  //styles to apply to children
-	  activeStyles: { color: 'white' },
-	  hoverStyles: { color: 'yellow' },
-	  nonActiveStyles: { color: 'gray' }
+	var horizontalSliderProps = {
+	  name: 'horizontalSlider1',
+	  scrollSpeed: 500,
+	  infinite: true,
+	  resetSlides: false,
+	  scrollSensitivity: 2,
+	  touchSensitivity: 2
 	};
 
 	var FullpageReact = function (_React$Component) {
@@ -21546,132 +21571,186 @@
 	    var _this = _possibleConstructorReturn(this, (FullpageReact.__proto__ || Object.getPrototypeOf(FullpageReact)).call(this, props));
 
 	    _this.state = {
-	      active: 0,
-	      hover: null
+	      active: {
+	        Fullpage: 0,
+	        horizontalSlider1: 0
+	      },
+	      previous: {
+	        Fullpage: 0,
+	        horizontalSlider1: 0
+	      }
 	    };
 
-	    _this.updateActiveState = _this.updateActiveState.bind(_this);
+	    _this.onSlideChangeStart = _this.onSlideChangeStart.bind(_this);
+	    _this.onSlideChangeEnd = _this.onSlideChangeEnd.bind(_this);
 	    return _this;
 	  }
 
 	  _createClass(FullpageReact, [{
-	    key: 'updateActiveState',
-	    value: function updateActiveState(newActive) {
-	      this.setState({ 'active': newActive });
+	    key: 'onSlideChangeStart',
+	    value: function onSlideChangeStart(name, state) {
+	      console.log('slide STARTED for', name, state.activeSlide);
+	      var sliderState = { previous: {} };
+	      sliderState.previous[name] = state.activeSlide;
+	      this.setState(sliderState);
 	    }
 	  }, {
-	    key: 'shouldComponentUpdate',
-	    value: function shouldComponentUpdate(nP, nS) {
-	      //ensure hoverStyles and activeStyles update
-	      return nS.active != this.state.active || nS.hover != this.state.hover;
-	    }
-	  }, {
-	    key: 'onMouseOver',
-	    value: function onMouseOver(idx) {
-	      this.setState({ 'hover': idx });
-	    }
-	  }, {
-	    key: 'onMouseOut',
-	    value: function onMouseOut(e) {
-	      this.setState({ 'hover': null });
-	    }
-	  }, {
-	    key: 'compareStyles',
-	    value: function compareStyles(component, idx) {
-	      return idx == this.state.active ? component.activeStyles : idx == this.state.hover ? component.hoverStyles : component.nonActiveStyles;
+	    key: 'onSlideChangeEnd',
+	    value: function onSlideChangeEnd(name, state) {
+	      console.log('slide ENDED for', name, state.activeSlide);
+	      var sliderState = { active: {} };
+	      sliderState.active[name] = state.activeSlide;
+	      this.setState(sliderState);
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this2 = this;
 
-	      var navCount = 3;
-	      var navArr = [];
-	      for (var i = 0; i < navCount; i++) {
-	        navArr.push(i);
-	      }
+	      var slide1 = changeFullpageSlide.bind(null, 0);
+	      var slide2 = changeFullpageSlide.bind(null, 1);
+	      var slide3 = changeFullpageSlide.bind(null, 2);
 
-	      return React.createElement(
-	        Fullpage,
-	        { active: this.updateActiveState },
-	        React.createElement(
-	          TopNav,
-	          topNavOptions,
-	          navArr.map(function (n, idx) {
-	            return React.createElement(
-	              'span',
-	              { key: idx, ref: idx, style: _this2.compareStyles(topNavOptions, idx),
-	                onMouseOver: function onMouseOver() {
-	                  return _this2.onMouseOver(idx);
-	                }, onMouseOut: function onMouseOut() {
-	                  return _this2.onMouseOut(idx);
-	                } },
-	              'Slide ',
-	              idx
-	            );
-	          }, this)
+	      var topNav = _react2.default.createElement(
+	        Overlay,
+	        { className: 'top-nav', style: topNavStyle },
+	        _react2.default.createElement(
+	          _reactTappable2.default,
+	          { className: 'topnav-button', onTap: slide1 },
+	          _react2.default.createElement(
+	            'button',
+	            null,
+	            'First Slide'
+	          )
 	        ),
-	        React.createElement(
+	        _react2.default.createElement(
+	          _reactTappable2.default,
+	          { className: 'topnav-button', onTap: slide2 },
+	          _react2.default.createElement(
+	            'button',
+	            null,
+	            'Second Slide'
+	          )
+	        ),
+	        _react2.default.createElement(
+	          _reactTappable2.default,
+	          { className: 'topnav-button', onTap: slide3 },
+	          _react2.default.createElement(
+	            'button',
+	            null,
+	            'Third Slide'
+	          )
+	        )
+	      );
+
+	      var prevHorizontalSlide = changeHorizontalSlide.bind(null, 'horizontalSlider1', 'PREV');
+	      var nextHorizontalSlide = changeHorizontalSlide.bind(null, 'horizontalSlider1', 'NEXT');
+
+	      var horizontalNav = _react2.default.createElement(
+	        Overlay,
+	        { style: { top: '50%' } },
+	        _react2.default.createElement(
+	          'div',
+	          { style: horizontalNavStyle },
+	          _react2.default.createElement(
+	            _reactTappable2.default,
+	            { style: { position: 'absolute', left: '0px' }, onTap: prevHorizontalSlide },
+	            _react2.default.createElement(
+	              'button',
+	              null,
+	              'PREV'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            _reactTappable2.default,
+	            { style: { position: 'absolute', right: '0px' }, onTap: nextHorizontalSlide },
+	            _react2.default.createElement(
+	              'button',
+	              null,
+	              'Next'
+	            )
+	          )
+	        )
+	      );
+
+	      return _react2.default.createElement(
+	        Fullpage,
+	        _extends({ onSlideChangeStart: this.onSlideChangeStart, onSlideChangeEnd: this.onSlideChangeEnd }, fullPageOptions),
+	        topNav,
+	        _react2.default.createElement(
 	          Slide,
-	          { id: 'slide1', className: 'slide', style: { backgroundColor: '#61DAFB' } },
-	          React.createElement('div', { className: 'arrow-up arrow-up-2 arrow-title-1' }),
-	          React.createElement('div', { className: 'arrow-up arrow-up-2 arrow-title-2' }),
-	          React.createElement('div', { className: 'arrow-up arrow-up-2 arrow-title-3' }),
-	          React.createElement(
+	          { className: 'slide ice-b' },
+	          _react2.default.createElement('div', { className: 'arrow-down arrow-down-2 arrow-title-1' }),
+	          _react2.default.createElement('div', { className: 'arrow-down arrow-down-2 arrow-title-2' }),
+	          _react2.default.createElement('div', { className: 'arrow-down arrow-down-2 arrow-title-3' }),
+	          _react2.default.createElement(
 	            'div',
 	            { id: 'title' },
 	            'Fullpage React'
 	          )
 	        ),
-	        React.createElement(
-	          Slide,
-	          { id: 'slide2', className: 'slide', style: { backgroundColor: '#2B2C28' } },
-	          React.createElement(
-	            'div',
-	            { className: 'sub-title' },
-	            '100% React components, no jQuery'
-	          ),
-	          React.createElement('div', { className: 'arrow-up abs-top top-100' })
-	        ),
-	        React.createElement(
-	          Slide,
-	          { id: 'slide3', className: 'slide', style: { backgroundColor: '#EFCB68' } },
-	          React.createElement(
-	            'div',
-	            { className: 'sub-title' },
-	            'Mobile friendly! Tap events for iOS and Android'
-	          ),
-	          React.createElement(
-	            'a',
-	            { href: 'https://github.com/cmswalker/fullpage-react' },
-	            'view source'
-	          ),
-	          React.createElement('div', { className: 'arrow-up arrow-up-2 abs-top top-200' })
-	        ),
-	        React.createElement(
-	          SideNav,
-	          sideNavOptions,
-	          navArr.map(function (n, idx) {
-	            return React.createElement(
+	        _react2.default.createElement(
+	          HorizontalSlider,
+	          _extends({ className: 'slide' }, horizontalSliderProps),
+	          _react2.default.createElement(
+	            Slide,
+	            { className: 'warm-b' },
+	            _react2.default.createElement(
 	              'div',
-	              { key: idx, ref: idx, style: _this2.compareStyles(sideNavOptions, idx),
-	                onMouseOver: function onMouseOver() {
-	                  return _this2.onMouseOver(idx);
-	                }, onMouseOut: function onMouseOut() {
-	                  return _this2.onMouseOut(idx);
-	                } },
-	              '\u25CF'
-	            );
-	          }, this)
+	              { className: 'sub-title' },
+	              'Horizontal Sliders',
+	              _react2.default.createElement('br', null),
+	              '(scroll left or right)'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            Slide,
+	            { className: 'ice-b' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'sub-title' },
+	              '100% React components, no jQuery. ',
+	              _react2.default.createElement('br', null),
+	              ' Easy API'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            Slide,
+	            { style: { backgroundColor: '#2B2C28' } },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'sub-title' },
+	              'Infinite Scrolling ->'
+	            )
+	          ),
+	          horizontalNav
+	        ),
+	        _react2.default.createElement(
+	          Slide,
+	          { className: 'slide green' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'sub-title' },
+	            'Mobile friendly with tap events',
+	            _react2.default.createElement('br', null),
+	            _react2.default.createElement(
+	              'a',
+	              { href: 'https://github.com/cmswalker/fullpage-react' },
+	              'Github'
+	            ),
+	            _react2.default.createElement('br', null),
+	            _react2.default.createElement(
+	              'a',
+	              { href: 'https://www.npmjs.com/package/fullpage-react' },
+	              'NPM'
+	            )
+	          )
 	        )
 	      );
 	    }
 	  }]);
 
 	  return FullpageReact;
-	}(React.Component);
-
-	;
+	}(_react2.default.Component);
 
 	module.exports = FullpageReact;
 
@@ -21679,408 +21758,14 @@
 /* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var FullpageReact = __webpack_require__(180);
-
-	module.exports = FullpageReact;
-
-/***/ },
-/* 180 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Fullpage = __webpack_require__(181);
-	var Slide = __webpack_require__(182);
-	var TopNav = __webpack_require__(191);
-	var SideNav = __webpack_require__(192);
-
-	module.exports = {
-	  Fullpage: Fullpage,
-	  Slide: Slide,
-	  TopNav: TopNav,
-	  SideNav: SideNav
-	};
-
-/***/ },
-/* 181 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var React = __webpack_require__(1);
-	var Slide = __webpack_require__(182);
-
-	var scrollTo = __webpack_require__(188);
-	var events = __webpack_require__(189);
-	var renderUtils = __webpack_require__(190);
-	var KEY_IDX = renderUtils.KEY_IDX,
-	    GET_BODY = renderUtils.GET_BODY,
-	    GET_BROWSER = renderUtils.GET_BROWSER,
-	    GET_OS = renderUtils.GET_OS;
-
-
-	var touchArr = [];
-	var latestTouch;
-	var needsConversion = null;
-
-	var Fullpage = function (_React$Component) {
-	  _inherits(Fullpage, _React$Component);
-
-	  function Fullpage(props) {
-	    _classCallCheck(this, Fullpage);
-
-	    var _this = _possibleConstructorReturn(this, (Fullpage.__proto__ || Object.getPrototypeOf(Fullpage)).call(this, props));
-
-	    var slideChildren = getSlideCount(_this.props.children);
-
-	    _this.state = {
-	      name: 'Fullpage',
-	      defaultClass: 'Fullpage',
-	      slides: [],
-	      slidesCount: slideChildren,
-	      activeSlide: 0,
-	      lastActive: -1,
-	      downThreshold: -Math.abs(_this.props.threshold || 100),
-	      upThreshold: _this.props.threshold || 100,
-	      touchStart: 0,
-	      touchSensitivity: _this.props.sensitivity || 100,
-	      scrollPending: false
-	    };
-
-	    _this.onScroll = _this.onScroll.bind(_this);
-	    _this.onTouchStart = _this.onTouchStart.bind(_this);
-	    _this.onTouchEnd = _this.onTouchEnd.bind(_this);
-	    _this.checkKey = _this.checkKey.bind(_this);
-	    _this.onResize = _this.onResize.bind(_this);
-	    return _this;
-	  }
-
-	  _createClass(Fullpage, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      document.addEventListener('wheel', this.onScroll);
-	      document.addEventListener('touchmove', this.onTouchStart);
-	      document.addEventListener('touchend', this.onTouchEnd);
-	      document.addEventListener('keydown', this.checkKey);
-	      window.addEventListener('resize', this.onResize);
-	      events.pub(this, this.scrollToSlide);
-
-	      //override the threshold for windows firefox
-	      var b = GET_BROWSER();
-	      var os = GET_OS();
-	      if (b === 'Firefox' && os === 'WINDOWS') {
-	        needsConversion = true;
-	      }
-
-	      //initialize slides
-	      this.onResize();
-	    }
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {
-	      document.removeEventListener('wheel', this.onScroll);
-	      document.removeEventListener('touchmove', this.onTouchStart);
-	      document.removeEventListener('touchend', this.onTouchEnd);
-	      document.removeEventListener('keydown', this.checkKey);
-	      window.removeEventListener('resize', this.onResize);
-	    }
-	  }, {
-	    key: 'shouldComponentUpdate',
-	    value: function shouldComponentUpdate(nP, nS) {
-	      return true;
-	    }
-	  }, {
-	    key: 'componentDidUpdate',
-	    value: function componentDidUpdate(pP, pS) {
-	      var s = this.state;
-	      events.active = s.activeSlide;
-	      this.props.active(s.activeSlide);
-	    }
-	  }, {
-	    key: 'checkKey',
-	    value: function checkKey(e) {
-	      var direction = null;
-	      e = e || window.event;
-	      if (KEY_IDX[e.keyCode]) {
-	        direction = KEY_IDX[e.keyCode];
-	      } else {
-	        return false;
-	      }
-
-	      //can remove this when carousel is implemented
-	      if (typeof direction !== 'number') {
-	        return false;
-	      }
-
-	      this.scrollToSlide(this.state.activeSlide + direction);
-	    }
-	  }, {
-	    key: 'onResize',
-	    value: function onResize() {
-	      var s = this.state;
-	      var slides = [];
-
-	      for (var i = 0; i < s.slidesCount; i++) {
-	        slides.push(window.innerHeight * i);
-	      }
-
-	      this.setState({
-	        'slides': slides,
-	        'height': window.innerHeight
-	      });
-
-	      this.scrollToSlide(s.activeSlide, true);
-	    }
-	  }, {
-	    key: 'scrollToSlide',
-	    value: function scrollToSlide(slide, override) {
-	      var _this2 = this;
-
-	      var s = this.state;
-
-	      if (override) {
-	        return scrollTo.call(this, GET_BODY(), s.slides[slide], 100, function () {
-	          _this2.setState({ 'activeSlide': slide });
-	          _this2.setState({ 'scrollPending': false });
-	        });
-	      }
-
-	      if (s.scrollPending) {
-	        return;
-	      }
-
-	      if (slide < 0 || slide >= s.slidesCount) {
-	        return;
-	      }
-
-	      this.setState({
-	        'activeSlide': slide,
-	        'scrollPending': true
-	      });
-
-	      scrollTo(GET_BODY(), s.slides[slide], 600, function () {
-	        _this2.setState({ 'activeSlide': slide });
-	        _this2.setState({ 'scrollPending': false });
-	      });
-	    }
-	  }, {
-	    key: 'onTouchStart',
-	    value: function onTouchStart(e) {
-	      e.preventDefault();
-	      var t = e.touches[0].clientY;
-	      latestTouch = t;
-	      touchArr.push(t);
-
-	      if (touchArr.length > 10) {
-	        this.setState({ 'touchStart': touchArr[0] });
-	        touchArr = [];
-	        return;
-	      }
-	    }
-	  }, {
-	    key: 'onTouchEnd',
-	    value: function onTouchEnd(e) {
-	      var s = this.state;
-	      var touchEnd = e.changedTouches[0].clientY;
-	      var touchStart = s.touchStart;
-	      var sensitivity = s.touchSensitivity;
-
-	      //prevent standard taps creating false positives;
-	      if (latestTouch !== touchEnd) {
-	        return;
-	      }
-
-	      if (!touchStart || touchStart > touchEnd + Math.abs(sensitivity / 2)) {
-
-	        if (s.activeSlide == s.slidesCount - 1) {
-	          // prevent down going down
-	          return;
-	        }
-
-	        return this.scrollToSlide(s.activeSlide + 1);
-	      }
-
-	      if (s.activeSlide == 0) {
-	        // prevent up going up
-	        return;
-	      }
-
-	      this.scrollToSlide(s.activeSlide - 1);
-	    }
-	  }, {
-	    key: 'onArrowClick',
-	    value: function onArrowClick() {
-	      this.scrollToSlide(this.state.activeSlide + 1);
-	    }
-	  }, {
-	    key: 'onScroll',
-	    value: function onScroll(e) {
-	      var _this3 = this;
-
-	      e.preventDefault();
-	      var s = this.state;
-
-	      if (s.scrollPending) {
-	        return;
-	      }
-
-	      var meas = needsConversion ? -e.deltaY : e.wheelDelta || -e.deltaY || e.detail;
-	      //windows firefox produces very low wheel activity so we have to multiply it
-	      if (needsConversion) {
-	        meas = meas * 3;
-	      }
-
-	      var scrollDown = meas < s.downThreshold;
-	      var scrollUp = !scrollDown && meas > s.upThreshold;
-
-	      if (!scrollDown && !scrollUp) {
-	        return this.setState({ 'scrollPending': false });
-	      }
-
-	      var activeSlide = s.activeSlide;
-
-	      if (scrollDown) {
-	        if (activeSlide == s.slidesCount - 1) {
-	          // prevent down going down
-	          return this.setState({ 'scrollPending': false });
-	        }
-
-	        activeSlide = activeSlide + 1;
-	      } else if (scrollUp) {
-	        if (!activeSlide) {
-	          // prevent up going up
-	          return this.setState({ 'scrollPending': false });
-	        }
-
-	        activeSlide = activeSlide - 1;
-	      }
-
-	      this.setState({ 'scrollPending': true });
-
-	      scrollTo(GET_BODY(), s.slides[activeSlide], 500, function () {
-	        _this3.setState({ 'activeSlide': activeSlide });
-	        _this3.setState({ 'lastActive': scrollDown ? activeSlide-- : activeSlide++ });
-
-	        setTimeout(function () {
-	          _this3.setState({ 'scrollPending': false });
-	        }, s.upThreshold * 2);
-	      });
-	      return this.setState({ 'scrollPending': true });
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return React.createElement(
-	        'div',
-	        { className: renderUtils.defaultClass.call(this), style: { height: this.state.height } },
-	        this.props.children
-	      );
-	    }
-	  }]);
-
-	  return Fullpage;
-	}(React.Component);
-
-	Fullpage.propTypes = {
-	  children: React.PropTypes.node.isRequired,
-	  threshold: React.PropTypes.number,
-	  sensitivity: React.PropTypes.number,
-	  active: React.PropTypes.func
-	};
-
-	function getSlideCount(children) {
-	  return children.reduce(function (result, c) {
-	    if (Array.isArray(c)) {
-	      return getSlideCount(c);
-	    }
-
-	    if (!c.type) {
-	      return result;
-	    }
-
-	    if (c.type === Slide) {
-	      return result = result + 1;
-	    }
-
-	    return result;
-	  }, 0);
-	}
-
-	module.exports = Fullpage;
-
-/***/ },
-/* 182 */
-/***/ function(module, exports, __webpack_require__) {
-
 	'use strict';
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var React = __webpack_require__(1);
-	var Tappable = __webpack_require__(183);
-
-	var noOp = function noOp() {};
-
-	var Slide = function (_React$Component) {
-	  _inherits(Slide, _React$Component);
-
-	  function Slide(props) {
-	    _classCallCheck(this, Slide);
-
-	    return _possibleConstructorReturn(this, (Slide.__proto__ || Object.getPrototypeOf(Slide)).call(this, props));
-	  }
-
-	  _createClass(Slide, [{
-	    key: 'render',
-	    value: function render() {
-	      return React.createElement(
-	        'div',
-	        _extends({}, this.props, { style: Object.assign({}, this.props.style, { height: '100%' }) }),
-	        (Array.isArray(this.props.children) ? this.props.children : [this.props.children]).map(function (child, idx) {
-	          return child;
-	        }, this)
-	      );
-	    }
-	  }]);
-
-	  return Slide;
-	}(React.Component);
-
-	Slide.propTypes = {
-	  children: React.PropTypes.node,
-	  style: React.PropTypes.object
-	};
-
-	module.exports = Slide;
-
-/***/ },
-/* 183 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var TappableMixin = __webpack_require__(184);
-	var PinchableMixin = __webpack_require__(185);
-	var getComponent = __webpack_require__(186);
-	var touchStyles = __webpack_require__(187);
+	var TappableMixin = __webpack_require__(180);
+	var PinchableMixin = __webpack_require__(181);
+	var getComponent = __webpack_require__(182);
+	var touchStyles = __webpack_require__(183);
 
 	var Component = getComponent([TappableMixin, PinchableMixin]);
 
@@ -22093,7 +21778,7 @@
 	});
 
 /***/ },
-/* 184 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22443,7 +22128,7 @@
 	module.exports = Mixin;
 
 /***/ },
-/* 185 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22554,7 +22239,7 @@
 	module.exports = Mixin;
 
 /***/ },
-/* 186 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22562,7 +22247,7 @@
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var React = __webpack_require__(1);
-	var touchStyles = __webpack_require__(187);
+	var touchStyles = __webpack_require__(183);
 
 	/**
 	 * Tappable Component
@@ -22634,7 +22319,7 @@
 	};
 
 /***/ },
-/* 187 */
+/* 183 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -22653,85 +22338,928 @@
 	module.exports = touchStyles;
 
 /***/ },
+/* 184 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var FullpageReact = __webpack_require__(185);
+
+	module.exports = FullpageReact;
+
+/***/ },
+/* 185 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var FullpageComp = __webpack_require__(186);
+	var Fullpage = FullpageComp.Fullpage,
+	    changeHorizontalSlide = FullpageComp.changeHorizontalSlide,
+	    changeFullpageSlide = FullpageComp.changeFullpageSlide;
+
+	var Overlay = __webpack_require__(199);
+
+	var Slide = __webpack_require__(198);
+
+	var HorizontalSliderModule = __webpack_require__(197);
+	var HorizontalSlider = HorizontalSliderModule.HorizontalSlider;
+
+
+	module.exports = {
+	  Fullpage: Fullpage,
+	  Slide: Slide,
+	  HorizontalSlider: HorizontalSlider,
+	  changeHorizontalSlide: changeHorizontalSlide,
+	  changeFullpageSlide: changeFullpageSlide,
+	  Overlay: Overlay
+	};
+
+/***/ },
+/* 186 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var React = __webpack_require__(1);
+	var ScrollSwipe = __webpack_require__(187);
+
+	var _require = __webpack_require__(188),
+	    jumpScroll = _require.jumpScroll,
+	    handleScroll = _require.handleScroll,
+	    resize = _require.resize,
+	    renderUtils = _require.renderUtils;
+
+	var defaultClass = renderUtils.defaultClass,
+	    KEY_IDX = renderUtils.KEY_IDX,
+	    GET_BODY = renderUtils.GET_BODY;
+
+	var _require2 = __webpack_require__(193),
+	    onScrollAction = _require2.onScrollAction;
+
+	var _require3 = __webpack_require__(196),
+	    noOp = _require3.noOp,
+	    VERTICAL = _require3.VERTICAL;
+
+	var HorizontalSliderModule = __webpack_require__(197);
+	var changeHorizontalSlide = HorizontalSliderModule.changeHorizontalSlide;
+
+
+	var _fp = {};
+
+	function changeFullpageSlide(to) {
+	  var comp = _fp;
+
+	  if (comp.state.scrollPending || to == comp.state.activeSlide) {
+	    return;
+	  }
+
+	  if (!to && to !== 0 || to >= comp.state.slideCount) {
+	    to = 'NEXT';
+	  }
+
+	  if (to < 0) {
+	    to = 'PREV';
+	  }
+
+	  if (to !== 'NEXT' && to !== 'PREV') {
+	    comp.onSlideChangeStart(comp.name, comp.state);
+	    comp.setState({ scrollPending: true });
+	    return jumpScroll.call(comp, to, GET_BODY(), comp.props.onSlideChangeEnd.bind(comp, comp.name));
+	  }
+
+	  var intent = to === 'NEXT' ? 1 : 0;
+	  var data = {
+	    intent: intent
+	  };
+
+	  var direction = VERTICAL;
+
+	  comp.onVerticalScroll.call(comp, data, direction);
+	}
+
+	var Fullpage = function (_React$Component) {
+	  _inherits(Fullpage, _React$Component);
+
+	  function Fullpage(props) {
+	    _classCallCheck(this, Fullpage);
+
+	    var _this = _possibleConstructorReturn(this, (Fullpage.__proto__ || Object.getPrototypeOf(Fullpage)).call(this, props));
+
+	    _this.name = 'Fullpage';
+
+	    var p = _this.props;
+	    if (p.infinite && p.resetSlides) {
+	      throw new Error(_this.name + ' cannot have both infinite and resetSlides as truthy props');
+	    }
+
+	    _this.infinite = false;
+	    _this.ss = null;
+	    _this.winProp = 'innerHeight';
+	    _this.elementBoundary = 'scrollTop';
+	    _this.scrollSpeed = p.scrollSpeed || 500;
+
+	    _this.onHorizontalChange = p.onHorizontalChange || noOp;
+	    _this.onSlideChangeStart = p.onSlideChangeStart || noOp;
+	    _this.onSlideChangeEnd = p.onSlideChangeEnd || noOp;
+
+	    _this.state = {
+	      activeSlide: p.activeSlide || 0,
+	      lastActive: -1,
+	      scrollSensitivity: p.scrollSensitivity || 10,
+	      touchSensitivity: p.touchSensitivity || 10,
+	      scrollPending: false
+	    };
+
+	    if (!Object.keys(_fp).length) {
+	      _fp = _this;
+	      module.exports._fp = _fp;
+	    }
+	    return _this;
+	  }
+
+	  _createClass(Fullpage, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var node = this.node;
+	      var s = this.state;
+
+	      var ss = new ScrollSwipe({
+	        target: node,
+	        scrollSensitivity: s.scrollSensitivity / 5,
+	        touchSensitivity: s.touchSensitivity / 5,
+	        scrollPreventDefault: true,
+	        touchPreventDefault: true,
+	        scrollCb: onScrollAction.bind(null, this),
+	        touchCb: onScrollAction.bind(null, this)
+	      });
+	      this.ss = ss;
+
+	      // document.addEventListener('keydown', this.checkKey);
+	      window.addEventListener('resize', resize.bind(this));
+
+	      resize.call(this);
+
+	      //hide scrollbars
+	      if (this.props.hideScrollBars) {
+	        document.documentElement.style.overflow = 'hidden';
+	        document.body.style.overflow = 'hidden';
+	      }
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      this.ss.killAll();
+	      this.ss = null;
+
+	      document.removeEventListener('keydown', this.checkKey);
+	      window.removeEventListener('resize', resize.bind(this));
+	    }
+	  }, {
+	    key: 'checkKey',
+	    value: function checkKey(e) {
+	      var direction = null;
+	      e = e || window.event;
+	      if (KEY_IDX[e.keyCode]) {
+	        direction = KEY_IDX[e.keyCode];
+	      } else {
+	        return false;
+	      }
+
+	      //can remove this when carousel is implemented
+	      if (typeof direction !== 'number') {
+	        return false;
+	      }
+
+	      this.scrollToSlide(this.state.activeSlide + direction);
+	    }
+	  }, {
+	    key: 'onVerticalScroll',
+	    value: function onVerticalScroll(data, direction) {
+	      handleScroll.call(this, data, direction, GET_BODY(), this.props.onSlideChangeEnd.bind(this, this.name));
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      var p = this.props;
+
+	      return React.createElement(
+	        'div',
+	        { ref: function ref(node) {
+	            return _this2.node = node;
+	          }, className: defaultClass.call(this) },
+	        (p.children || []).map(function (c) {
+	          if (!c) {
+	            return false;
+	          }
+
+	          return c;
+	        })
+	      );
+	    }
+	  }]);
+
+	  return Fullpage;
+	}(React.Component);
+
+	Fullpage.propTypes = {
+	  children: React.PropTypes.node,
+	  touchSensitivity: React.PropTypes.number,
+	  scrollSensitivity: React.PropTypes.number,
+	  activeSlide: React.PropTypes.number,
+	  onSlideChangeStart: React.PropTypes.func.isRequired,
+	  onSlideChangeEnd: React.PropTypes.func.isRequired,
+	  hideScrollBars: React.PropTypes.bool,
+	  infinite: React.PropTypes.bool,
+	  resetSlides: React.PropTypes.bool
+	};
+
+	module.exports = {
+	  Fullpage: Fullpage,
+	  _fp: _fp,
+	  changeHorizontalSlide: changeHorizontalSlide,
+	  changeFullpageSlide: changeFullpageSlide
+	};
+
+/***/ },
+/* 187 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;;(function(root, factory) {
+	  if (true) {
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	  } else if (typeof exports === 'object') {
+	    module.exports = factory();
+	  } else {
+	    root.ScrollSwipe = factory();
+	  }
+	}(this, function() {
+	'use strict';
+
+	var VERTICAL = 'VERTICAL';
+	var HORIZONTAL = 'HORIZONTAL';
+
+	var noOp = function noOp() {};
+
+	var acceptedParams = {
+	  target: true,
+	  scrollSensitivity: true,
+	  touchSensitivity: true,
+	  scrollCb: true,
+	  touchCb: true,
+	  scrollPreventDefault: true,
+	  touchPreventDefault: true
+	};
+
+	if (true) {
+	  module.exports = ScrollSwipe;
+	}
+
+	function ScrollSwipe(opts) {
+	  var _this = this;
+
+	  Object.keys(opts).forEach(function (key) {
+	    if (acceptedParams[key]) {
+	      _this[key] = opts[key];
+	      return;
+	    }
+
+	    throw new Error('unknown options for ScrollSwipe: ' + key);
+	  });
+
+	  if (!opts.target) {
+	    throw new Error('must provide DOM target element to ScrollSwipe');
+	  }
+
+	  if (!this.scrollSensitivity || this.scrollSensitivity < 0) {
+	    this.scrollSensitivity = 0;
+	  }
+
+	  if (!this.touchSensitivity || this.touchSensitivity < 0) {
+	    this.touchSensitivity = 0;
+	  }
+
+	  this.startTouchEvent = null;
+	  this.latestTouchEvent = null;
+	  this.latestTouch = null;
+
+	  this.startScrollEvent = null;
+	  this.latestScrollEvent = null;
+	  this.latestScroll = null;
+
+	  this.intent = 0;
+	  this.currentDirection = VERTICAL;
+	  this.touchArr = [];
+	  this.xArr = [];
+	  this.yArr = [];
+	  this.touchArrX = [];
+	  this.touchArrY = [];
+
+	  this.scrollPending = false;
+
+	  //these should only init if true
+	  if (this.scrollCb) {
+	    this.initScroll();
+	  }
+
+	  if (this.touchCb) {
+	    this.initTouch();
+	  }
+
+	  return this;
+	}
+
+	ScrollSwipe.prototype.listen = function listen() {
+	  this.scrollPending = false;
+	  return this;
+	};
+
+	ScrollSwipe.prototype.killScroll = function killScroll() {
+	  this.target.removeEventListener('wheel');
+	  return this;
+	};
+
+	ScrollSwipe.prototype.killTouch = function killTouch() {
+	  this.target.removeEventListener('touchmove');
+	  this.target.removeEventListener('touchend');
+	  return this;
+	};
+
+	ScrollSwipe.prototype.killAll = function teardown() {
+	  this.killScroll().killTouch();
+	  return this;
+	};
+
+	ScrollSwipe.prototype.initScroll = function initScroll() {
+	  var _this2 = this;
+
+	  this.target.addEventListener('wheel', function (e) {
+	    if (_this2.scrollPreventDefault) {
+	      e.preventDefault();
+	    }
+
+	    if (_this2.scrollPending) {
+	      return;
+	    }
+
+	    _this2.startScrollEvent = e;
+
+	    var x = e.deltaX;
+	    var y = e.deltaY;
+
+	    _this2.addXScroll(x);
+	    _this2.addYScroll(y);
+
+	    _this2.scrollFulfilled(function (fulfilled, direction, intent) {
+	      if (!fulfilled) {
+	        return;
+	      }
+
+	      _this2.latestScrollEvent = e;
+
+	      var result = {
+	        startEvent: e,
+	        lastEvent: _this2.latestScrollEvent,
+	        scrollPending: _this2.scrollPending,
+	        direction: direction,
+	        intent: intent
+	      };
+
+	      _this2.scrollCb(result);
+	    });
+	  });
+
+	  return this;
+	};
+
+	ScrollSwipe.prototype.initTouch = function initTouch() {
+	  var _this3 = this;
+
+	  this.target.addEventListener('touchmove', function (e) {
+
+	    if (_this3.touchPreventDefault) {
+	      e.preventDefault();
+	    }
+
+	    var changedTouches = e.changedTouches[0];
+	    var x = changedTouches.clientX;
+	    var y = changedTouches.clientY;
+
+	    _this3.startTouchEvent = e;
+	    _this3.addXTouch(x);
+	    _this3.addYTouch(y);
+	  });
+
+	  this.target.addEventListener('touchend', function (e) {
+	    if (_this3.touchPreventDefault) {
+	      e.preventDefault();
+	    }
+
+	    _this3.touchFulfilled(e, function (fulfilled, direction, intent) {
+	      if (!fulfilled) {
+	        return;
+	      }
+
+	      var result = {
+	        startEvent: _this3.startTouchEvent,
+	        lastEvent: _this3.latestTouchEvent,
+	        scrollPending: _this3.scrollPending,
+	        direction: direction,
+	        intent: intent
+	      };
+
+	      _this3.touchCb(result);
+	    });
+	  });
+
+	  return this;
+	};
+
+	//touch events
+	ScrollSwipe.prototype.touchFulfilled = function touchFulfilled(e, cb) {
+	  if (!e) {
+	    throw new Error('must provide event to touchFulfilled');
+	  }
+
+	  if (!cb) {
+	    throw new Error('must provide callback to touchFulfilled');
+	  }
+
+	  var touchSensitivity = this.touchSensitivity;
+	  var touchArrX = this.touchArrX;
+	  var touchArrY = this.touchArrY;
+
+
+	  var bool = touchArrX.length > touchSensitivity && touchArrY.length > touchSensitivity;
+
+	  if (!bool) {
+	    return cb(false, null);
+	  }
+
+	  var changedTouches = e.changedTouches[0];
+
+	  var xStart = touchArrX[0];
+	  var yStart = touchArrY[0];
+
+	  var xEnd = changedTouches.clientX;
+	  var yEnd = changedTouches.clientY;
+
+	  var xIntent = xStart < xEnd ? 0 : 1;
+	  var yIntent = yStart < yEnd ? 0 : 1;
+
+	  var direction = VERTICAL;
+
+	  //determine vertical or horizontal based on the greatest difference
+	  if (Math.abs(xStart - xEnd) > Math.abs(yStart - yEnd)) {
+	    direction = HORIZONTAL;
+	  }
+
+	  var intent = direction === VERTICAL ? yIntent : xIntent;
+
+	  swap.call(this, intent, direction);
+	  this.resetTouches();
+	  this.scrollPending = true;
+	  this.latestTouchEvent = e;
+
+	  cb(this.scrollPending, this.currentDirection, this.currentIntent);
+	  return this;
+	};
+
+	ScrollSwipe.prototype.getTouch = function getTouch(idx) {
+	  return this.touchArr[idx];
+	};
+
+	ScrollSwipe.prototype.addXTouch = function addTouch(touch) {
+	  this.latestTouch = touch;
+	  this.touchArrX.push(touch);
+	  return this;
+	};
+
+	ScrollSwipe.prototype.addYTouch = function addTouch(touch) {
+	  this.latestTouch = touch;
+	  this.touchArrY.push(touch);
+	  return this;
+	};
+
+	ScrollSwipe.prototype.resetTouches = function resetTouches() {
+	  this.touchArrX = [];
+	  this.touchArrY = [];
+	  return this;
+	};
+
+	//wheel events
+	ScrollSwipe.prototype.addXScroll = function addXScroll(s) {
+	  this.latestScroll = s;
+	  this.xArr.push(s);
+	  return this;
+	};
+
+	ScrollSwipe.prototype.addYScroll = function addYScroll(s) {
+	  this.latestScroll = s;
+	  this.yArr.push(s);
+	  return this;
+	};
+
+	ScrollSwipe.prototype.getDirection = function getDirection() {
+	  return this.currentDirection;
+	};
+
+	ScrollSwipe.prototype.resetScroll = function resetScroll() {
+	  this.xArr = [];
+	  this.yArr = [];
+	  return this;
+	};
+
+	ScrollSwipe.prototype.scrollFulfilled = function scrollFulfilled(cb) {
+	  if (!cb) {
+	    throw new Error('must provide callback to scrollFulfilled');
+	  }
+
+	  var xArr = this.xArr;
+	  var yArr = this.yArr;
+	  var scrollSensitivity = this.scrollSensitivity;
+
+
+	  var bool = xArr.length > scrollSensitivity && yArr.length > scrollSensitivity;
+
+	  var _evalScrollDirection = this.evalScrollDirection();
+
+	  var direction = _evalScrollDirection.direction;
+	  var intent = _evalScrollDirection.intent;
+
+
+	  if (bool) {
+	    swap.call(this, intent, direction);
+	    this.resetScroll();
+	    this.scrollPending = true;
+	  }
+
+	  cb(this.scrollPending, this.currentDirection, this.currentIntent);
+	  return this;
+	};
+
+	ScrollSwipe.prototype.evalScrollDirection = function evalScrollDirection() {
+	  var _getSums = this.getSums();
+
+	  var x = _getSums.x;
+	  var y = _getSums.y;
+	  var xIntent = _getSums.xIntent;
+	  var yIntent = _getSums.yIntent;
+
+	  var direction = x > y ? HORIZONTAL : VERTICAL;
+	  var base = direction === VERTICAL ? yIntent : xIntent;
+
+	  var intent = 0;
+
+	  if (base > 0) {
+	    intent = 1;
+	  }
+
+	  return { direction: direction, intent: intent };
+	};
+
+	ScrollSwipe.prototype.getSums = function getSums() {
+	  var xArr = this.xArr;
+	  var yArr = this.yArr;
+
+
+	  var xIntent = 0;
+	  var yIntent = 0;
+
+	  var x = xArr.reduce(function (result, curr) {
+	    xIntent = xIntent + curr;
+	    return result += Math.abs(curr);
+	  }, 0);
+
+	  var y = yArr.reduce(function (result, curr) {
+	    yIntent = yIntent + curr;
+	    return result += Math.abs(curr);
+	  }, 0);
+
+	  return { x: x, y: y, xIntent: xIntent, yIntent: yIntent };
+	};
+
+	ScrollSwipe.prototype.getScrollDirection = function getScrollDirection() {
+	  return this.currentDirection;
+	};
+
+	function swap(intent, direction) {
+	  this.previousIntent = this.currentIntent;
+	  this.currentIntent = intent;
+	  this.previousDirection = this.currentDirection;
+	  this.currentDirection = direction;
+	}
+	return ScrollSwipe;
+	}));
+
+
+/***/ },
 /* 188 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	module.exports = scrollTo;
+	var renderUtils = __webpack_require__(189);
+	var scrollTo = __webpack_require__(190);
+	var series = __webpack_require__(191);
 
-	function scrollTo(element, to, duration, callback) {
-	  var start = element.scrollTop,
-	      change = to - start,
-	      currentTime = 0,
-	      increment = 10;
+	var _require = __webpack_require__(193),
+	    changeSlide = _require.changeSlide;
 
-	  animateScroll(callback);
+	var _require2 = __webpack_require__(196),
+	    noOp = _require2.noOp,
+	    NONE = _require2.NONE,
+	    BLOCK = _require2.BLOCK,
+	    I_BLOCK = _require2.I_BLOCK,
+	    HEAD = _require2.HEAD,
+	    TAIL = _require2.TAIL,
+	    INCREMENT = _require2.INCREMENT,
+	    DECREMENT = _require2.DECREMENT;
 
-	  function animateScroll(callback) {
-	    currentTime += increment;
-	    var val = Math.easeInOutQuad(currentTime, start, change, duration);
-	    element.scrollTop = val;
-	    if (currentTime < duration) {
-	      setTimeout(function () {
-	        animateScroll(callback);
-	      }, increment);
+	function getSlideComponents() {
+	  var children = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+	  var considerHorizontals = arguments[1];
+
+	  if (!Array.isArray(children)) {
+	    children = [children];
+	  }
+
+	  return children.filter(function (c) {
+	    if (!c || !c.type) {
+	      return false;
+	    }
+
+	    if (c.type.name === 'Slide') {
+	      return true;
+	    }
+
+	    if (considerHorizontals && c.type.name === 'HorizontalSlider') {
+	      return true;
+	    }
+
+	    return false;
+	  });
+	}
+
+	function resize() {
+	  var s = this.state;
+	  var p = this.props;
+
+	  var considerHorizontals = this.name === 'Fullpage' ? true : false;
+	  var validComponents = getSlideComponents(p.children, considerHorizontals);
+
+	  this.setState({
+	    slideComponentsConst: validComponents,
+	    slideCount: validComponents.length,
+	    width: window.innerWidth,
+	    height: window.innerHeight
+	  }, removeAllButActive.bind(this, s.activeSlide));
+	}
+
+	function jumpScroll(activeSlide, scrollElement, cb) {
+	  var _this = this;
+
+	  cb = cb || noOp;
+
+	  var windowVal = this.state.activeSlide;
+	  var scrollDestination = window[this.winProp] * activeSlide;
+
+	  applyVisibiltyToAll.call(this);
+	  scrollElement[this.elementBoundary] = window[this.winProp] * windowVal;
+
+	  scrollTo(scrollElement, this.elementBoundary, scrollDestination, this.scrollSpeed, function () {
+	    removeAllButActive.call(_this, activeSlide);
+	    var newState = { activeSlide: activeSlide, scrollPending: false };
+	    _this.setState(newState, function () {
+	      cb(_this.state);
+	    });
+	  });
+	}
+
+	function removeAllButActive(activeSlide) {
+	  var arr = document.querySelectorAll('[data-slide=' + this.name + ']');
+	  arr = Array.prototype.slice.call(arr);
+	  arr.forEach(function (elem, i) {
+	    if (i !== activeSlide) {
+	      elem.style.display = NONE;
+	    }
+	  });
+	}
+
+	function applyVisibiltyToAll() {
+	  var styleProp = this.name === 'HorizontalSlider' ? I_BLOCK : BLOCK;
+
+	  var arr = document.querySelectorAll('[data-slide=' + this.name + ']');
+	  arr = Array.prototype.slice.call(arr);
+
+	  arr.forEach(function (elem) {
+	    elem.style.display = styleProp;
+	  });
+	}
+
+	var INTENT_MAP = {
+	  'VERTICAL': {
+	    0: 'UP',
+	    1: 'DOWN'
+	  },
+	  'HORIZONTAL': {
+	    0: 'LEFT',
+	    1: 'RIGHT'
+	  }
+	};
+
+	function handleScroll(data, direction, scrollElement, callback) {
+	  var _this2 = this;
+
+	  var s = this.state;
+	  var p = this.props;
+	  var resetSlides = p.resetSlides;
+	  var infinite = this.infinite,
+	      ss = this.ss;
+
+
+	  var intent = INTENT_MAP[direction][data.intent];
+
+	  var scrollUp = intent === 'UP' || intent === 'LEFT';
+	  var scrollDown = intent === 'DOWN' || intent === 'RIGHT';
+
+	  //windows firefox produces very low wheel activity so we have t\\o multiply it
+	  // if (needsConversion) {
+	  //   meas = meas * 3;
+	  // }
+	  //
+	  // if (needsConversionOSX) {
+	  //   meas = meas * 40;
+
+	  var activeSlide = s.activeSlide;
+
+	  if (scrollDown) {
+	    if (activeSlide === s.slideCount - 1 && !infinite && !resetSlides) {
+	      // prevent down going down
+	      ss.listen();
+	      return this.setState({ scrollPending: false });
+	    }
+
+	    activeSlide = activeSlide + 1;
+	  } else {
+	    if (activeSlide === 0 && !infinite && !resetSlides) {
+	      // prevent up going up
+	      ss.listen();
+	      return this.setState({ scrollPending: false });
+	    }
+
+	    activeSlide = activeSlide - 1;
+	  }
+
+	  this.setState({ scrollPending: true });
+
+	  var action = scrollDown ? INCREMENT : DECREMENT;
+
+	  if (resetSlides || infinite) {
+	    //reset flow
+	    if (action === INCREMENT) {
+	      if (!s.slideComponentsConst[activeSlide]) {
+	        activeSlide = 0;
+	        action = HEAD;
+	      }
 	    } else {
-	      return callback();
+	      if (!s.slideComponentsConst[activeSlide]) {
+	        activeSlide = s.slideComponentsConst.length - 1;
+	        action = TAIL;
+	      }
+	    }
+	  }
+
+	  var scrollDestination = window[this.winProp] * activeSlide;
+	  var c = void 0;
+	  var next = void 0;
+	  var last = void 0;
+	  var windowVal = s.activeSlide;
+
+	  var swap = infinite && (action === HEAD || action === TAIL);
+
+	  if (swap) {
+	    var arr = document.querySelectorAll('[data-slide=' + this.name + ']');
+	    arr = Array.prototype.slice.call(arr);
+
+	    for (var i = 0; i < arr.length; i++) {
+	      if (c) {
+	        break;
+	      }
+
+	      if (i === s.activeSlide) {
+	        c = arr[i];
+	        if (action === HEAD) {
+	          last = arr[0];
+	          next = arr[1] || c;
+	        } else {
+	          last = arr[arr.length - 1];
+	          next = arr[i + 1] || c;
+	        }
+	      }
+	    }
+
+	    if (action === HEAD) {
+	      windowVal = 0;
+	      scrollDestination = window[this.winProp];
+	    } else {
+	      //set it at the footer;
+	      windowVal = 1;
+	      scrollDestination = 0;
+	    }
+	  }
+
+	  if (swap) {
+	    if (action === HEAD) {
+	      swapElements(c, last);
+	      swapElements(last, next);
+	    } else {
+	      swapElements(last, next);
+	      swapElements(c, last);
+	    }
+	  }
+
+	  series([function (done) {
+	    applyVisibiltyToAll.call(_this2);
+	    scrollElement[_this2.elementBoundary] = window[_this2.winProp] * windowVal;
+
+	    scrollTo(scrollElement, _this2.elementBoundary, scrollDestination, _this2.scrollSpeed, function () {
+	      if (swap) {
+	        if (action === HEAD) {
+	          swapElements(last, next);
+	          swapElements(c, last);
+	        } else {
+	          swapElements(c, last);
+	          swapElements(last, next);
+	        }
+	      }
+
+	      done();
+	    });
+	  }, function (done) {
+	    removeAllButActive.call(_this2, activeSlide);
+	    done();
+	  }], function () {
+	    var newState = changeSlide(_this2.state, { type: action }, 1);
+
+	    _this2.setState(newState, function () {
+	      callback(_this2.state);
+	    });
+
+	    setTimeout(function () {
+	      _this2.setState({ scrollPending: false }, function () {
+	        ss.listen();
+	      });
+	    }, 700);
+	  });
+	}
+
+	module.exports = {
+	  removeAllButActive: removeAllButActive,
+	  series: series,
+	  INTENT_MAP: INTENT_MAP,
+	  handleScroll: handleScroll,
+	  applyVisibiltyToAll: applyVisibiltyToAll,
+	  resize: resize,
+	  getSlideComponents: getSlideComponents,
+	  renderUtils: renderUtils,
+	  scrollTo: scrollTo,
+	  jumpScroll: jumpScroll
+	};
+
+	function swapElements(obj1, obj2) {
+	  // save the location of obj2
+	  var parent2 = obj2.parentNode;
+	  var next2 = obj2.nextSibling;
+	  // special case for obj1 is the next sibling of obj2
+	  if (next2 === obj1) {
+	    // just put obj1 before obj2
+	    parent2.insertBefore(obj1, obj2);
+	  } else {
+	    // insert obj2 right before obj1
+	    obj1.parentNode.insertBefore(obj2, obj1);
+
+	    // now insert obj1 where obj2 was
+	    if (next2) {
+	      // if there was an element after obj2, then insert obj1 right before that
+	      parent2.insertBefore(obj1, next2);
+	    } else {
+	      // otherwise, just append as last child
+	      parent2.appendChild(obj1);
 	    }
 	  }
 	}
 
-	//t = current time
-	//b = start value
-	//c = change in value
-	//d = duration
-	Math.easeInOutQuad = function (t, b, c, d) {
-	  t /= d / 2;
-	  if (t < 1) {
-	    return c / 2 * t * t + b;
-	  }
-
-	  t--;
-	  return -c / 2 * (t * (t - 2) - 1) + b;
-	};
-
 /***/ },
 /* 189 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	var cache = {};
-
-	var events = {
-	  sub: sub,
-	  pub: pub,
-	  active: 0
-	};
-
-	function pub(sub, action) {
-	  var name = sub.state.name;
-
-	  if (!cache[name]) {
-	    cache[name] = {};
-	    cache[name].action = action.bind(sub);
-	  }
-	}
-
-	function sub(sub, arg) {
-	  if (events.active == arg) {
-	    return;
-	  }
-
-	  cache[sub].action(arg);
-	  events.active = arg;
-	}
-
-	module.exports = events;
-
-/***/ },
-/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22740,7 +23268,7 @@
 	Object.assign = Object.assign || objectAssign;
 
 	function defaultClass() {
-	  return this.props.className || this.state.defaultClass;
+	  return this.props.className || this.name;
 	}
 
 	function browser() {
@@ -22796,6 +23324,10 @@
 	    if (code.indexOf('win') >= 0) {
 	      OS = 'WINDOWS';
 	    }
+
+	    if (code.indexOf('macintel') >= 0) {
+	      OS = 'OSX';
+	    }
 	  }
 
 	  return OS;
@@ -22826,104 +23358,654 @@
 	exports.GET_BROWSER = GET_BROWSER;
 
 /***/ },
+/* 190 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = scrollTo;
+
+	function scrollTo(element, elementBoundary, to, duration, callback) {
+	  var start = element[elementBoundary],
+	      change = to - start,
+	      currentTime = 0,
+	      increment = 10,
+	      domainThresh = duration * .8,
+	      slowDown = 15;
+
+	  animateScroll(callback);
+
+	  function animateScroll(callback) {
+	    currentTime += increment;
+
+	    var val = Math.easeInOutQuad(currentTime, start, change, duration);
+	    element[elementBoundary] = val;
+
+	    if (currentTime < duration) {
+
+	      if (currentTime > domainThresh) {
+	        setTimeout(function () {
+	          animateScroll(callback);
+	        }, slowDown);
+	        return;
+	      }
+
+	      setTimeout(function () {
+	        animateScroll(callback);
+	      }, increment);
+	    } else {
+	      return callback();
+	    }
+	  }
+	}
+
+	//t = current time
+	//b = start value
+	//c = change in value
+	//d = duration
+	Math.easeInOutQuad = function (t, b, c, d) {
+	  t /= d / 2;
+	  if (t < 1) {
+	    return c / 2 * t * t + b;
+	  }
+
+	  t--;
+	  return -c / 2 * (t * (t - 2) - 1) + b;
+	};
+
+/***/ },
 /* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(process, setImmediate) {'use strict';
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	var nextTick = 'undefined' !== typeof process ? process.nextTick : 'undefined' !== typeof setImmediate ? setImmediate : setTimeout;
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	function series(arr, ready, safe) {
+	  var length = arr.length,
+	      orig;
 
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	  if (!length) return nextTick(ready, 1);
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var React = __webpack_require__(1);
-	var Tappable = __webpack_require__(183);
-
-	var events = __webpack_require__(189);
-	var renderUtils = __webpack_require__(190);
-
-	var TopNav = function (_React$Component) {
-	  _inherits(TopNav, _React$Component);
-
-	  function TopNav(props) {
-	    _classCallCheck(this, TopNav);
-
-	    var _this = _possibleConstructorReturn(this, (TopNav.__proto__ || Object.getPrototypeOf(TopNav)).call(this, props));
-
-	    _this.state = {
-	      defaultClass: _this.props.footer ? 'bottomNav' : 'topNav'
-	    };
-	    return _this;
+	  function handleItem(idx) {
+	    arr[idx](function (err) {
+	      if (err) return ready(err);
+	      if (idx < length - 1) return handleItem(idx + 1);
+	      return ready();
+	    });
 	  }
 
-	  _createClass(TopNav, [{
-	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps(nP, nS) {}
-	  }, {
-	    key: 'goToSlide',
-	    value: function goToSlide(slide) {
-	      events.sub('Fullpage', slide);
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _this2 = this;
+	  if (safe) {
+	    orig = handleItem;
+	    handleItem = function handleItem(idx) {
+	      nextTick(function () {
+	        orig(idx);
+	      }, 1);
+	    };
+	  }
 
-	      var styles = {
-	        position: 'fixed',
-	        width: '100%',
-	        zIndex: '1',
-	        cursor: 'pointer',
+	  handleItem(0);
+	}
 
-	        //defaults
-	        textAlign: 'left',
-	        top: '0'
-	      };
-
-	      if (this.props.footer) {
-	        styles.bottom = '0';
-	        delete styles.top;
-	      }
-
-	      if (this.props.align === 'right') {
-	        styles.textAlign = 'right';
-	      } else if (this.props.align === 'center') {
-	        styles.textAlign = 'center';
-	      }
-
-	      return React.createElement(
-	        'div',
-	        { className: renderUtils.defaultClass.call(this), style: styles },
-	        this.props.children.map(function (child, idx) {
-	          return React.createElement(
-	            Tappable,
-	            { key: idx, onTap: _this2.goToSlide.bind(_this2, child.ref), onClick: _this2.goToSlide.bind(_this2, child.ref) },
-	            child
-	          );
-	        }, this)
-	      );
-	    }
-	  }]);
-
-	  return TopNav;
-	}(React.Component);
-
-	TopNav.propTypes = {
-	  children: React.PropTypes.node,
-	  style: React.PropTypes.object,
-	  footer: React.PropTypes.bool,
-	  align: React.PropTypes.string
-	};
-
-	module.exports = TopNav;
+	module.exports = series;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(192).setImmediate))
 
 /***/ },
 /* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(3).nextTick;
+	var apply = Function.prototype.apply;
+	var slice = Array.prototype.slice;
+	var immediateIds = {};
+	var nextImmediateId = 0;
+
+	// DOM APIs, for completeness
+
+	exports.setTimeout = function() {
+	  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
+	};
+	exports.setInterval = function() {
+	  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
+	};
+	exports.clearTimeout =
+	exports.clearInterval = function(timeout) { timeout.close(); };
+
+	function Timeout(id, clearFn) {
+	  this._id = id;
+	  this._clearFn = clearFn;
+	}
+	Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+	Timeout.prototype.close = function() {
+	  this._clearFn.call(window, this._id);
+	};
+
+	// Does not start the time, just sets up the members needed.
+	exports.enroll = function(item, msecs) {
+	  clearTimeout(item._idleTimeoutId);
+	  item._idleTimeout = msecs;
+	};
+
+	exports.unenroll = function(item) {
+	  clearTimeout(item._idleTimeoutId);
+	  item._idleTimeout = -1;
+	};
+
+	exports._unrefActive = exports.active = function(item) {
+	  clearTimeout(item._idleTimeoutId);
+
+	  var msecs = item._idleTimeout;
+	  if (msecs >= 0) {
+	    item._idleTimeoutId = setTimeout(function onTimeout() {
+	      if (item._onTimeout)
+	        item._onTimeout();
+	    }, msecs);
+	  }
+	};
+
+	// That's not how node.js implements it but the exposed api is the same.
+	exports.setImmediate = typeof setImmediate === "function" ? setImmediate : function(fn) {
+	  var id = nextImmediateId++;
+	  var args = arguments.length < 2 ? false : slice.call(arguments, 1);
+
+	  immediateIds[id] = true;
+
+	  nextTick(function onNextTick() {
+	    if (immediateIds[id]) {
+	      // fn.call() is faster so we optimize for the common use-case
+	      // @see http://jsperf.com/call-apply-segu
+	      if (args) {
+	        fn.apply(null, args);
+	      } else {
+	        fn.call(null);
+	      }
+	      // Prevent ids from leaking
+	      exports.clearImmediate(id);
+	    }
+	  });
+
+	  return id;
+	};
+
+	exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
+	  delete immediateIds[id];
+	};
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(192).setImmediate, __webpack_require__(192).clearImmediate))
+
+/***/ },
+/* 193 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var changeSlide = __webpack_require__(194);
+	var onScrollActionMod = __webpack_require__(195);
+	var isCompActive = onScrollActionMod.isCompActive,
+	    onScrollAction = onScrollActionMod.onScrollAction;
+
+
+	module.exports = {
+	  onScrollAction: onScrollAction,
+	  isCompActive: isCompActive,
+	  changeSlide: changeSlide
+	};
+
+/***/ },
+/* 194 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var changeSlide = function changeSlide() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { activeSlide: 0 };
+	  var action = arguments[1];
+	  var difference = arguments[2];
+
+	  switch (action.type) {
+	    case 'INCREMENT':
+	      return {
+	        activeSlide: state.activeSlide + difference,
+	        lastActive: state.activeSlide
+	      };
+	    case 'DECREMENT':
+	      return {
+	        activeSlide: state.activeSlide - difference,
+	        lastActive: state.activeSlide
+	      };
+	    case 'HEAD':
+	      return {
+	        lastActive: state.activeSlide,
+	        activeSlide: 0
+	      };
+	    case 'TAIL':
+	      return {
+	        lastActive: state.activeSlide,
+	        activeSlide: state.slideComponentsConst.length - 1
+	      };
+	    default:
+	      return state;
+	  }
+	};
+	module.exports = changeSlide;
+
+/***/ },
+/* 195 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _localfp = null;
+
+	function onScrollAction(comp, data) {
+	  if (!_localfp) {
+	    var Fullpage = __webpack_require__(186);
+	    var _fp = Fullpage._fp;
+
+	    _localfp = _fp;
+	  }
+
+	  if (comp.state.scrollPending) {
+	    return;
+	  }
+
+	  var direction = data.direction;
+
+	  var VERTICAL = 'VERTICAL';
+
+	  if (direction === VERTICAL) {
+	    _localfp.onSlideChangeStart(comp.name, comp.state);
+	    return _localfp.onVerticalScroll(data, direction);
+	  }
+
+	  //tricky, here comp.onHorizontalScroll is referring to the horizontal slider function, so we escape for fullpage
+	  if (comp.name === 'Fullpage') {
+	    return comp.ss.listen();
+	  }
+
+	  //name references the props name for each horizontal slider
+	  _localfp.onSlideChangeStart(comp.props.name, comp.state);
+	  comp.onHorizontalScroll(data, direction);
+	}
+
+	module.exports = {
+	  onScrollAction: onScrollAction,
+	  isCompActive: isCompActive
+	};
+
+	function isCompActive(comp) {
+	  if (!_localfp) {
+	    var Fullpage = __webpack_require__(186);
+	    var _fp = Fullpage._fp;
+
+	    _localfp = _fp;
+	  }
+
+	  var name = comp.props.name || null;
+	  var active = _localfp.state.activeSlide;
+
+	  var activeComp = (_localfp.state.slideComponentsConst || [])[active] || { props: {} };
+	  return activeComp.props.name === name;
+	}
+
+/***/ },
+/* 196 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var INCREMENT = 'INCREMENT';
+	var DECREMENT = 'DECREMENT';
+	var VERTICAL = 'VERTICAL';
+	var HORIZONTAL = 'HORIZONTAL';
+	var HEAD = 'HEAD';
+	var TAIL = 'TAIL';
+	var I_BLOCK = 'inline-block';
+	var BLOCK = 'block';
+	var NONE = 'none';
+	var noOp = function noOp() {};
+
+	module.exports = {
+	  INCREMENT: INCREMENT,
+	  DECREMENT: DECREMENT,
+	  VERTICAL: VERTICAL,
+	  HORIZONTAL: HORIZONTAL,
+	  I_BLOCK: I_BLOCK,
+	  HEAD: HEAD,
+	  TAIL: TAIL,
+	  BLOCK: BLOCK,
+	  NONE: NONE,
+	  noOp: noOp
+	};
+
+/***/ },
+/* 197 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var React = __webpack_require__(1);
+	var ScrollSwipe = __webpack_require__(187);
+
+	var Slide = __webpack_require__(198);
+	var Overlay = __webpack_require__(199);
+
+	var _require = __webpack_require__(193),
+	    onScrollAction = _require.onScrollAction;
+
+	var utils = __webpack_require__(188);
+	var jumpScroll = utils.jumpScroll,
+	    handleScroll = utils.handleScroll,
+	    resize = utils.resize,
+	    renderUtils = utils.renderUtils;
+	var defaultClass = renderUtils.defaultClass;
+
+	var _require2 = __webpack_require__(196),
+	    HORIZONTAL = _require2.HORIZONTAL;
+
+	var DEFAULTS = {
+	  scrollSpeed: 500,
+	  upThreshold: 100,
+	  downThreshold: 100,
+	  activeSlide: 0,
+	  sensitivity: 100
+	};
+
+	var _localfp = null;
+	var states = {};
+	var horizontalSliders = {};
+
+	function changeHorizontalSlide(name, to) {
+	  var comp = horizontalSliders[name];
+
+	  if (!_localfp) {
+	    var _require3 = __webpack_require__(186),
+	        _fp = _require3._fp;
+
+	    _localfp = _fp;
+	  }
+
+	  if (!comp) {
+	    throw new Error('No Horizontal Slider with name: ' + name);
+	  }
+
+	  if (comp.state.scrollPending || to == comp.state.activeSlide) {
+	    return;
+	  }
+
+	  if (!to && to !== 0 || to >= comp.state.slideCount) {
+	    to = 'NEXT';
+	  }
+
+	  if (to < 0) {
+	    to = 'PREV';
+	  }
+
+	  if (to !== 'NEXT' && to !== 'PREV') {
+	    _localfp.onSlideChangeStart(comp.name, comp.state);
+	    comp.setState({ scrollPending: true });
+	    return jumpScroll.call(comp, to, comp.node, _localfp.onSlideChangeEnd.bind(comp, comp.name));
+	  }
+
+	  var intent = to === 'NEXT' ? 1 : 0;
+	  var data = {
+	    intent: intent
+	  };
+
+	  var direction = HORIZONTAL;
+
+	  comp.onHorizontalScroll.call(comp, data, direction);
+	}
+
+	var HorizontalSlider = function (_React$Component) {
+	  _inherits(HorizontalSlider, _React$Component);
+
+	  function HorizontalSlider(props) {
+	    _classCallCheck(this, HorizontalSlider);
+
+	    var _this = _possibleConstructorReturn(this, (HorizontalSlider.__proto__ || Object.getPrototypeOf(HorizontalSlider)).call(this, props));
+
+	    var p = _this.props;
+
+	    _this.name = 'HorizontalSlider';
+
+	    if (p.infinite && p.resetSlides) {
+	      throw new Error(_this.name + ' cannot have both infinite and resetSlides as truthy props');
+	    }
+
+	    _this.winProp = 'innerWidth';
+	    _this.elementBoundary = 'scrollLeft';
+	    _this.scrollSpeed = p.scrollSpeed || DEFAULTS.scrollSpeed;
+	    _this.infinite = p.infinite;
+
+	    _this.parentOnScrollAction = onScrollAction;
+
+	    _this.state = {
+	      activeSlide: p.activeSlide || 0,
+	      lastActive: -1,
+	      scrollSensitivity: p.scrollSensitivity || 10,
+	      touchSensitivity: p.touchSensitivity || 10,
+	      scrollPending: false
+	    };
+
+	    if (!horizontalSliders[p.name]) {
+	      horizontalSliders[p.name] = _this;
+	    }
+	    return _this;
+	  }
+
+	  _createClass(HorizontalSlider, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      var p = this.props;
+	      this.setState({ activeSlide: states[p.name] || p.activeSlide || 0 });
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var node = this.node;
+	      var s = this.state;
+
+	      var ss = new ScrollSwipe({
+	        target: node,
+	        scrollSensitivity: s.scrollSensitivity / 5,
+	        touchSensitivity: s.touchSensitivity / 5,
+	        scrollPreventDefault: true,
+	        touchPreventDefault: true,
+	        scrollCb: this.onScrollAction.bind(this),
+	        touchCb: this.onScrollAction.bind(this)
+	      });
+	      this.ss = ss;
+
+	      window.addEventListener('resize', resize.bind(this));
+
+	      //initialize slides
+	      resize.call(this);
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      states[this.props.name] = this.state.activeSlide;
+	    }
+	  }, {
+	    key: 'onScrollAction',
+	    value: function onScrollAction(data) {
+	      var ss = this.ss;
+
+
+	      if (data.direction !== HORIZONTAL) {
+	        return ss.listen();
+	      }
+
+	      this.parentOnScrollAction(this, data);
+	    }
+	  }, {
+	    key: 'onHorizontalScroll',
+	    value: function onHorizontalScroll(data, direction) {
+	      //must access the global callback
+	      if (!_localfp) {
+	        var _require4 = __webpack_require__(186),
+	            _fp = _require4._fp;
+
+	        _localfp = _fp;
+	      }
+
+	      var cb = _localfp.onSlideChangeEnd.bind(this, this.props.name);
+	      var node = this.node;
+	      handleScroll.call(this, data, direction, node, cb);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      var p = this.props;
+
+	      var overlayStyle = { position: 'absolute' };
+
+	      if (this.state.scrollPending) {
+	        overlayStyle.position = 'fixed';
+	      }
+
+	      var attrs = {
+	        'data-slide': 'Fullpage'
+	      };
+
+	      var horizontalSliderStyle = Object.assign({}, p.style, { height: this.state.height, width: '100%', position: 'relative', overflowX: 'auto', whiteSpace: 'nowrap', padding: '0px', margin: '0 auto', overflow: 'hidden' });
+
+	      var horizontalSlideStyle = { overflow: 'hidden', whiteSpace: 'normal', display: 'inline-block', height: window.innerHeight, width: '100%' };
+
+	      return React.createElement(
+	        'div',
+	        _extends({ ref: function ref(node) {
+	            return _this2.node = node;
+	          }, className: defaultClass.call(this) }, attrs, { style: horizontalSliderStyle }),
+	        (p.children || []).map(function (ch, i) {
+	          if (!ch) {
+	            return null;
+	          }
+
+	          if (ch.type.name !== 'Slide' && ch.type.name !== 'Overlay') {
+	            return null;
+	          }
+
+	          if (ch.type.name === 'Overlay') {
+	            var oStyle = ch.props.style || {};
+	            var oClassName = ch.props.className || '';
+	            return React.createElement(
+	              Overlay,
+	              { className: oClassName, key: i, style: Object.assign({}, overlayStyle, oStyle) },
+	              ch.props.children
+	            );
+	          }
+
+	          var hSlideProps = ch.props;
+	          var hSlideClassName = hSlideProps.className || '';
+	          var slideStyle = hSlideProps.style || {};
+	          var attrs = {
+	            'data-slide': 'HorizontalSlider'
+	          };
+
+	          return React.createElement(
+	            Slide,
+	            _extends({ key: i, className: hSlideClassName, horizontal: true, style: Object.assign({}, horizontalSlideStyle, slideStyle) }, attrs),
+	            hSlideProps.children
+	          );
+	        })
+	      );
+	    }
+	  }]);
+
+	  return HorizontalSlider;
+	}(React.Component);
+
+	HorizontalSlider.propTypes = {
+	  children: React.PropTypes.node,
+	  name: React.PropTypes.string.isRequired,
+	  style: React.PropTypes.object,
+	  infinite: React.PropTypes.bool.isRequired,
+	  onHorizontalChange: React.PropTypes.func
+	};
+
+	module.exports = {
+	  HorizontalSlider: HorizontalSlider,
+	  changeHorizontalSlide: changeHorizontalSlide
+	};
+
+/***/ },
+/* 198 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var React = __webpack_require__(1);
+
+	var utils = __webpack_require__(188);
+	var renderUtils = utils.renderUtils;
+	var defaultClass = renderUtils.defaultClass;
+
+	var Slide = function (_React$Component) {
+	  _inherits(Slide, _React$Component);
+
+	  function Slide(props) {
+	    _classCallCheck(this, Slide);
+
+	    var _this = _possibleConstructorReturn(this, (Slide.__proto__ || Object.getPrototypeOf(Slide)).call(this, props));
+
+	    _this.name = 'Slide';
+	    return _this;
+	  }
+
+	  _createClass(Slide, [{
+	    key: 'render',
+	    value: function render() {
+	      var style = Object.assign({ overflow: 'hidden', width: '100%', height: window.innerHeight }, this.props.style);
+	      var attrs = {
+	        'data-slide': this.props.horizontal ? 'HorizontalSlider' : 'Fullpage'
+	      };
+
+	      return React.createElement(
+	        'div',
+	        _extends({ className: defaultClass.call(this) }, attrs, { style: style }),
+	        this.props.children
+	      );
+	    }
+	  }]);
+
+	  return Slide;
+	}(React.Component);
+
+	Slide.propTypes = {
+	  children: React.PropTypes.node,
+	  style: React.PropTypes.object,
+	  horizontal: React.PropTypes.bool
+	};
+
+	module.exports = Slide;
+
+/***/ },
+/* 199 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -22935,128 +24017,58 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var React = __webpack_require__(1);
-	var Tappable = __webpack_require__(183);
 
-	var events = __webpack_require__(189);
-	var renderUtils = __webpack_require__(190);
+	var utils = __webpack_require__(188);
+	var renderUtils = utils.renderUtils;
+	var defaultClass = renderUtils.defaultClass;
 
-	var styles = {
-	  position: 'fixed',
-	  zIndex: '1',
-	  cursor: 'pointer',
+	var Overlay = function (_React$Component) {
+	  _inherits(Overlay, _React$Component);
 
-	  //defaults
-	  top: '50%',
-	  left: '1%'
-	};
+	  function Overlay(props) {
+	    _classCallCheck(this, Overlay);
 
-	var SideNav = function (_React$Component) {
-	  _inherits(SideNav, _React$Component);
+	    var _this = _possibleConstructorReturn(this, (Overlay.__proto__ || Object.getPrototypeOf(Overlay)).call(this, props));
 
-	  function SideNav(props) {
-	    _classCallCheck(this, SideNav);
-
-	    var _this = _possibleConstructorReturn(this, (SideNav.__proto__ || Object.getPrototypeOf(SideNav)).call(this, props));
-
-	    _this.state = {
-	      side: _this.props.right ? 'right' : 'left',
-	      currentStyles: styles,
-	      defaultClass: 'sideNav'
-	    };
-
-	    _this.goToSlide = _this.goToSlide.bind(_this);
-	    _this.updateStyles = _this.updateStyles.bind(_this);
+	    _this.name = 'Overlay';
 	    return _this;
 	  }
 
-	  _createClass(SideNav, [{
-	    key: 'updateStyles',
-	    value: function updateStyles(styles) {
-	      this.setState({ currentStyles: styles });
-	    }
-	  }, {
-	    key: 'goToSlide',
-	    value: function goToSlide(slide) {
-	      events.sub('Fullpage', slide);
-	    }
-	  }, {
-	    key: 'componentWillMount',
-	    value: function componentWillMount() {
-	      if (this.props.top) {
-	        this.setState(function (prevState, props) {
-	          var styles = prevState.currentStyles;
-	          styles.top = props.top;
-
-	          return {
-	            currentStyles: styles
-	          };
-	        });
-	      }
-
-	      if (this.props.right) {
-	        this.setState(function (prevState, props) {
-	          var styles = prevState.currentStyles;
-	          styles.right = props.right;
-	          delete styles.left;
-
-	          return {
-	            currentStyles: styles
-	          };
-	        });
-	      } else {
-	        this.setState(function (prevState, props) {
-	          var styles = prevState.currentStyles;
-	          styles.left = props.left;
-
-	          return {
-	            currentStyles: styles
-	          };
-	        });
-	      }
-	    }
-	  }, {
+	  _createClass(Overlay, [{
 	    key: 'render',
 	    value: function render() {
-	      var _this2 = this;
+	      var overlayStyle = { position: 'absolute', width: '100%' };
+	      var style = Object.assign({}, overlayStyle, this.props.style);
 
 	      return React.createElement(
 	        'div',
-	        { className: renderUtils.defaultClass.call(this), style: this.state.currentStyles },
-	        this.props.children.map(function (child, idx) {
-	          return React.createElement(
-	            Tappable,
-	            { key: idx, onTap: _this2.goToSlide.bind(_this2, child.ref), onClick: _this2.goToSlide.bind(_this2, child.ref) },
-	            child
-	          );
-	        }, this)
+	        { className: defaultClass.call(this), style: style },
+	        this.props.children
 	      );
 	    }
 	  }]);
 
-	  return SideNav;
+	  return Overlay;
 	}(React.Component);
 
-	SideNav.propTypes = {
+	Overlay.propTypes = {
 	  children: React.PropTypes.node,
-	  style: React.PropTypes.object,
-	  top: React.PropTypes.string,
-	  left: React.PropTypes.string,
-	  right: React.PropTypes.string
+	  style: React.PropTypes.object
 	};
 
-	module.exports = SideNav;
+	module.exports = Overlay;
 
 /***/ },
-/* 193 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(194);
+	var content = __webpack_require__(201);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(196)(content, {});
+	var update = __webpack_require__(203)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -23073,10 +24085,10 @@
 	}
 
 /***/ },
-/* 194 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(195)();
+	exports = module.exports = __webpack_require__(202)();
 	// imports
 
 
@@ -23087,7 +24099,7 @@
 
 
 /***/ },
-/* 195 */
+/* 202 */
 /***/ function(module, exports) {
 
 	/*
@@ -23143,7 +24155,7 @@
 
 
 /***/ },
-/* 196 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -23395,16 +24407,56 @@
 
 
 /***/ },
-/* 197 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(198);
+	var content = __webpack_require__(205);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(196)(content, {});
+	var update = __webpack_require__(203)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./skeleton.css", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./skeleton.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 205 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(202)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "/*\n* Skeleton V2.0.4\n* Copyright 2014, Dave Gamache\n* www.getskeleton.com\n* Free to use under the MIT license.\n* http://www.opensource.org/licenses/mit-license.php\n* 12/29/2014\n*/\n\n\n/* Table of contents\n––––––––––––––––––––––––––––––––––––––––––––––––––\n- Grid\n- Base Styles\n- Typography\n- Links\n- Buttons\n- Forms\n- Lists\n- Code\n- Tables\n- Spacing\n- Utilities\n- Clearing\n- Media Queries\n*/\n\n\n/* Grid\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.container {\n  position: relative;\n  width: 100%;\n  max-width: 960px;\n  margin: 0 auto;\n  padding: 0 20px;\n  box-sizing: border-box; }\n.column,\n.columns {\n  width: 100%;\n  float: left;\n  box-sizing: border-box; }\n\n/* For devices larger than 400px */\n@media (min-width: 400px) {\n  .container {\n    width: 85%;\n    padding: 0; }\n}\n\n/* For devices larger than 550px */\n@media (min-width: 550px) {\n  .container {\n    width: 80%; }\n  .column,\n  .columns {\n    margin-left: 4%; }\n  .column:first-child,\n  .columns:first-child {\n    margin-left: 0; }\n\n  .one.column,\n  .one.columns                    { width: 4.66666666667%; }\n  .two.columns                    { width: 13.3333333333%; }\n  .three.columns                  { width: 22%;            }\n  .four.columns                   { width: 30.6666666667%; }\n  .five.columns                   { width: 39.3333333333%; }\n  .six.columns                    { width: 48%;            }\n  .seven.columns                  { width: 56.6666666667%; }\n  .eight.columns                  { width: 65.3333333333%; }\n  .nine.columns                   { width: 74.0%;          }\n  .ten.columns                    { width: 82.6666666667%; }\n  .eleven.columns                 { width: 91.3333333333%; }\n  .twelve.columns                 { width: 100%; margin-left: 0; }\n\n  .one-third.column               { width: 30.6666666667%; }\n  .two-thirds.column              { width: 65.3333333333%; }\n\n  .one-half.column                { width: 48%; }\n\n  /* Offsets */\n  .offset-by-one.column,\n  .offset-by-one.columns          { margin-left: 8.66666666667%; }\n  .offset-by-two.column,\n  .offset-by-two.columns          { margin-left: 17.3333333333%; }\n  .offset-by-three.column,\n  .offset-by-three.columns        { margin-left: 26%;            }\n  .offset-by-four.column,\n  .offset-by-four.columns         { margin-left: 34.6666666667%; }\n  .offset-by-five.column,\n  .offset-by-five.columns         { margin-left: 43.3333333333%; }\n  .offset-by-six.column,\n  .offset-by-six.columns          { margin-left: 52%;            }\n  .offset-by-seven.column,\n  .offset-by-seven.columns        { margin-left: 60.6666666667%; }\n  .offset-by-eight.column,\n  .offset-by-eight.columns        { margin-left: 69.3333333333%; }\n  .offset-by-nine.column,\n  .offset-by-nine.columns         { margin-left: 78.0%;          }\n  .offset-by-ten.column,\n  .offset-by-ten.columns          { margin-left: 86.6666666667%; }\n  .offset-by-eleven.column,\n  .offset-by-eleven.columns       { margin-left: 95.3333333333%; }\n\n  .offset-by-one-third.column,\n  .offset-by-one-third.columns    { margin-left: 34.6666666667%; }\n  .offset-by-two-thirds.column,\n  .offset-by-two-thirds.columns   { margin-left: 69.3333333333%; }\n\n  .offset-by-one-half.column,\n  .offset-by-one-half.columns     { margin-left: 52%; }\n\n}\n\n\n/* Base Styles\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n/* NOTE\nhtml is set to 62.5% so that all the REM measurements throughout Skeleton\nare based on 10px sizing. So basically 1.5rem = 15px :) */\nhtml {\n  font-size: 62.5%; }\nbody {\n  font-size: 1.5em; /* currently ems cause chrome bug misinterpreting rems on body element */\n  line-height: 1.6;\n  font-weight: 400;\n  font-family: \"Raleway\", \"HelveticaNeue\", \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n  color: #222; }\n\n\n/* Typography\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\nh1, h2, h3, h4, h5, h6 {\n  margin-top: 0;\n  margin-bottom: 2rem;\n  font-weight: 300; }\nh1 { font-size: 4.0rem; line-height: 1.2;  letter-spacing: -.1rem;}\nh2 { font-size: 3.6rem; line-height: 1.25; letter-spacing: -.1rem; }\nh3 { font-size: 3.0rem; line-height: 1.3;  letter-spacing: -.1rem; }\nh4 { font-size: 2.4rem; line-height: 1.35; letter-spacing: -.08rem; }\nh5 { font-size: 1.8rem; line-height: 1.5;  letter-spacing: -.05rem; }\nh6 { font-size: 1.5rem; line-height: 1.6;  letter-spacing: 0; }\n\n/* Larger than phablet */\n@media (min-width: 550px) {\n  h1 { font-size: 5.0rem; }\n  h2 { font-size: 4.2rem; }\n  h3 { font-size: 3.6rem; }\n  h4 { font-size: 3.0rem; }\n  h5 { font-size: 2.4rem; }\n  h6 { font-size: 1.5rem; }\n}\n\np {\n  margin-top: 0; }\n\n\n/* Links\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\na {\n  color: #1EAEDB; }\na:hover {\n  color: #0FA0CE; }\n\n\n/* Buttons\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.button,\nbutton,\ninput[type=\"submit\"],\ninput[type=\"reset\"],\ninput[type=\"button\"] {\n  display: inline-block;\n  height: 38px;\n  padding: 0 30px;\n  color: #555;\n  text-align: center;\n  font-size: 11px;\n  font-weight: 600;\n  line-height: 38px;\n  letter-spacing: .1rem;\n  text-transform: uppercase;\n  text-decoration: none;\n  white-space: nowrap;\n  background-color: transparent;\n  border-radius: 4px;\n  border: 1px solid #bbb;\n  cursor: pointer;\n  box-sizing: border-box; }\n.button:hover,\nbutton:hover,\ninput[type=\"submit\"]:hover,\ninput[type=\"reset\"]:hover,\ninput[type=\"button\"]:hover,\n.button:focus,\nbutton:focus,\ninput[type=\"submit\"]:focus,\ninput[type=\"reset\"]:focus,\ninput[type=\"button\"]:focus {\n  color: #333;\n  border-color: #888;\n  outline: 0; }\n.button.button-primary,\nbutton.button-primary,\ninput[type=\"submit\"].button-primary,\ninput[type=\"reset\"].button-primary,\ninput[type=\"button\"].button-primary {\n  color: #FFF;\n  background-color: #33C3F0;\n  border-color: #33C3F0; }\n.button.button-primary:hover,\nbutton.button-primary:hover,\ninput[type=\"submit\"].button-primary:hover,\ninput[type=\"reset\"].button-primary:hover,\ninput[type=\"button\"].button-primary:hover,\n.button.button-primary:focus,\nbutton.button-primary:focus,\ninput[type=\"submit\"].button-primary:focus,\ninput[type=\"reset\"].button-primary:focus,\ninput[type=\"button\"].button-primary:focus {\n  color: #FFF;\n  background-color: #1EAEDB;\n  border-color: #1EAEDB; }\n\n\n/* Forms\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\ninput[type=\"email\"],\ninput[type=\"number\"],\ninput[type=\"search\"],\ninput[type=\"text\"],\ninput[type=\"tel\"],\ninput[type=\"url\"],\ninput[type=\"password\"],\ntextarea,\nselect {\n  height: 38px;\n  padding: 6px 10px; /* The 6px vertically centers text on FF, ignored by Webkit */\n  background-color: #fff;\n  border: 1px solid #D1D1D1;\n  border-radius: 4px;\n  box-shadow: none;\n  box-sizing: border-box; }\n/* Removes awkward default styles on some inputs for iOS */\ninput[type=\"email\"],\ninput[type=\"number\"],\ninput[type=\"search\"],\ninput[type=\"text\"],\ninput[type=\"tel\"],\ninput[type=\"url\"],\ninput[type=\"password\"],\ntextarea {\n  -webkit-appearance: none;\n     -moz-appearance: none;\n          appearance: none; }\ntextarea {\n  min-height: 65px;\n  padding-top: 6px;\n  padding-bottom: 6px; }\ninput[type=\"email\"]:focus,\ninput[type=\"number\"]:focus,\ninput[type=\"search\"]:focus,\ninput[type=\"text\"]:focus,\ninput[type=\"tel\"]:focus,\ninput[type=\"url\"]:focus,\ninput[type=\"password\"]:focus,\ntextarea:focus,\nselect:focus {\n  border: 1px solid #33C3F0;\n  outline: 0; }\nlabel,\nlegend {\n  display: block;\n  margin-bottom: .5rem;\n  font-weight: 600; }\nfieldset {\n  padding: 0;\n  border-width: 0; }\ninput[type=\"checkbox\"],\ninput[type=\"radio\"] {\n  display: inline; }\nlabel > .label-body {\n  display: inline-block;\n  margin-left: .5rem;\n  font-weight: normal; }\n\n\n/* Lists\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\nul {\n  list-style: circle inside; }\nol {\n  list-style: decimal inside; }\nol, ul {\n  padding-left: 0;\n  margin-top: 0; }\nul ul,\nul ol,\nol ol,\nol ul {\n  margin: 1.5rem 0 1.5rem 3rem;\n  font-size: 90%; }\nli {\n  margin-bottom: 1rem; }\n\n\n/* Code\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\ncode {\n  padding: .2rem .5rem;\n  margin: 0 .2rem;\n  font-size: 90%;\n  white-space: nowrap;\n  background: #F1F1F1;\n  border: 1px solid #E1E1E1;\n  border-radius: 4px; }\npre > code {\n  display: block;\n  padding: 1rem 1.5rem;\n  white-space: pre; }\n\n\n/* Tables\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\nth,\ntd {\n  padding: 12px 15px;\n  text-align: left;\n  border-bottom: 1px solid #E1E1E1; }\nth:first-child,\ntd:first-child {\n  padding-left: 0; }\nth:last-child,\ntd:last-child {\n  padding-right: 0; }\n\n\n/* Spacing\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\nbutton,\n.button {\n  margin-bottom: 1rem; }\ninput,\ntextarea,\nselect,\nfieldset {\n  margin-bottom: 1.5rem; }\npre,\nblockquote,\ndl,\nfigure,\ntable,\np,\nul,\nol,\nform {\n  margin-bottom: 2.5rem; }\n\n\n/* Utilities\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.u-full-width {\n  width: 100%;\n  box-sizing: border-box; }\n.u-max-full-width {\n  max-width: 100%;\n  box-sizing: border-box; }\n.u-pull-right {\n  float: right; }\n.u-pull-left {\n  float: left; }\n\n\n/* Misc\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\nhr {\n  margin-top: 3rem;\n  margin-bottom: 3.5rem;\n  border-width: 0;\n  border-top: 1px solid #E1E1E1; }\n\n\n/* Clearing\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n\n/* Self Clearing Goodness */\n.container:after,\n.row:after,\n.u-cf {\n  content: \"\";\n  display: table;\n  clear: both; }\n\n\n/* Media Queries\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n/*\nNote: The best way to structure the use of media queries is to create the queries\nnear the relevant code. For example, if you wanted to change the styles for buttons\non small devices, paste the mobile query code up in the buttons section and style it\nthere.\n*/\n\n\n/* Larger than mobile */\n@media (min-width: 400px) {}\n\n/* Larger than phablet (also point when grid becomes active) */\n@media (min-width: 550px) {}\n\n/* Larger than tablet */\n@media (min-width: 750px) {}\n\n/* Larger than desktop */\n@media (min-width: 1000px) {}\n\n/* Larger than Desktop HD */\n@media (min-width: 1200px) {}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 206 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(207);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(203)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -23421,15 +24473,15 @@
 	}
 
 /***/ },
-/* 198 */
+/* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(195)();
+	exports = module.exports = __webpack_require__(202)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "body {\n  text-align: center;\n  font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n}\nbody a {\n  color: #61dafb;\n}\nbody div.slide {\n  padding-right: 3%;\n  padding-left: 3%;\n  font-size: 1em;\n}\n@media only screen and (min-width: 0px) and (max-width: 559px) {\n  body div.slide {\n    font-size: 10vw;\n  }\n}\n@media only screen and (min-width: 560px) and (max-width: 759px) {\n  body div.slide {\n    font-size: 10vw;\n  }\n}\n@media only screen and (min-width: 760px) and (max-width: 959px) {\n  body div.slide {\n    font-size: 8vw;\n  }\n}\n@media only screen and (min-width: 960px) and (max-width: 1300px) {\n  body div.slide {\n    font-size: 8vw;\n  }\n}\n@media only screen and (min-width: 1300px) {\n  body div.slide {\n    font-size: 6vw;\n  }\n}\nbody div.slide .logo {\n  font-size: 4em;\n  font-family: monospace;\n  position: static;\n  padding-top: 10%;\n}\nbody div.slide .logo2 {\n  padding-top: 0px;\n  margin-top: -30%;\n}\nbody div.slide #title {\n  color: #808080;\n  padding-top: 300px;\n}\n@media only screen and (min-width: 0px) and (max-width: 559px) {\n  body div.slide #title {\n    padding-top: 250px;\n  }\n}\nbody div.slide .sub-title {\n  padding-top: 200px;\n  color: #808080;\n}\n@media only screen and (min-width: 0px) and (max-width: 559px) {\n  body div.slide .sub-title {\n    padding-top: 150px;\n  }\n}\nbody .arrow-up,\nbody .arrow-down,\nbody .arrow-right,\nbody .arrow-left {\n  width: 0;\n  height: 1;\n}\nbody .arrow-down,\nbody .arrow-up {\n  border-left: 50px solid transparent;\n  border-right: 50px solid transparent;\n}\nbody .arrow-up {\n  border-top: 50px solid #61dafb;\n}\nbody .arrow-up-2 {\n  border-top: 50px solid #2b2c28;\n}\nbody .arrow-down {\n  border-bottom: 50px solid #000;\n}\nbody .arrow-left,\nbody .arrow-right {\n  border-bottom: 50px solid transparent;\n  border-top: 50px solid transparent;\n}\nbody .arrow-left {\n  border-right: 50px solid #000;\n}\nbody .arrow-right {\n  border-left: 50px solid #000;\n}\nbody .abs-center,\nbody .abs-top,\nbody .abs-bottom {\n  position: absolute;\n  margin-left: auto;\n  margin-right: auto;\n  left: 0;\n  right: 0;\n}\nbody .abs-top {\n  top: 0;\n}\nbody .abs-bottom {\n  bottom: 0;\n}\nbody .top-100 {\n  top: 100%;\n}\nbody .top-200 {\n  top: 200%;\n}\nbody .arrow-title-1,\nbody .arrow-title-2,\nbody .arrow-title-3 {\n  width: 0;\n  height: 1;\n  position: absolute;\n  margin-left: auto;\n  margin-right: auto;\n  left: 0;\n  right: 0;\n  top: 12%;\n  border-top: 50px solid #2b2c28;\n}\nbody .arrow-title-2 {\n  top: 16%;\n  border-top: 50px solid #808080;\n}\nbody .arrow-title-3 {\n  top: 20%;\n  border-top: 50px solid #efcb68;\n}\nbody .ice {\n  color: #61dafb;\n}\nbody .ice-b {\n  background-color: #61dafb;\n}\nbody .coal {\n  color: #2b2c28;\n}\nbody .coal-b {\n  backround-color: #2b2c28;\n}\nbody .warm {\n  color: #efcb68;\n}\nbody .warm-b {\n  background-color: #efcb68;\n}\n", ""]);
+	exports.push([module.id, "body {\n  text-align: center;\n  font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n}\nbody a {\n  color: #61dafb;\n}\nbody div.slide {\n  font-size: 1em;\n}\n@media only screen and (min-width: 0px) and (max-width: 559px) {\n  body div.slide {\n    font-size: 10vw;\n  }\n}\n@media only screen and (min-width: 560px) and (max-width: 759px) {\n  body div.slide {\n    font-size: 10vw;\n  }\n}\n@media only screen and (min-width: 760px) and (max-width: 959px) {\n  body div.slide {\n    font-size: 8vw;\n  }\n}\n@media only screen and (min-width: 960px) and (max-width: 1300px) {\n  body div.slide {\n    font-size: 8vw;\n  }\n}\n@media only screen and (min-width: 1300px) {\n  body div.slide {\n    font-size: 6vw;\n  }\n}\nbody div.slide .logo {\n  font-size: 4em;\n  font-family: monospace;\n  position: static;\n  padding-top: 10%;\n}\nbody div.slide .logo2 {\n  padding-top: 0px;\n  margin-top: -30%;\n}\nbody div.slide #title {\n  color: #808080;\n  padding-top: 300px;\n}\n@media only screen and (min-width: 0px) and (max-width: 559px) {\n  body div.slide #title {\n    padding-top: 250px;\n  }\n}\nbody div.slide .sub-title {\n  padding-top: 200px;\n  color: #808080;\n}\n@media only screen and (min-width: 0px) and (max-width: 559px) {\n  body div.slide .sub-title {\n    padding-top: 150px;\n  }\n}\nbody .arrow-up,\nbody .arrow-down,\nbody .arrow-right,\nbody .arrow-left {\n  width: 0;\n  height: 1;\n}\nbody .arrow-down,\nbody .arrow-up {\n  border-left: 50px solid transparent;\n  border-right: 50px solid transparent;\n}\nbody .arrow-down,\nbody .arrow-down-2 {\n  border-bottom: 0px;\n}\nbody .arrow-up,\nbody .arrow-up-2 {\n  border-top: 0px;\n}\nbody .arrow-up {\n  border-top: 50px solid #61dafb;\n}\nbody .arrow-down {\n  border-bottom: 50px solid #61dafb;\n}\nbody .arrow-left,\nbody .arrow-right {\n  border-bottom: 50px solid transparent;\n  border-top: 50px solid transparent;\n}\nbody .arrow-left {\n  border-right: 50px solid #fff;\n}\nbody .arrow-right {\n  border-left: 50px solid #fff;\n}\nbody .abs-center,\nbody .abs-top,\nbody .abs-bottom {\n  position: absolute;\n  margin-left: auto;\n  margin-right: auto;\n  left: 0;\n  right: 0;\n}\nbody .abs-top {\n  top: 0;\n}\nbody .abs-bottom {\n  bottom: 0;\n}\nbody .top-100 {\n  top: 100%;\n}\nbody .top-200 {\n  top: 200%;\n}\nbody .arrow-title-1,\nbody .arrow-title-2,\nbody .arrow-title-3 {\n  width: 0;\n  height: 1;\n  position: absolute;\n  margin-left: auto;\n  margin-right: auto;\n  left: 0;\n  right: 0;\n  top: 12%;\n  border-top: 50px solid #2b2c28;\n}\nbody .arrow-title-2 {\n  top: 16%;\n  border-top: 50px solid #808080;\n}\nbody .arrow-title-3 {\n  top: 20%;\n  border-top: 50px solid #efcb68;\n}\nbody .ice {\n  color: #61dafb;\n}\nbody .ice-b {\n  background-color: #61dafb;\n}\nbody .coal {\n  color: #2b2c28;\n}\nbody .coal-b {\n  backround-color: #f00;\n}\nbody .warm {\n  color: #efcb68;\n}\nbody .warm-b {\n  background-color: #efcb68;\n}\n@media only screen and (min-width: 0px) and (max-width: 559px) {\n  div.top-nav {\n    display: none;\n  }\n}\nbutton {\n  background-color: #fff;\n  border: 1px solid #eee;\n}\nbutton:hover {\n  background-color: #eee;\n  border: 1px solid #eee;\n}\n@media only screen and (min-width: 0px) and (max-width: 559px) {\n  button {\n    padding: 0px;\n    text-align: center;\n    width: 50px;\n    height: 30px;\n  }\n}\n.topnav-button {\n  padding-left: 3%;\n}\n", ""]);
 
 	// exports
 

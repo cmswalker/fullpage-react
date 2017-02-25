@@ -7,19 +7,6 @@ $gray = gray
 // Typography
 // -------------------------
 font-family-primary = "Helvetica Neue", Helvetica, Arial, sans-serif;
-// font-family-primary-extra-thin-italic = 'Averta-ExtrathinItalic', sans-serif
-// font-family-primary-thin = 'Averta-Thin', sans-serif
-// font-family-primary-thin-italic = 'Averta-ThinItalic', sans-serif
-// font-family-primary-light = 'Averta-Light', sans-serif
-// font-family-primary-light-italic = 'Averta-LightItalic', sans-serif
-// font-family-primary-regular = 'Averta-Regular', sans-serif
-// font-family-primary-regular-italic = 'Averta-RegularItalic', sans-serif
-// font-family-primary-semi-bold = 'Averta-Semibold', sans-serif
-// font-family-primary-semi-bold-italic = 'Averta-SemiboldItalic', sans-serif
-// font-family-primary-bold = 'Averta-Bold', sans-serif
-// font-family-primary-bold-italic = 'Averta-BoldItalic', sans-serif
-// font-family-primary-extra-bold = 'Averta-ExtraBold', sans-serif
-// font-family-primary-extra-bold-italic = 'Averta-ExtraBoldItalic', sans-serif
 
 font-size-xxsmall = 10px
 font-size-xsmall = 12px
@@ -68,13 +55,10 @@ mq-max = s(mq-query-min-fstr, bp-desktop-max)
 
 body
   text-align center
-  font-family font-family-primary  
+  font-family font-family-primary
   a
     color $ice
   div.slide
-    padding-right 3%
-    padding-left 3%
-    
     font-size 1em
     @media mq-mobile
       font-size 10vw
@@ -85,7 +69,7 @@ body
     @media mq-desktop
       font-size 8vw
     @media mq-max
-      font-size 6vw        
+      font-size 6vw
 
     .logo
       font-size 4em
@@ -102,7 +86,7 @@ body
       padding-top 300px
       @media mq-mobile
         padding-top 250px
-        
+
     .sub-title
       padding-top 200px
       color $gray
@@ -121,12 +105,16 @@ body
     border-left $arrowPx solid transparent
     border-right $arrowPx solid transparent
 
+  .arrow-down, .arrow-down-2
+    border-bottom 0px
+  .arrow-up, .arrow-up-2
+    border-top 0px
+
   .arrow-up
     border-top $arrowPx solid $ice
-  .arrow-up-2
-    border-top $arrowPx solid $coal
+
   .arrow-down
-    border-bottom $arrowPx solid black
+    border-bottom $arrowPx solid $ice
 
   .arrow-left
   .arrow-right
@@ -134,9 +122,9 @@ body
     border-top $arrowPx solid transparent
 
   .arrow-left
-    border-right $arrowPx solid black
+    border-right $arrowPx solid white
   .arrow-right
-    border-left $arrowPx solid black
+    border-left $arrowPx solid white
 
   .abs-center
   .abs-top
@@ -182,9 +170,33 @@ body
     background-color $ice
   .coal
     color $coal
+
   .coal-b
-    backround-color $coal
+    backround-color red
   .warm
     color $warm
   .warm-b
     background-color $warm
+
+////////////V2
+
+  div.top-nav
+    @media mq-mobile
+      display none
+
+  button
+    background-color white
+    border 1px solid #EEEEEE
+    &:hover
+      background-color #EEEEEE
+      border 1px solid #EEEEEE
+
+    @media mq-mobile
+      padding 0px
+      text-align center
+      width 50px
+      height 30px
+
+
+  .topnav-button
+    padding-left 3%

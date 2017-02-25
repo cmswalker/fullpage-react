@@ -9,20 +9,61 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var React = require('react');
-var Slide = require('./slide');
+var ScrollSwipe = require('scroll-swipe');
 
-var scrollTo = require('../utils/scrollTo');
-var events = require('../utils/events');
-var renderUtils = require('../utils/renderUtils');
-var KEY_IDX = renderUtils.KEY_IDX,
-    GET_BODY = renderUtils.GET_BODY,
-    GET_BROWSER = renderUtils.GET_BROWSER,
-    GET_OS = renderUtils.GET_OS;
+var _require = require('../utils'),
+    jumpScroll = _require.jumpScroll,
+    handleScroll = _require.handleScroll,
+    resize = _require.resize,
+    renderUtils = _require.renderUtils;
+
+var defaultClass = renderUtils.defaultClass,
+    KEY_IDX = renderUtils.KEY_IDX,
+    GET_BODY = renderUtils.GET_BODY;
+
+var _require2 = require('../actions'),
+    onScrollAction = _require2.onScrollAction;
+
+var _require3 = require('../utils/constants'),
+    noOp = _require3.noOp,
+    VERTICAL = _require3.VERTICAL;
+
+var HorizontalSliderModule = require('./HorizontalSlider');
+var changeHorizontalSlide = HorizontalSliderModule.changeHorizontalSlide;
 
 
-var touchArr = [];
-var latestTouch;
-var needsConversion = null;
+var _fp = {};
+
+function changeFullpageSlide(to) {
+  var comp = _fp;
+
+  if (comp.state.scrollPending || to == comp.state.activeSlide) {
+    return;
+  }
+
+  if (!to && to !== 0 || to >= comp.state.slideCount) {
+    to = 'NEXT';
+  }
+
+  if (to < 0) {
+    to = 'PREV';
+  }
+
+  if (to !== 'NEXT' && to !== 'PREV') {
+    comp.onSlideChangeStart(comp.name, comp.state);
+    comp.setState({ scrollPending: true });
+    return jumpScroll.call(comp, to, GET_BODY(), comp.props.onSlideChangeEnd.bind(comp, comp.name));
+  }
+
+  var intent = to === 'NEXT' ? 1 : 0;
+  var data = {
+    intent: intent
+  };
+
+  var direction = VERTICAL;
+
+  comp.onVerticalScroll.call(comp, data, direction);
+}
 
 var Fullpage = function (_React$Component) {
   _inherits(Fullpage, _React$Component);
@@ -32,70 +73,74 @@ var Fullpage = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Fullpage.__proto__ || Object.getPrototypeOf(Fullpage)).call(this, props));
 
-    var slideChildren = getSlideCount(_this.props.children);
+    _this.name = 'Fullpage';
+
+    var p = _this.props;
+    if (p.infinite && p.resetSlides) {
+      throw new Error(_this.name + ' cannot have both infinite and resetSlides as truthy props');
+    }
+
+    _this.infinite = false;
+    _this.ss = null;
+    _this.winProp = 'innerHeight';
+    _this.elementBoundary = 'scrollTop';
+    _this.scrollSpeed = p.scrollSpeed || 500;
+
+    _this.onHorizontalChange = p.onHorizontalChange || noOp;
+    _this.onSlideChangeStart = p.onSlideChangeStart || noOp;
+    _this.onSlideChangeEnd = p.onSlideChangeEnd || noOp;
 
     _this.state = {
-      name: 'Fullpage',
-      defaultClass: 'Fullpage',
-      slides: [],
-      slidesCount: slideChildren,
-      activeSlide: 0,
+      activeSlide: p.activeSlide || 0,
       lastActive: -1,
-      downThreshold: -Math.abs(_this.props.threshold || 100),
-      upThreshold: _this.props.threshold || 100,
-      touchStart: 0,
-      touchSensitivity: _this.props.sensitivity || 100,
+      scrollSensitivity: p.scrollSensitivity || 10,
+      touchSensitivity: p.touchSensitivity || 10,
       scrollPending: false
     };
 
-    _this.onScroll = _this.onScroll.bind(_this);
-    _this.onTouchStart = _this.onTouchStart.bind(_this);
-    _this.onTouchEnd = _this.onTouchEnd.bind(_this);
-    _this.checkKey = _this.checkKey.bind(_this);
-    _this.onResize = _this.onResize.bind(_this);
+    if (!Object.keys(_fp).length) {
+      _fp = _this;
+      module.exports._fp = _fp;
+    }
     return _this;
   }
 
   _createClass(Fullpage, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      document.addEventListener('wheel', this.onScroll);
-      document.addEventListener('touchmove', this.onTouchStart);
-      document.addEventListener('touchend', this.onTouchEnd);
-      document.addEventListener('keydown', this.checkKey);
-      window.addEventListener('resize', this.onResize);
-      events.pub(this, this.scrollToSlide);
+      var node = this.node;
+      var s = this.state;
 
-      //override the threshold for windows firefox
-      var b = GET_BROWSER();
-      var os = GET_OS();
-      if (b === 'Firefox' && os === 'WINDOWS') {
-        needsConversion = true;
+      var ss = new ScrollSwipe({
+        target: node,
+        scrollSensitivity: s.scrollSensitivity / 5,
+        touchSensitivity: s.touchSensitivity / 5,
+        scrollPreventDefault: true,
+        touchPreventDefault: true,
+        scrollCb: onScrollAction.bind(null, this),
+        touchCb: onScrollAction.bind(null, this)
+      });
+      this.ss = ss;
+
+      // document.addEventListener('keydown', this.checkKey);
+      window.addEventListener('resize', resize.bind(this));
+
+      resize.call(this);
+
+      //hide scrollbars
+      if (this.props.hideScrollBars) {
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
       }
-
-      //initialize slides
-      this.onResize();
     }
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
-      document.removeEventListener('wheel', this.onScroll);
-      document.removeEventListener('touchmove', this.onTouchStart);
-      document.removeEventListener('touchend', this.onTouchEnd);
+      this.ss.killAll();
+      this.ss = null;
+
       document.removeEventListener('keydown', this.checkKey);
-      window.removeEventListener('resize', this.onResize);
-    }
-  }, {
-    key: 'shouldComponentUpdate',
-    value: function shouldComponentUpdate(nP, nS) {
-      return true;
-    }
-  }, {
-    key: 'componentDidUpdate',
-    value: function componentDidUpdate(pP, pS) {
-      var s = this.state;
-      events.active = s.activeSlide;
-      this.props.active(s.activeSlide);
+      window.removeEventListener('resize', resize.bind(this));
     }
   }, {
     key: 'checkKey',
@@ -116,165 +161,29 @@ var Fullpage = function (_React$Component) {
       this.scrollToSlide(this.state.activeSlide + direction);
     }
   }, {
-    key: 'onResize',
-    value: function onResize() {
-      var s = this.state;
-      var slides = [];
-
-      for (var i = 0; i < s.slidesCount; i++) {
-        slides.push(window.innerHeight * i);
-      }
-
-      this.setState({
-        'slides': slides,
-        'height': window.innerHeight
-      });
-
-      this.scrollToSlide(s.activeSlide, true);
-    }
-  }, {
-    key: 'scrollToSlide',
-    value: function scrollToSlide(slide, override) {
-      var _this2 = this;
-
-      var s = this.state;
-
-      if (override) {
-        return scrollTo.call(this, GET_BODY(), s.slides[slide], 100, function () {
-          _this2.setState({ 'activeSlide': slide });
-          _this2.setState({ 'scrollPending': false });
-        });
-      }
-
-      if (s.scrollPending) {
-        return;
-      }
-
-      if (slide < 0 || slide >= s.slidesCount) {
-        return;
-      }
-
-      this.setState({
-        'activeSlide': slide,
-        'scrollPending': true
-      });
-
-      scrollTo(GET_BODY(), s.slides[slide], 600, function () {
-        _this2.setState({ 'activeSlide': slide });
-        _this2.setState({ 'scrollPending': false });
-      });
-    }
-  }, {
-    key: 'onTouchStart',
-    value: function onTouchStart(e) {
-      e.preventDefault();
-      var t = e.touches[0].clientY;
-      latestTouch = t;
-      touchArr.push(t);
-
-      if (touchArr.length > 10) {
-        this.setState({ 'touchStart': touchArr[0] });
-        touchArr = [];
-        return;
-      }
-    }
-  }, {
-    key: 'onTouchEnd',
-    value: function onTouchEnd(e) {
-      var s = this.state;
-      var touchEnd = e.changedTouches[0].clientY;
-      var touchStart = s.touchStart;
-      var sensitivity = s.touchSensitivity;
-
-      //prevent standard taps creating false positives;
-      if (latestTouch !== touchEnd) {
-        return;
-      }
-
-      if (!touchStart || touchStart > touchEnd + Math.abs(sensitivity / 2)) {
-
-        if (s.activeSlide == s.slidesCount - 1) {
-          // prevent down going down
-          return;
-        }
-
-        return this.scrollToSlide(s.activeSlide + 1);
-      }
-
-      if (s.activeSlide == 0) {
-        // prevent up going up
-        return;
-      }
-
-      this.scrollToSlide(s.activeSlide - 1);
-    }
-  }, {
-    key: 'onArrowClick',
-    value: function onArrowClick() {
-      this.scrollToSlide(this.state.activeSlide + 1);
-    }
-  }, {
-    key: 'onScroll',
-    value: function onScroll(e) {
-      var _this3 = this;
-
-      e.preventDefault();
-      var s = this.state;
-
-      if (s.scrollPending) {
-        return;
-      }
-
-      var meas = needsConversion ? -e.deltaY : e.wheelDelta || -e.deltaY || e.detail;
-      //windows firefox produces very low wheel activity so we have to multiply it
-      if (needsConversion) {
-        meas = meas * 3;
-      }
-
-      var scrollDown = meas < s.downThreshold;
-      var scrollUp = !scrollDown && meas > s.upThreshold;
-
-      if (!scrollDown && !scrollUp) {
-        return this.setState({ 'scrollPending': false });
-      }
-
-      var activeSlide = s.activeSlide;
-
-      if (scrollDown) {
-        if (activeSlide == s.slidesCount - 1) {
-          // prevent down going down
-          return this.setState({ 'scrollPending': false });
-        }
-
-        activeSlide = activeSlide + 1;
-      } else if (scrollUp) {
-        if (!activeSlide) {
-          // prevent up going up
-          return this.setState({ 'scrollPending': false });
-        }
-
-        activeSlide = activeSlide - 1;
-      }
-
-      this.setState({ 'scrollPending': true });
-
-      scrollTo(GET_BODY(), s.slides[activeSlide], 500, function () {
-        _this3.setState({ 'activeSlide': activeSlide });
-        _this3.setState({ 'lastActive': scrollDown ? activeSlide-- : activeSlide++ });
-
-        setTimeout(function () {
-          _this3.setState({ 'scrollPending': false });
-        }, s.upThreshold * 2);
-      });
-      return this.setState({ 'scrollPending': true });
+    key: 'onVerticalScroll',
+    value: function onVerticalScroll(data, direction) {
+      handleScroll.call(this, data, direction, GET_BODY(), this.props.onSlideChangeEnd.bind(this, this.name));
     }
   }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
+      var p = this.props;
+
       return React.createElement(
         'div',
-        { className: renderUtils.defaultClass.call(this), style: { height: this.state.height } },
-        this.props.children
+        { ref: function ref(node) {
+            return _this2.node = node;
+          }, className: defaultClass.call(this) },
+        (p.children || []).map(function (c) {
+          if (!c) {
+            return false;
+          }
+
+          return c;
+        })
       );
     }
   }]);
@@ -283,28 +192,20 @@ var Fullpage = function (_React$Component) {
 }(React.Component);
 
 Fullpage.propTypes = {
-  children: React.PropTypes.node.isRequired,
-  threshold: React.PropTypes.number,
-  sensitivity: React.PropTypes.number,
-  active: React.PropTypes.func
+  children: React.PropTypes.node,
+  touchSensitivity: React.PropTypes.number,
+  scrollSensitivity: React.PropTypes.number,
+  activeSlide: React.PropTypes.number,
+  onSlideChangeStart: React.PropTypes.func.isRequired,
+  onSlideChangeEnd: React.PropTypes.func.isRequired,
+  hideScrollBars: React.PropTypes.bool,
+  infinite: React.PropTypes.bool,
+  resetSlides: React.PropTypes.bool
 };
 
-function getSlideCount(children) {
-  return children.reduce(function (result, c) {
-    if (Array.isArray(c)) {
-      return getSlideCount(c);
-    }
-
-    if (!c.type) {
-      return result;
-    }
-
-    if (c.type === Slide) {
-      return result = result + 1;
-    }
-
-    return result;
-  }, 0);
-}
-
-module.exports = Fullpage;
+module.exports = {
+  Fullpage: Fullpage,
+  _fp: _fp,
+  changeHorizontalSlide: changeHorizontalSlide,
+  changeFullpageSlide: changeFullpageSlide
+};

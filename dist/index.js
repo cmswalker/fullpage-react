@@ -1,13 +1,23 @@
 'use strict';
 
-var Fullpage = require('./components/fullpage');
+var FullpageComp = require('./components/fullpage');
+var Fullpage = FullpageComp.Fullpage,
+    changeHorizontalSlide = FullpageComp.changeHorizontalSlide,
+    changeFullpageSlide = FullpageComp.changeFullpageSlide;
+
+var Overlay = require('./components/overlay');
+
 var Slide = require('./components/slide');
-var TopNav = require('./components/topNav');
-var SideNav = require('./components/sideNav');
+
+var HorizontalSliderModule = require('./components/HorizontalSlider');
+var HorizontalSlider = HorizontalSliderModule.HorizontalSlider;
+
 
 module.exports = {
   Fullpage: Fullpage,
   Slide: Slide,
-  TopNav: TopNav,
-  SideNav: SideNav
+  HorizontalSlider: HorizontalSlider,
+  changeHorizontalSlide: changeHorizontalSlide,
+  changeFullpageSlide: changeFullpageSlide,
+  Overlay: Overlay
 };

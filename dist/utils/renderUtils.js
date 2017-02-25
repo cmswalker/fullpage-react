@@ -4,7 +4,7 @@ var objectAssign = require('object-assign');
 Object.assign = Object.assign || objectAssign;
 
 function defaultClass() {
-  return this.props.className || this.state.defaultClass;
+  return this.props.className || this.name;
 }
 
 function browser() {
@@ -59,6 +59,10 @@ var GET_OS = function GET_OS() {
 
     if (code.indexOf('win') >= 0) {
       OS = 'WINDOWS';
+    }
+
+    if (code.indexOf('macintel') >= 0) {
+      OS = 'OSX';
     }
   }
 

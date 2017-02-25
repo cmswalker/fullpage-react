@@ -2,19 +2,31 @@
 
 module.exports = scrollTo;
 
-function scrollTo(element, to, duration, callback) {
-  var start = element.scrollTop,
+function scrollTo(element, elementBoundary, to, duration, callback) {
+  var start = element[elementBoundary],
       change = to - start,
       currentTime = 0,
-      increment = 10;
+      increment = 10,
+      domainThresh = duration * .8,
+      slowDown = 15;
 
   animateScroll(callback);
 
   function animateScroll(callback) {
     currentTime += increment;
+
     var val = Math.easeInOutQuad(currentTime, start, change, duration);
-    element.scrollTop = val;
+    element[elementBoundary] = val;
+
     if (currentTime < duration) {
+
+      if (currentTime > domainThresh) {
+        setTimeout(function () {
+          animateScroll(callback);
+        }, slowDown);
+        return;
+      }
+
       setTimeout(function () {
         animateScroll(callback);
       }, increment);

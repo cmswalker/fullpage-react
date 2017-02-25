@@ -1,7 +1,5 @@
 'use strict';
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -16,41 +14,38 @@ var utils = require('../utils');
 var renderUtils = utils.renderUtils;
 var defaultClass = renderUtils.defaultClass;
 
-var Slide = function (_React$Component) {
-  _inherits(Slide, _React$Component);
+var Overlay = function (_React$Component) {
+  _inherits(Overlay, _React$Component);
 
-  function Slide(props) {
-    _classCallCheck(this, Slide);
+  function Overlay(props) {
+    _classCallCheck(this, Overlay);
 
-    var _this = _possibleConstructorReturn(this, (Slide.__proto__ || Object.getPrototypeOf(Slide)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Overlay.__proto__ || Object.getPrototypeOf(Overlay)).call(this, props));
 
-    _this.name = 'Slide';
+    _this.name = 'Overlay';
     return _this;
   }
 
-  _createClass(Slide, [{
+  _createClass(Overlay, [{
     key: 'render',
     value: function render() {
-      var style = Object.assign({ overflow: 'hidden', width: '100%', height: window.innerHeight }, this.props.style);
-      var attrs = {
-        'data-slide': this.props.horizontal ? 'HorizontalSlider' : 'Fullpage'
-      };
+      var overlayStyle = { position: 'absolute', width: '100%' };
+      var style = Object.assign({}, overlayStyle, this.props.style);
 
       return React.createElement(
         'div',
-        _extends({ className: defaultClass.call(this) }, attrs, { style: style }),
+        { className: defaultClass.call(this), style: style },
         this.props.children
       );
     }
   }]);
 
-  return Slide;
+  return Overlay;
 }(React.Component);
 
-Slide.propTypes = {
+Overlay.propTypes = {
   children: React.PropTypes.node,
-  style: React.PropTypes.object,
-  horizontal: React.PropTypes.bool
+  style: React.PropTypes.object
 };
 
-module.exports = Slide;
+module.exports = Overlay;

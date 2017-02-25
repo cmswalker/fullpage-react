@@ -1,110 +1,136 @@
-const React = require('react');
+//check issues and make sure all is good!
 
-const {Fullpage, Slide, TopNav, SideNav} = require('../lib/index');
+import React from 'react';
+import Tappable from 'react-tappable';
 
+const {Fullpage, Slide, HorizontalSlider, Overlay, changeHorizontalSlide, changeFullpageSlide} = require('../lib/index');
+
+require('./normalize.css');
+require('./skeleton.css');
 require('./exampleStyles.styl');
 
 let fullPageOptions = {
   // for mouse/wheel events
   // represents the level of force required to generate a slide change on non-mobile, 100 is default
-  threshold: 100,
+  scrollSensitivity: 2,
 
   // for touchStart/touchEnd/mobile scrolling
   // represents the level of force required to generate a slide change on mobile, 100 is default
-  sensitivity: 100
+  touchSensitivity: 2,
+  scrollSpeed: 500,
+  resetSlides: true,
+  hideScrollBars: true
 };
 
-let topNavOptions = {
-  footer: false, //topNav can double as a footer if true
-  align: 'left', //also supports center and right alignment
-
-  //styles to apply to children
-  activeStyles: {backgroundColor: 'white'},
-  hoverStyles: {backgroundColor: 'yellow'},
-  nonActiveStyles: {backgroundColor: 'gray'}
+let topNavStyle = {
+  textAlign: 'center',
+  position: 'fixed',
+  width: '100%',
+  cursor: 'pointer',
+  zIndex: 10,
+  backgroundColor: 'rgba(255, 255, 255, 0.4)',
+  top: '0px'
 };
 
-// all children are spans by default, for stacked buttons,
-// just wrap your nested components/buttons in divs
-let sideNavOptions = {
-  right: '2%', //left alignment is default
-  top: '50%', //top is 50% by default
+let horizontalNavStyle = {
+  position: 'relative',
+  top: '50%'
+};
 
-  //styles to apply to children
-  activeStyles: {color: 'white'},
-  hoverStyles: {color: 'yellow'},
-  nonActiveStyles: {color: 'gray'}
+let horizontalSliderProps = {
+  name: 'horizontalSlider1',
+  scrollSpeed: 500,
+  infinite: true,
+  resetSlides: false,
+  scrollSensitivity: 2
 };
 
 class FullpageReact extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      active: 0,
-      hover: null
+      active: {
+        Fullpage: 0,
+        horizontalSlider1: 0
+      },
+      previous: {
+        Fullpage: 0,
+        horizontalSlider1: 0
+      }
     };
 
-    this.updateActiveState = this.updateActiveState.bind(this);
+    this.onSlideChangeStart = this.onSlideChangeStart.bind(this);
+    this.onSlideChangeEnd = this.onSlideChangeEnd.bind(this);
   }
 
-  updateActiveState(newActive) {
-    this.setState({'active': newActive});
+  onSlideChangeStart(name, state) {
+    console.log('slide STARTED for', name, state.activeSlide);
+    var sliderState = { previous: {} };
+    sliderState.previous[name] = state.activeSlide;
+    this.setState(sliderState);
   }
 
-  shouldComponentUpdate(nP, nS) {
-    //ensure hoverStyles and activeStyles update
-    return nS.active != this.state.active || nS.hover != this.state.hover;
-  }
-
-  onMouseOver(idx) {
-    this.setState({'hover': idx});
-  }
-
-  onMouseOut(e) {
-    this.setState({'hover': null});
-  }
-
-  compareStyles(component, idx) {
-    return idx == this.state.active ? component.activeStyles : idx == this.state.hover ? component.hoverStyles : component.nonActiveStyles
+  onSlideChangeEnd(name, state) {
+    console.log('slide ENDED for', name, state.activeSlide);
+    var sliderState = { active: {} };
+    sliderState.active[name] = state.activeSlide;
+    this.setState(sliderState);
   }
 
   render() {
-    let navCount = 3;
-    let navArr = [];
-    for (var i = 0; i < navCount; i++) {
-      navArr.push(i);
-    }
+
+    let prevSlide = changeFullpageSlide.bind(null, 'PREV');
+    let nextSlide = changeFullpageSlide.bind(null, 'NEXT');
+    let backToTop = changeFullpageSlide.bind(null, 0);
+
+    let topNav = (
+      <Overlay style={topNavStyle}>
+        <Tappable onTap={prevSlide}>
+          <button>Previous Slide</button>
+        </Tappable>
+        <Tappable onTap={backToTop}>
+          <button>Back to Top</button>
+        </Tappable>
+        <Tappable onTap={nextSlide}>
+          <button>Next Slide</button>
+        </Tappable>
+      </Overlay>
+    );
+
+    let prevHorizontalSlide = changeHorizontalSlide.bind(null, 'horizontalSlider1', 'PREV');
+    let nextHorizontalSlide = changeHorizontalSlide.bind(null, 'horizontalSlider1', 'NEXT');
+
+    let horizontalNav = (
+      <Overlay style={{top: '50%'}}>
+        <div style={horizontalNavStyle}>
+          <Tappable onTap={prevHorizontalSlide}><button>PREV</button></Tappable>
+          <Tappable style={{position: 'absolute', right: '0px'}} onTap={nextHorizontalSlide}><button>Next</button></Tappable>
+        </div>
+      </Overlay>
+    );
 
     return (
-      <Fullpage active={this.updateActiveState} {...fullPageOptions}>
+      <Fullpage onSlideChangeStart={this.onSlideChangeStart} onSlideChangeEnd={this.onSlideChangeEnd} {...fullPageOptions}>
 
-        <TopNav className='topNav' {...topNavOptions}>
-          {navArr.map((n, idx) => {
-            return <span key={idx} ref={idx} style={this.compareStyles(topNavOptions, idx)}
-              onMouseOver={() => this.onMouseOver(idx)} onMouseOut={() => this.onMouseOut()}>Slide {idx}</span>
-          }, this)}
-        </TopNav>
+        {topNav}
 
-        <Slide style={{backgroundColor: '#61DAFB'}}>
-          <div id="title">Fullpage React</div>
+        <Slide className="blue">
+          <p>Slide 1</p>
         </Slide>
-        <Slide style={{backgroundColor: '#2B2C28'}}></Slide>
-        <Slide style={{backgroundColor: '#EFCB68'}}></Slide>
 
-        <SideNav {...sideNavOptions}>
-          {navArr.map((n, idx) => {
-            return <div key={idx} ref={idx} style={this.compareStyles(sideNavOptions, idx)}
-              onMouseOver={() => this.onMouseOver(idx)} onMouseOut={() => this.onMouseOut()}>&#x25CF;</div>
-          }, this)}
-        </SideNav>
+        <HorizontalSlider {...horizontalSliderProps}>
+          <Slide className="red"><p>Slide 2</p><p>Horizontal 1</p></Slide>
+          <Slide className="yellow"><p>Slide 2</p><p>Horizontal 2</p></Slide>
+          <Slide className="green"><p>Slide 2</p><p>Horizontal 3</p></Slide>
 
+          {horizontalNav}
+        </HorizontalSlider>
+
+        <Slide className="dark-blue"><p>Slide 3</p></Slide>
+        <Slide className="green"><p>Slide 4</p></Slide>
       </Fullpage>
     );
   }
 }
 
 module.exports = FullpageReact;
-
-function log() {
-  console.log('hi')
-}

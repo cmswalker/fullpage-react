@@ -9,7 +9,7 @@ var Overlay = require('./components/overlay');
 
 var Slide = require('./components/slide');
 
-var HorizontalSliderModule = require('./components/HorizontalSlider');
+var HorizontalSliderModule = require('./components/horizontalSlider');
 var HorizontalSlider = HorizontalSliderModule.HorizontalSlider;
 
 

@@ -5,9 +5,9 @@
   "main": "index.js",
   "eslintConfig": "./.eslint.json",
   "scripts": {
-    "start": "webpack-dev-server",
-    "build": "babel lib -d dist",
-    "babel-version": "babel --version",
+    "start": "./node_modules/.bin/webpack-dev-server",
+    "build": "./node_modules/.bin/babel lib -d dist",
+    "babel-version": "./node_modules/.bin/babel --version",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "cmswalker",

@@ -28,7 +28,7 @@ var _require3 = require('../utils/constants'),
     noOp = _require3.noOp,
     VERTICAL = _require3.VERTICAL;
 
-var HorizontalSliderModule = require('./HorizontalSlider');
+var HorizontalSliderModule = require('./horizontalSlider');
 var changeHorizontalSlide = HorizontalSliderModule.changeHorizontalSlide;
 
 

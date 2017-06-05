@@ -1,6 +1,6 @@
 const React = require('react');
 
-const Fullpage = require('fullpage-react');
+const { Fullpage, Slide, HorizontalSlider } = require('fullpage-react');
 const { changeFullpageSlide, changeHorizontalSlide } = Fullpage;
 
 require('./styles/skeleton.css');

@@ -1,6 +1,6 @@
-import React from 'react';
+const React = require('react');
 
-import { Fullpage, HorizontalSlider, Slide } from 'fullpage-react';
+const { Fullpage, HorizontalSlider, Slide } = require('fullpage-react');
 const { changeFullpageSlide, changeHorizontalSlide } = Fullpage;
 
 require('./styles/skeleton.css');
@@ -156,4 +156,4 @@ function scrollNavEnd(nav) {
   nav.style.position = 'absolute';
 }
 
-export default FullpageReact;
+module.exports = FullpageReact;

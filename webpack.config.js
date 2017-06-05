@@ -15,9 +15,9 @@ const config = {
   },
 
   output: {
-    filename: '[name].js',
+    filename: '[name].bundle.js',
     path: path.join(__dirname, '/js/'),
-    publicPath: '/',
+    publicPath: '/js',
     chunkFilename: '[id].chunk.js'
   },
 
@@ -45,13 +45,7 @@ const config = {
   stats: 'errors-only',
 
   devServer: {
-    port: 3030,
-    contentBase: path.join(__dirname, 'public'), // boolean | string | array, static file location
-    compress: true, // enable gzip compression
-    historyApiFallback: true, // true for index.html upon 404, object for multiple paths
-    // hot: true, // hot module replacement. Depends on HotModuleReplacementPlugin
-    https: false, // true for self-signed, object for cert authority
-    noInfo: true, // only errors & warns on hot reload
+    port: 3030
   },
 
   plugins: []
@@ -65,9 +59,7 @@ if (isProduction) {
     index: path.join(__dirname, 'lib/index.js')
   }
 } else {
-  config.plugins.push(new HtmlwebpackPlugin({
-    title: 'Fullpage React'
-  }));
+
 }
 
 module.exports = config;

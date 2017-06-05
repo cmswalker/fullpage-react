@@ -48,11 +48,12 @@ const config = {
     port: 3030
   },
 
-  plugins: []
+  plugins: [],
+
+  devtool: 'source-map'
 }
 
 if (isProduction) {
-  config.devtool = 'source-map';
   // Don't follow/bundle these modules, but request them at runtime from the environment
   config.externals = ['react', /^@angular\//];
   config.entry = {

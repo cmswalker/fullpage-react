@@ -1,12 +1,7 @@
 {
-  "plugins": [
-  ],
+  "plugins": [],
   "presets": [
-    ["env", {
-      "targets": {
-        "uglify": true
-      }
-    }],
-    "react"
+    "react",
+    "es2015"
   ]
 }

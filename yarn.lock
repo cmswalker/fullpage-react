@@ -2075,11 +2075,11 @@ fstream@^1.0.0, fstream@^1.0.10, fstream@^1.0.2:
     mkdirp ">=0.5 0"
     rimraf "2"
 
-fullpage-react@../fullpage-react-2.0.3.tgz:
-  version "2.0.3"
-  resolved "../fullpage-react-2.0.3.tgz#81a8639976900939f44b4d49cfe251973e3833b0"
+fullpage-react@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/fullpage-react/-/fullpage-react-3.0.1.tgz#1fd2ee3b0ae5323b5707abbcf423deee6cdea871"
   dependencies:
-    scroll-swipe "^0.0.8"
+    scroll-swipe "0.0.9"
 
 function-bind@^1.0.2, function-bind@^1.1.0:
   version "1.1.0"
@@ -3955,9 +3955,9 @@ schema-utils@^0.3.0:
   dependencies:
     ajv "^5.0.0"
 
-scroll-swipe@^0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/scroll-swipe/-/scroll-swipe-0.0.8.tgz#da2a05d77d969408d160d3e7ded969e2b53f85e1"
+scroll-swipe@0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/scroll-swipe/-/scroll-swipe-0.0.9.tgz#2811457110f99d1cbc1f69b65b9b00c8c8e9f9e6"
 
 select-hose@^2.0.0:
   version "2.0.0"

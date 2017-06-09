@@ -2075,9 +2075,9 @@ fstream@^1.0.0, fstream@^1.0.10, fstream@^1.0.2:
     mkdirp ">=0.5 0"
     rimraf "2"
 
-fullpage-react@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/fullpage-react/-/fullpage-react-3.0.2.tgz#1efdef28f83a2fdb98dfdde3f46b18241cc3bda9"
+fullpage-react@3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/fullpage-react/-/fullpage-react-3.0.3.tgz#bdfd8d827276a7e32ce6f561dae05ea5a95d8b6a"
   dependencies:
     scroll-swipe "0.0.9"
 

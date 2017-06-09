@@ -96,22 +96,16 @@ class FullpageReact extends React.Component {
 
     const topNav = (
       <div style={topNavStyle}>
-        <span onClick={prevSlide}>
-          <button>Up</button>
-        </span>
-        <span onClick={goToTop}>
-          <button>Top</button>
-        </span>
-        <span onClick={nextSlide}>
-          <button>Down</button>
-        </span>
+        <button onClick={prevSlide}>Up</button>
+        <button onClick={goToTop}>Top</button>
+        <button onClick={nextSlide}>Down</button>
       </div>
     );
 
     const horizontalNav = (
       <div id='horizontal-nav' className='slide' style={horizontalNavStyle}>
-        <span style={{position: 'absolute', left: '0px'}} onClick={prevHorizontalSlide}><button>Left</button></span>
-        <span style={{position: 'absolute', right: '0px'}} onClick={nextHorizontalSlide}><button>Right</button></span>
+        <button style={{position: 'absolute', left: '0px'}} onClick={prevHorizontalSlide}>Left</button>
+        <button style={{position: 'absolute', right: '0px'}} onClick={nextHorizontalSlide}>Right</button>
       </div>
     );
 

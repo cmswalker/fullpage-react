@@ -67,8 +67,8 @@ if (isProduction) {
   };
 
   config.externals = {
-    'react': 'React',
-    'react-dom': 'ReactDOM'
+    'React': 'react',
+    'ReactDOM': 'react-dom'
   };
 
   config.output = {

@@ -1,7 +1,9 @@
 $arrowPx = 50px
-$ice = #61DAFB
-$coal = #2B2C28
-$warm = #EFCB68
+$ice = #D4DCCD
+$coal = #6B717E
+$warm = #FFE8E1
+$pink = #FFC4D1
+$orange = #FAC9B8
 $gray = gray
 
 // Typography
@@ -57,7 +59,9 @@ body
   text-align center
   font-family font-family-primary
   a
-    color $ice
+    color $warm
+    &:hover
+      color $coal
   div.slide
     font-size 1em
     @media mq-mobile
@@ -159,7 +163,7 @@ body
     border-top $arrowPx solid $coal
   .arrow-title-2
     top 16%
-    border-top $arrowPx solid $gray
+    border-top $arrowPx solid $orange
   .arrow-title-3
     top 20%
     border-top $arrowPx solid $warm
@@ -168,15 +172,26 @@ body
     color $ice
   .ice-b
     background-color $ice
+
   .coal
     color $coal
-
   .coal-b
-    backround-color red
+    backround-color $coal
+
   .warm
     color $warm
   .warm-b
     background-color $warm
+
+  .pink
+    color $pink
+  .pink-b
+    background-color $pink
+
+  .orange
+    color $orange
+  .orange-b
+    background-color $orange
 
 ////////////V2
 
@@ -194,7 +209,7 @@ body
     @media mq-mobile
       padding 0px
       text-align center
-      width 50px
+      width 70px
       height 30px
 
 

@@ -1,25 +1,19 @@
-const React = require('react');
+import React from 'react';
+import { Fullpage, HorizontalSlider, Slide } from 'fullpage-react';
 
-const { Fullpage, Slide, HorizontalSlider } = require('fullpage-react');
 const { changeFullpageSlide, changeHorizontalSlide } = Fullpage;
 
+require('normalize-css');
 require('./styles/skeleton.css');
 require('./styles/main.styl');
 
 const fullPageOptions = {
-  // for mouse/wheel events
-  // represents the level of force required to generate a slide change on non-mobile, 10 is default
   scrollSensitivity: 7,
-
-  // for touchStart/touchEnd/mobile scrolling
-  // represents the level of force required to generate a slide change on mobile, 10 is default
   touchSensitivity: 7,
   scrollSpeed: 500,
   resetSlides: true,
   hideScrollBars: true,
-  enableArrowKeys: true,
-  breakpoint: 375,
-  window: window
+  enableArrowKeys: true
 };
 
 const topNavStyle = {
@@ -28,8 +22,8 @@ const topNavStyle = {
   width: '100%',
   cursor: 'pointer',
   zIndex: 10,
-  backgroundColor: 'rgba(255, 255, 255, 0.4)',
-  top: '0px'
+  top: '0px',
+  className: 'top-nav'
 };
 
 const horizontalNavStyle = {
@@ -41,10 +35,7 @@ const horizontalNavStyle = {
 
 const horizontalSliderProps = {
   name: 'horizontalSlider1',
-  scrollSpeed: 500,
-  infinite: true,
-  scrollSensitivity: 2,
-  touchSensitivity: 2
+  infinite: true
 };
 
 class FullpageReact extends React.Component {
@@ -62,6 +53,10 @@ class FullpageReact extends React.Component {
   }
 
   onSlideChangeStart(name, props, state, newState) {
+    if (!this.horizontalNav) {
+      this.horizontalNav = document.getElementById('horizontal-nav');
+    }
+
     if (name === 'horizontalSlider1') {
       scrollNavStart(this.horizontalNav);
     }
@@ -82,7 +77,7 @@ class FullpageReact extends React.Component {
   }
 
   componentDidMount() {
-    this.horizontalNav = document.getElementById('horizontal-nav');
+
   }
 
   render() {
@@ -102,39 +97,53 @@ class FullpageReact extends React.Component {
     const topNav = (
       <div style={topNavStyle}>
         <span onClick={prevSlide}>
-          <button>Previous Slide</button>
+          <button>Up</button>
         </span>
         <span onClick={goToTop}>
-          <button>Back to Top</button>
+          <button>Top</button>
         </span>
         <span onClick={nextSlide}>
-          <button>Next Slide</button>
+          <button>Down</button>
         </span>
       </div>
     );
 
     const horizontalNav = (
-      <div id='horizontal-nav' style={horizontalNavStyle}>
-        <span onClick={prevHorizontalSlide}><button>PREV</button></span>
-        <span style={{position: 'absolute', right: '0px'}} onClick={nextHorizontalSlide}><button>Next</button></span>
+      <div id='horizontal-nav' className='slide' style={horizontalNavStyle}>
+        <span style={{position: 'absolute', left: '0px'}} onClick={prevHorizontalSlide}><button>Left</button></span>
+        <span style={{position: 'absolute', right: '0px'}} onClick={nextHorizontalSlide}><button>Right</button></span>
       </div>
     );
 
     const horizontalSlides = [
-      <Slide style={{backgroundColor: 'red'}}><p>Horizontal 1</p></Slide>,
-      <Slide style={{backgroundColor: 'yellow'}}><p>Horizontal 2</p></Slide>,
-      <Slide style={{backgroundColor: 'green'}}><p>Horizontal 3</p></Slide>
+      <Slide className="warm-b">
+        <div className="sub-title">Horizontal Sliders<br/>(scroll left or right)</div>
+      </Slide>,
+      <Slide className="pink-b">
+        <div className="sub-title">100% React components, no jQuery. <br/> Easy API</div>
+      </Slide>,
+      <Slide style={{backgroundColor: '#2B2C28'}}>
+        <div className="sub-title">Infinite Scrolling -></div>
+      </Slide>
     ];
     horizontalSliderProps.slides = horizontalSlides;
 
-    const horizontalSlider = <HorizontalSlider id='horizontal-slider-1' {...horizontalSliderProps}>{horizontalNav}</HorizontalSlider>;
+    const horizontalSlider = <HorizontalSlider id='horizontal-slider-1' className='slide ' {...horizontalSliderProps}>{horizontalNav}</HorizontalSlider>;
 
     const verticalSlides = [
-      <Slide style={{backgroundColor: 'blue'}}>
-        <p>Slide 1</p>
+      <Slide className="slide ice-b">
+      <div className="arrow-down arrow-down-2 arrow-title-1"></div>
+        <div className="arrow-down arrow-down-2 arrow-title-2"></div>
+        <div className="arrow-down arrow-down-2 arrow-title-3"></div>
+        <div id="title">Fullpage React</div>
       </Slide>,
       horizontalSlider,
-      <Slide style={{backgroundColor: 'pink'}}><p>Slide 3</p></Slide>
+      <Slide className="slide orange-b">
+        <div className="sub-title">Mobile friendly with tap events<br/>
+          <a href="https://github.com/cmswalker/fullpage-react">Github</a><br/>
+          <a href="https://www.npmjs.com/package/fullpage-react">NPM</a>
+        </div>
+      </Slide>
     ];
     fullPageOptions.slides = verticalSlides;
 
@@ -147,13 +156,11 @@ class FullpageReact extends React.Component {
 }
 
 function scrollNavStart(nav) {
-  // make the nav fixed when we start scrolling horizontally
   nav.style.position = 'fixed';
 }
 
 function scrollNavEnd(nav) {
-  // make the nav absolute when scroll finishes
   nav.style.position = 'absolute';
 }
 
-module.exports = FullpageReact;
+export default FullpageReact

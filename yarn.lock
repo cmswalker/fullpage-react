@@ -2075,9 +2075,9 @@ fstream@^1.0.0, fstream@^1.0.10, fstream@^1.0.2:
     mkdirp ">=0.5 0"
     rimraf "2"
 
-fullpage-react@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/fullpage-react/-/fullpage-react-3.0.1.tgz#1fd2ee3b0ae5323b5707abbcf423deee6cdea871"
+fullpage-react@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/fullpage-react/-/fullpage-react-3.0.2.tgz#1efdef28f83a2fdb98dfdde3f46b18241cc3bda9"
   dependencies:
     scroll-swipe "0.0.9"
 
@@ -2430,6 +2430,10 @@ inquirer@^0.12.0:
     string-width "^1.0.1"
     strip-ansi "^3.0.0"
     through "^2.3.6"
+
+insert-css@0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/insert-css/-/insert-css-0.0.0.tgz#2304bfa6f893abecb8ff9ca8d9c7605d94cf2911"
 
 interpret@^1.0.0:
   version "1.0.3"
@@ -3005,6 +3009,12 @@ nopt@^4.0.1:
   dependencies:
     abbrev "1"
     osenv "^0.1.4"
+
+normalize-css@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/normalize-css/-/normalize-css-2.3.1.tgz#fc03e3b91e3a51aa7a1836bae7b2b6ac6d51e156"
+  dependencies:
+    insert-css "0.0.0"
 
 normalize-package-data@^2.3.2:
   version "2.3.8"

@@ -31,7 +31,7 @@ You can either require this module in your own bundler/build chain or use it dir
 
 ###### Component Option Boilerplate
 
-```
+```jsx
 const { Fullpage, Slide, HorizontalSlider } = require('fullpage-react');
 
 const fullPageOptions = {

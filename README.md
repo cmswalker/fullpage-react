@@ -1,35 +1,31 @@
-# Fullpage-React
+# [Fullpage-React](https://cmswalker.github.io/fullpage-react/)
 
-100% React Components and vanilla JS.
+100% React Components and vanilla JS. No other Dependencies.
 
-Demo can be found [here](https://cmswalker.github.io/fullpage-react/)
+### Demo can be found [here](https://cmswalker.github.io/fullpage-react/) along with the [source code](https://github.com/cmswalker/fullpage-react/blob/master/examples/fullpageReactExample.js)
 
-A larger example setup can be found [here](https://github.com/cmswalker/fullpage-react/blob/master/examples/fullpageReactExample.js)
+### [Starter Example](https://github.com/cmswalker/fullpage-react/tree/master/examples)
+
+### On [NPM](https://www.npmjs.com/package/fullpage-react)
+
+###### Built for UMD
+You can either require this module in your own bundler/build chain or use it directly in the browser via a [script](https://raw.githubusercontent.com/cmswalker/fullpage-react/master/FullpageReact.js). If dropped directly into the browser, there will be a global variable named `FullpageReact`
+
 ---
 
 ### Basic Setup
 
-#### [NPM](https://www.npmjs.com/package/fullpage-react)
-
 ```
 npm install fullpage-react --save
-
-```
-
-#### Yarn
-```
 yarn add fullpage-react
+
 ```
 
-All styling can be done via inline or stylesheets.
-Each component from Fullpage-React requires its own block of options
-
-###### Built for UMD
-You can either require this module in your own bundler/build chain or use it directly in the browser. If dropped directly into the browser, there will be a global variable named `FullpageReact`
+Inline component styles are supported by default.
 
 ---
 
-###### Component Option Boilerplate
+###### Component Boilerplate
 
 ```jsx
 const { Fullpage, Slide, HorizontalSlider } = require('fullpage-react');
@@ -70,7 +66,7 @@ fullpageOptions.slides = slides;
 
 ```
 
-###### Events
+###### Events API
 
-There are two functions located on the Fullpage class. These are used for manually changing the vertical and horizontal slides via UI.
+There are two functions located on the `Fullpage` class. These are used for manually changing the vertical and horizontal slides via UI.
 An example can be found here [here](https://github.com/cmswalker/fullpage-react/blob/master/examples/fullpageReactExample.js)

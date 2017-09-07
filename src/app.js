@@ -9,7 +9,7 @@ require('./styles/main.styl');
 
 const fullPageOptions = {
   scrollSensitivity: 7,
-  touchSensitivity: 7,
+  touchSensitivity: -3,
   scrollSpeed: 500,
   resetSlides: true,
   hideScrollBars: true,

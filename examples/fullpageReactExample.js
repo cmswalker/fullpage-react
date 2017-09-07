@@ -14,7 +14,7 @@ const fullPageOptions = {
 
   // for touchStart/touchEnd/mobile scrolling
   // represents the level of force required to generate a slide change on mobile, 10 is default
-  touchSensitivity: 7,
+  touchSensitivity: -3,
   scrollSpeed: 500,
   resetSlides: true,
   hideScrollBars: true,

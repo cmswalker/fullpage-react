@@ -116,7 +116,7 @@ class FullpageReact extends React.Component {
       <Slide className="pink-b">
         <div className="sub-title">100% React components, no jQuery. <br/> Easy API</div>
       </Slide>,
-      <Slide style={{backgroundColor: '#2B2C28'}}>
+      <Slide className="coal-b">
         <div className="sub-title">Infinite Scrolling -></div>
       </Slide>
     ];
@@ -125,7 +125,7 @@ class FullpageReact extends React.Component {
     const horizontalSlider = <HorizontalSlider id='horizontal-slider-1' className='slide ' {...horizontalSliderProps}>{horizontalNav}</HorizontalSlider>;
 
     const verticalSlides = [
-      <Slide className="slide ice-b">
+      <Slide className="slide pink-b">
       <div className="arrow-down arrow-down-2 arrow-title-1"></div>
         <div className="arrow-down arrow-down-2 arrow-title-2"></div>
         <div className="arrow-down arrow-down-2 arrow-title-3"></div>

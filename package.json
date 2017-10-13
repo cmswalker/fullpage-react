@@ -24,11 +24,18 @@
   },
   "keywords": [
     "react",
-    "react-fullpage",
     "fullpage",
+    "fullpage.js",
+    "react-fullpage",
+    "fullpage-react",
+    "fullpage-scroll",
     "scroll",
+    "swipe",
     "slide",
-    "slider"
+    "slider",
+    "react-scroll",
+    "react-slider",
+    "react-slideshow"
   ],
   "dependencies": {
     "scroll-swipe": "0.0.9"

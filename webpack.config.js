@@ -61,13 +61,13 @@ const config = {
 }
 
 if (isProduction) {
-  config.plugins.push(
-    new webpack.optimize.UglifyJsPlugin({
-      compress: true,
-      comments: false,
-      sourceMap: true
-    })
-  );
+  // config.plugins.push(
+  //   new webpack.optimize.UglifyJsPlugin({
+  //     compress: true,
+  //     comments: false,
+  //     sourceMap: true
+  //   })
+  // );
 } else {
 
 }

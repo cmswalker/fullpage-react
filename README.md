@@ -62,7 +62,7 @@ const slides = [
   <HorizontalSlider {...horizontalSliderProps}></HorizontalSlider>
   <Slide> Slide 3 </Slide>
 ];
-fullpageOptions.slides = slides;
+fullPageOptions.slides = slides;
 
 <Fullpage {...fullPageOptions} />
 

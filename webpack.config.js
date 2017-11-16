@@ -67,8 +67,8 @@ if (isProduction) {
   };
 
   config.externals = {
-    'React': 'react',
-    'ReactDOM': 'react-dom'
+    'react': 'React',
+    'react-dom': 'ReactDOM'
   };
 
   config.output = {
@@ -79,14 +79,6 @@ if (isProduction) {
     libraryTarget: 'umd',
     umdNamedDefine: true
   };
-
-  config.plugins.push(
-    new webpack.optimize.UglifyJsPlugin({
-      compress: true,
-      comments: false,
-      sourceMap: true
-    })
-  );
 
 } else {
   config.plugins.push(new HtmlwebpackPlugin({

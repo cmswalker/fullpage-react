@@ -1,2 +1,1730 @@
-!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define("FullpageReact",[],t):"object"==typeof exports?exports.FullpageReact=t():e.FullpageReact=t()}(this,function(){return function(e){function t(r){if(n[r])return n[r].exports;var o=n[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,t),o.l=!0,o.exports}var n={};return t.m=e,t.c=n,t.i=function(e){return e},t.d=function(e,n,r){t.o(e,n)||Object.defineProperty(e,n,{configurable:!1,enumerable:!0,get:r})},t.n=function(e){var n=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(n,"a",n),n},t.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},t.p="/",t(t.s=11)}([function(e,t){function n(){throw new Error("setTimeout has not been defined")}function r(){throw new Error("clearTimeout has not been defined")}function o(e){if(c===setTimeout)return setTimeout(e,0);if((c===n||!c)&&setTimeout)return c=setTimeout,setTimeout(e,0);try{return c(e,0)}catch(t){try{return c.call(null,e,0)}catch(t){return c.call(this,e,0)}}}function i(e){if(f===clearTimeout)return clearTimeout(e);if((f===r||!f)&&clearTimeout)return f=clearTimeout,clearTimeout(e);try{return f(e)}catch(t){try{return f.call(null,e)}catch(t){return f.call(this,e)}}}function l(){y&&h&&(y=!1,h.length?p=h.concat(p):v=-1,p.length&&a())}function a(){if(!y){var e=o(l);y=!0;for(var t=p.length;t;){for(h=p,p=[];++v<t;)h&&h[v].run();v=-1,t=p.length}h=null,y=!1,i(e)}}function u(e,t){this.fun=e,this.array=t}function s(){}var c,f,d=e.exports={};!function(){try{c="function"==typeof setTimeout?setTimeout:n}catch(e){c=n}try{f="function"==typeof clearTimeout?clearTimeout:r}catch(e){f=r}}();var h,p=[],y=!1,v=-1;d.nextTick=function(e){var t=new Array(arguments.length-1);if(arguments.length>1)for(var n=1;n<arguments.length;n++)t[n-1]=arguments[n];p.push(new u(e,t)),1!==p.length||y||o(a)},u.prototype.run=function(){this.fun.apply(null,this.array)},d.title="browser",d.browser=!0,d.env={},d.argv=[],d.version="",d.versions={},d.on=s,d.addListener=s,d.once=s,d.off=s,d.removeListener=s,d.removeAllListeners=s,d.emit=s,d.prependListener=s,d.prependOnceListener=s,d.listeners=function(e){return[]},d.binding=function(e){throw new Error("process.binding is not supported")},d.cwd=function(){return"/"},d.chdir=function(e){throw new Error("process.chdir is not supported")},d.umask=function(){return 0}},function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var r=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var n=arguments[t];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(e[r]=n[r])}return e},o=n(3),i=function(e){return e&&e.__esModule?e:{default:e}}(o),l=function(e){var t=e.render,n=e.className,o=e.window,l=e.horizontal,a=e.horizontalSliderName;if(!t)return null;var u=Array.isArray(e.children)?e.children:[e.children],s=o.innerWidth,c=o.innerHeight,f=e.style||{},d=Object.assign({overflow:"hidden",width:s,height:c,position:"relative"},f),h=l?["HorizontalSlide"]:["VerticalSlide"];n&&h.push(n),h=h.join(" ");var p={"data-slide":l?"HorizontalSlide":"VerticalSlide","data-horizontal-slider":a||null};return i.default.createElement("div",r({className:h,id:e.id},p,{style:d}),u)};t.default=l},function(e,t,n){"use strict";function r(e){return function(){return e}}var o=function(){};o.thatReturns=r,o.thatReturnsFalse=r(!1),o.thatReturnsTrue=r(!0),o.thatReturnsNull=r(null),o.thatReturnsThis=function(){return this},o.thatReturnsArgument=function(e){return e},e.exports=o},function(e,t,n){"use strict";(function(t){"production"===t.env.NODE_ENV?e.exports=n(19):e.exports=n(18)}).call(t,n(0))},function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{default:e}}function o(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function i(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function l(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}Object.defineProperty(t,"__esModule",{value:!0});var a=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var n=arguments[t];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(e[r]=n[r])}return e},u=function(){function e(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(t,n,r){return n&&e(t.prototype,n),r&&e(t,r),t}}(),s=n(3),c=r(s),f=n(1),d=r(f),h=n(5),p=function(e){function t(e){o(this,t);var n=i(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,e));return n.name=n.props.name,n}return l(t,e),u(t,[{key:"componentDidMount",value:function(){var e=this.props,t=e.activeSlide,n=e.document,r=e.name;(0,e.cache)(this);var o=(0,h.getNodes)(n,'data-horizontal-slider="'+r+'"');(0,h.hideAllButActive)(t,o)}},{key:"render",value:function(){var e=this,t=this.props,n=t.name,r=t.children,o=t.window;if(!n)throw new Error("name is a required prop for HorizontalSlider");var i=t.slides.reduce(function(e,t){return t?("function"!=typeof t.type?e.other.push(t):e.slides.push(t),e):e},{slides:[],other:[]}),l=i.other,u=i.slides,s=o.innerWidth,f=o.innerHeight,h={"data-slide":"HorizontalSlider","data-name":n},p=(t.className||"")+"HorizontalSlider",y=t.hideScrollBars?"hidden":"auto",v=Object.assign({},t.style,{height:o.innerHeight,width:s,position:"relative",overflowX:y,whiteSpace:"nowrap",padding:"0px",margin:"0"}),m={overflow:"hidden",whiteSpace:"normal",display:"inline-block",height:f,width:s};return c.default.createElement("div",a({ref:function(t){return e.node=t},className:p,id:t.id},h,{style:v}),l.map(function(e,t){var n=e.props||{};return c.default.createElement("div",a({key:t},n))}),u.map(function(e,t){if(!e)return null;var r=Object.assign({},m,l),i=e.props||{},l=i.style||{};return c.default.createElement(d.default,a({render:!0,key:t,horizontalSliderName:n,slide:e,id:i.id,className:i.className||"",window:o,horizontal:!0,style:r},i),i.children)}),r)}}]),t}(c.default.Component);t.default=p},function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{default:e}}function o(e){if(e&&e.__esModule)return e;var t={};if(null!=e)for(var n in e)Object.prototype.hasOwnProperty.call(e,n)&&(t[n]=e[n]);return t.default=e,t}function i(e){for(var t=[];e;){if(t.push(e),"HTML"===e.tagName)return t.push(document),t.push(window),t;e=e.parentElement}}function l(e,t){return e.querySelectorAll("["+t+"]")}function a(e,t){Array.prototype.forEach.call(t,function(t,n){t.style.display=n===e?"inline-block":"none"})}function u(e){Array.prototype.forEach.call(e,function(e){e.style.display="inline-block"})}function s(e){return e?[["edge",/Edge\/([0-9\._]+)/],["yandexbrowser",/YaBrowser\/([0-9\._]+)/],["vivaldi",/Vivaldi\/([0-9\.]+)/],["kakaotalk",/KAKAOTALK\s([0-9\.]+)/],["chrome",/(?!Chrom.*OPR)Chrom(?:e|ium)\/([0-9\.]+)(:?\s|$)/],["phantomjs",/PhantomJS\/([0-9\.]+)(:?\s|$)/],["crios",/CriOS\/([0-9\.]+)(:?\s|$)/],["firefox",/Firefox\/([0-9\.]+)(?:\s|$)/],["fxios",/FxiOS\/([0-9\.]+)/],["opera",/Opera\/([0-9\.]+)(?:\s|$)/],["opera",/OPR\/([0-9\.]+)(:?\s|$)$/],["ie",/Trident\/7\.0.*rv\:([0-9\.]+).*\).*Gecko$/],["ie",/MSIE\s([0-9\.]+);.*Trident\/[4-7].0/],["ie",/MSIE\s(7\.0)/],["bb10",/BB10;\sTouch.*Version\/([0-9\.]+)/],["android",/Android\s([0-9\.]+)/],["ios",/Version\/([0-9\._]+).*Mobile.*Safari.*/],["safari",/Version\/([0-9\._]+).*Safari/]].map(function(t){if(t[1].test(e)){var n=t[1].exec(e),r=n&&n[1].split(/[._]/).slice(0,3);return r&&r.length<3&&Array.prototype.push.apply(r,1==r.length?[0,0]:[0]),{name:t[0],version:r.join("."),os:(0,m.default)(e)}}}).filter(Boolean).shift():null}Object.defineProperty(t,"__esModule",{value:!0}),t.detectBrowser=t.getNodes=t.scrollTo=t.renderUtils=t.INTENT_MAP=t.hideAllButActive=t.showAll=t.constants=t.composedPath=void 0;var c=n(14),f=o(c),d=n(15),h=r(d),p=n(12),y=o(p),v=n(13),m=r(v),b={VERTICAL:{0:"UP",1:"DOWN"},HORIZONTAL:{0:"LEFT",1:"RIGHT"}};t.composedPath=i,t.constants=y,t.showAll=u,t.hideAllButActive=a,t.INTENT_MAP=b,t.renderUtils=f,t.scrollTo=h.default,t.getNodes=l,t.detectBrowser=s},function(e,t,n){"use strict";(function(t){var n={};"production"!==t.env.NODE_ENV&&Object.freeze(n),e.exports=n}).call(t,n(0))},function(e,t,n){"use strict";(function(t){function n(e,t,n,o,i,l,a,u){if(r(t),!e){var s;if(void 0===t)s=new Error("Minified exception occurred; use the non-minified dev environment for the full error message and additional helpful warnings.");else{var c=[n,o,i,l,a,u],f=0;s=new Error(t.replace(/%s/g,function(){return c[f++]})),s.name="Invariant Violation"}throw s.framesToPop=1,s}}var r=function(e){};"production"!==t.env.NODE_ENV&&(r=function(e){if(void 0===e)throw new Error("invariant requires an error message argument")}),e.exports=n}).call(t,n(0))},function(e,t,n){"use strict";(function(t){var r=n(2),o=r;if("production"!==t.env.NODE_ENV){var i=function(e){for(var t=arguments.length,n=Array(t>1?t-1:0),r=1;r<t;r++)n[r-1]=arguments[r];var o=0,i="Warning: "+e.replace(/%s/g,function(){return n[o++]});"undefined"!=typeof console&&console.error(i);try{throw new Error(i)}catch(e){}};o=function(e,t){if(void 0===t)throw new Error("`warning(condition, format, ...args)` requires a warning message argument");if(0!==t.indexOf("Failed Composite propType: ")&&!e){for(var n=arguments.length,r=Array(n>2?n-2:0),o=2;o<n;o++)r[o-2]=arguments[o];i.apply(void 0,[t].concat(r))}}}e.exports=o}).call(t,n(0))},function(e,t,n){"use strict";function r(e){if(null===e||void 0===e)throw new TypeError("Object.assign cannot be called with null or undefined");return Object(e)}var o=Object.getOwnPropertySymbols,i=Object.prototype.hasOwnProperty,l=Object.prototype.propertyIsEnumerable;e.exports=function(){try{if(!Object.assign)return!1;var e=new String("abc");if(e[5]="de","5"===Object.getOwnPropertyNames(e)[0])return!1;for(var t={},n=0;n<10;n++)t["_"+String.fromCharCode(n)]=n;if("0123456789"!==Object.getOwnPropertyNames(t).map(function(e){return t[e]}).join(""))return!1;var r={};return"abcdefghijklmnopqrst".split("").forEach(function(e){r[e]=e}),"abcdefghijklmnopqrst"===Object.keys(Object.assign({},r)).join("")}catch(e){return!1}}()?Object.assign:function(e,t){for(var n,a,u=r(e),s=1;s<arguments.length;s++){n=Object(arguments[s]);for(var c in n)i.call(n,c)&&(u[c]=n[c]);if(o){a=o(n);for(var f=0;f<a.length;f++)l.call(n,a[f])&&(u[a[f]]=n[a[f]])}}return u}},function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{default:e}}function o(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function l(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function a(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}function u(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:0;return{activeSlide:e,lastActive:e-1}}function s(e,t,n){return e[t||n].parentNode.insertBefore(e[n],e[t]),e}function c(e){s(e,0,e.length-1)}function f(e){s(e,null,e.length-1)}function d(e,t,n){var r=t.slides,o=n.activeSlide;return!n.scrollPending&&(!!t.infinite||!(e>r.length-1||e<0)&&e!=o)}function h(){return{flush:L,killAll:L,listen:L}}function p(){var e=void 0;if("undefined"!=typeof navigator&&navigator&&(e=navigator.userAgent),!e)return document.body;var t=E.detectBrowser(e),n=t.name,r=t.version,o=(t.os,r.split(".")),i=y(o,3);i[0],i[1],i[2];return new Set(["firefox","chrome"]).has(n)?document.documentElement:document.body}Object.defineProperty(t,"__esModule",{value:!0});var y=function(){function e(e,t){var n=[],r=!0,o=!1,i=void 0;try{for(var l,a=e[Symbol.iterator]();!(r=(l=a.next()).done)&&(n.push(l.value),!t||n.length!==t);r=!0);}catch(e){o=!0,i=e}finally{try{!r&&a.return&&a.return()}finally{if(o)throw i}}return n}return function(t,n){if(Array.isArray(t))return t;if(Symbol.iterator in Object(t))return e(t,n);throw new TypeError("Invalid attempt to destructure non-iterable instance")}}(),v=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var n=arguments[t];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(e[r]=n[r])}return e},m=function(){function e(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(t,n,r){return n&&e(t.prototype,n),r&&e(t,r),t}}(),b=n(3),g=r(b),w=n(20),S=r(w),O=n(5),E=function(e){if(e&&e.__esModule)return e;var t={};if(null!=e)for(var n in e)Object.prototype.hasOwnProperty.call(e,n)&&(t[n]=e[n]);return t.default=e,t}(O),_=n(1),k=r(_),A=n(4),T=r(A),P=E.constants,j=E.scrollTo,N=E.renderUtils,R=E.INTENT_MAP,x=E.getNodes,C=E.showAll,W=E.hideAllButActive,I=E.composedPath,L=P.noOp,M=N.KEY_IDX,D={},z={},F=function(e){function t(e){i(this,t);var n=l(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,e)),r=n.props;if(r.infinite&&r.resetSlides)throw new Error("Fullpage Component cannot have both infinite and resetSlides as truthy props");var o=r.slides,a=r.window;if(!o||!o.length)throw new Error("Please provide slides for Fullpage");a&&(z.window=a,z.document=z.window.document);var s={},c=o.reduce(function(e,t,n){var r=t.props.name;return t.props.slides&&r&&(e[r]=u(0),s[n]=r),e},{});c.horizontalMap=s,n.name="Fullpage";var f=r.activeSlide||0;return n.scrollSensitivity=r.scrollSensitivity||10,n.touchSensitivity=r.touchSensitivity||10,n.scrollSpeed=r.scrollSpeed||500,n.node=null,n.ss=null,n.verticalRoot=p(),n.onHorizontalChange=r.onHorizontalChange||L,n.onSlideChangeStart=r.onSlideChangeStart||L,n.onSlideChangeEnd=r.onSlideChangeEnd||L,n.onScrollAction=n.onScrollAction.bind(n),n.onVerticalScroll=n.onVerticalScroll.bind(n),n.onHorizontalScroll=n.onHorizontalScroll.bind(n),n.resize=n.resize.bind(n),n.isLocked=!1,n.handleScroll=n.handleScroll.bind(n),n.hSlideCache={},n.cacheHslide=function(e){n.hSlideCache[e.name]=e},D=n,n.state=Object.assign({scrollPending:!1,window:null,document:null},c,u(f)),n}return a(t,e),m(t,[{key:"componentDidMount",value:function(){var e=this;if(z.window||(z.window=window||this.props.window||null,z.document=z.window?z.window.document:null),!z.window)throw new Error("Window is not available at componentDidMount, please provide a stub and pass window into props when available");this.setState({window:z.window,document:z.document},function(){e.init.call(e)})}},{key:"init",value:function(){var e=this.state.window;e.addEventListener("resize",this.resize.bind(this,e)),this.resize(e)}},{key:"hideScrollBars",value:function(){var e=this.props.hideScrollBars,t=this.state.document;e&&!this.isWithinBreakpoint.call(this)&&(t.documentElement.style.overflow="hidden",t.body.style.overflow="hidden")}},{key:"showScrollBars",value:function(){var e=this.state.document;e.documentElement.style.overflow="auto",e.body.style.overflow="auto"}},{key:"lockScroll",value:function(){var e=this.node;this.props.enableArrowKeys&&window.addEventListener("keydown",this.checkKey.bind(this));var t=new S.default({target:e,scrollSensitivity:3*this.scrollSensitivity,touchSensitivity:3*this.touchSensitivity,scrollPreventDefault:!0,touchPreventDefault:!0,scrollCb:this.onScrollAction,touchCb:this.onScrollAction});this.ss=t,this.isLocked=!0}},{key:"unlockScroll",value:function(){var e=this.props.enableArrowKeys;(this.ss||h()).killAll(),this.ss=null,e&&window.removeEventListener("keydown",this.checkKey.bind(this)),this.isLocked=!1}},{key:"isWithinBreakpoint",value:function(){var e=this.props.breakpoint;if(!e)return!1;var t=this.state.window.innerWidth||1/0;return e&&e>=t}},{key:"resize",value:function(e){this.setState({width:e.innerWidth,height:e.innerHeight});var t=this.isWithinBreakpoint.call(this);if(t&&this.isLocked)return void this.unlockScroll.call(this);t||this.isLocked||this.lockScroll.call(this)}},{key:"onScrollAction",value:function(e){var t=e.direction,n=e.intent,r=e.startEvent,o=this.state,i=this.ss||h();if(o.scrollPending)return i.listen();var l=R[t];if("VERTICAL"===t)return this.onVerticalScroll(l[n],r);var a=r.path||r.composedPath||I(r.target),u=a.find(function(e){return!!e.dataset&&"HorizontalSlider"===e.dataset.slide});if(!u)return i.listen();this.onHorizontalScroll(l[n],u)}},{key:"onVerticalScroll",value:function(e){var t=this,n=this.state,r=n.window,o=(n.document,n.activeSlide),i=this.props.slides,l="DOWN"===e?o+1:o-1;if(l<0||l>i.length-1){return(this.ss||h()).listen()}var a=l*r.innerHeight,u={activeSlide:l,lastActive:o};this.setState({scrollPending:!0},function(){t.handleScroll(t.verticalRoot,"scrollTop",a,u,t.name)})}},{key:"onHorizontalScroll",value:function(e,t){var n=t.dataset.name,r=this.state[n].activeSlide,i="RIGHT"===e?r+1:r-1,l=this.state.window.innerWidth,a=D.hSlideCache[n],u=a.props,s=u.infinite,c=x(this.state.document,'data-horizontal-slider="'+n+'"'),f=r*l,d=i*l,h=this.determineHSlide(a,r,i,f,d,c);f=h.leftVal,i=h.next,d=h.to;var p=o({},n,{activeSlide:i,lastActive:r});this.handleHorizontal(n,t,c,f,d,i,p,s)}},{key:"determineHSlide",value:function(e,t,n,r,o,i){var l=e.props,a=l.infinite,u=l.resetSlides,s=this.state.window.innerWidth,f=this.ss||h(),d=i.length,p=0===t&&-1===n,y=t===d-1&&n===d;return a||u||!p&&!y?(a&&p?(n=d-1,c(i),r=s,o=0):a&&y&&(n=0,c(i),r=0,o=s),{next:n,leftVal:r,to:o}):f.listen()}},{key:"handleHorizontal",value:function(e,t,n,r,o,i,l,a){var u=this;C(n),t.scrollLeft=r,this.setState({scrollPending:!0},function(){u.handleScroll(t,"scrollLeft",o,l,e,function(){a&&(f(n),t.scrollLeft=innerWidth*i),W(i,n)})})}},{key:"handleScroll",value:function(e,t,n,r,o){var i=this,l=arguments.length>5&&void 0!==arguments[5]?arguments[5]:L,a=this.ss||h();a.flush(),this.onSlideChangeStart(o,this.props,this.state,r[o]||r),j(e,t,n,this.scrollSpeed,function(){r.scrollPending=!1,i.setState(r,function(){l(),i.onSlideChangeEnd(o,i.props,i.state,r[o]||r),setTimeout(function(){a.flush(),a.listen()},200)})})}},{key:"componentWillUnmount",value:function(){(this.ss||h()).killAll(),this.ss=null;var e=this.state.window;e.removeEventListener("resize",this.resize.bind(this)),this.props.enableArrowKeys&&e.removeEventListener("keydown",this.checkKey.bind(this))}},{key:"checkKey",value:function(e){var n=M[e.keyCode];if(n){var r="UP"===n||"LEFT"===n?-1:1;if("VERTICAL"===("UP"===n||"DOWN"===n?"VERTICAL":"HORIZONTAL"))return void t.changeFullpageSlide(this.state.activeSlide+r);var o=this.state.horizontalMap[this.state.activeSlide];if(o){var i=this.state[o].activeSlide;t.changeHorizontalSlide(o,i+r)}}}},{key:"render",value:function(){var e=this,t=this.state,n=this.props,r=t.window,o=t.document,i=n.children||null;if(!r)return i;var l=n.slides.reduce(function(e,t){return t?("function"!=typeof t.type?e.other.push(t):e.slides.push(t),e):e},{slides:[],other:[]}),a=l.other,u=l.slides;return g.default.createElement("div",{ref:function(t){return e.node=t},className:"Fullpage"},i,a.map(function(e,t){var n=e.props||{};return g.default.createElement("div",v({key:t},n))}),u.map(function(i,l){var a=i.props||{},u=a.children;if(a.slides){var s=a.name;return g.default.createElement(T.default,v({cache:e.cacheHslide.bind(e),window:r,document:o,activeSlide:t[s].activeSlide,hideScrollBars:n.hideScrollBars},a,{key:l}),u)}return g.default.createElement(k.default,v({render:!0,className:a.className||"",id:a.id,window:r,document:o,key:l},a),u)}))}}],[{key:"changeHorizontalSlide",value:function(e,t){t=+t;var n=D.hSlideCache[e];if(!n)throw Error("cannt find HorizontalSlider by name",e);var r=n.node,i=n.props,l=i.infinite;if(d(t,i,D.state)){var a=D.state[e].activeSlide,u=x(D.state.document,'data-horizontal-slider="'+e+'"'),s=a*innerWidth,c=t*innerWidth,f=D.determineHSlide.call(D,n,a,t,s,c,u);s=f.leftVal,t=f.next,c=f.to;var h=o({},e,{activeSlide:t,lastActive:a});D.handleHorizontal.call(D,e,r,u,s,c,t,h,l)}}},{key:"changeFullpageSlide",value:function(e){var t=D,n=t.props,r=t.state,o=r.activeSlide,i=r.window;r.document;if(d(e,n,r)){var l={activeSlide:e,lastActive:o},a=e*i.innerHeight;t.setState({scrollPending:!0},function(){t.handleScroll(t.verticalRoot,"scrollTop",a,l,t.name)})}}}]),t}(g.default.Component);t.default=F},function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0}),t.HorizontalSlider=t.Slide=t.Fullpage=void 0;var o=n(10),i=r(o),l=n(1),a=r(l),u=n(4),s=r(u);t.Fullpage=i.default,t.Slide=a.default,t.HorizontalSlider=s.default},function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var r=function(){};t.INCREMENT="INCREMENT",t.DECREMENT="DECREMENT",t.VERTICAL="VERTICAL",t.HORIZONTAL="HORIZONTAL",t.I_BLOCK="inline-block",t.HEAD="HEAD",t.TAIL="TAIL",t.BLOCK="block",t.NONE="none",t.noOp=r},function(e,t,n){"use strict";e.exports=function(e){var t=[{name:"iOS",rule:/iP(hone|od|ad)/},{name:"Android OS",rule:/Android/},{name:"BlackBerry OS",rule:/BlackBerry|BB10/},{name:"Windows Mobile",rule:/IEMobile/},{name:"Amazon OS",rule:/Kindle/},{name:"Windows 3.11",rule:/Win16/},{name:"Windows 95",rule:/(Windows 95)|(Win95)|(Windows_95)/},{name:"Windows 98",rule:/(Windows 98)|(Win98)/},{name:"Windows 2000",rule:/(Windows NT 5.0)|(Windows 2000)/},{name:"Windows XP",rule:/(Windows NT 5.1)|(Windows XP)/},{name:"Windows Server 2003",rule:/(Windows NT 5.2)/},{name:"Windows Vista",rule:/(Windows NT 6.0)/},{name:"Windows 7",rule:/(Windows NT 6.1)/},{name:"Windows 8",rule:/(Windows NT 6.2)/},{name:"Windows 8.1",rule:/(Windows NT 6.3)/},{name:"Windows 10",rule:/(Windows NT 10.0)/},{name:"Windows ME",rule:/Windows ME/},{name:"Open BSD",rule:/OpenBSD/},{name:"Sun OS",rule:/SunOS/},{name:"Linux",rule:/(Linux)|(X11)/},{name:"Mac OS",rule:/(Mac_PowerPC)|(Macintosh)/},{name:"QNX",rule:/QNX/},{name:"BeOS",rule:/BeOS/},{name:"OS/2",rule:/OS\/2/},{name:"Search Bot",rule:/(nuhk)|(Googlebot)|(Yammybot)|(Openbot)|(Slurp)|(MSNBot)|(Ask Jeeves\/Teoma)|(ia_archiver)/}],n=t.filter(function(t){if(e.match(t.rule))return!0});return n&&n[0]?n[0].name:null}},function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var r={37:"LEFT",38:"UP",39:"RIGHT",40:"DOWN"};t.KEY_IDX=r},function(e,t,n){"use strict";function r(e,t,n,r,i){function l(){c+=s;var n=o(c,a,u,r);if(e[t]=n,c>=r)return cancelAnimationFrame(f),i();f=requestAnimationFrame(l)}var a=e[t],u=n-a,s=10,c=0,f=requestAnimationFrame(l)}function o(e,t,n,r){return e/=r,-n*e*(e-2)+t}Object.defineProperty(t,"__esModule",{value:!0}),t.default=r},function(e,t,n){"use strict";(function(t){function r(e,n,r,u,s){if("production"!==t.env.NODE_ENV)for(var c in e)if(e.hasOwnProperty(c)){var f;try{o("function"==typeof e[c],"%s: %s type `%s` is invalid; it must be a function, usually from the `prop-types` package, but received `%s`.",u||"React class",r,c,typeof e[c]),f=e[c](n,c,u,r,null,l)}catch(e){f=e}if(i(!f||f instanceof Error,"%s: type specification of %s `%s` is invalid; the type checker function must return `null` or an `Error` but returned a %s. You may have forgotten to pass an argument to the type checker creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and shape all require an argument).",u||"React class",r,c,typeof f),f instanceof Error&&!(f.message in a)){a[f.message]=!0;var d=s?s():"";i(!1,"Failed %s type: %s%s",r,f.message,null!=d?d:"")}}}if("production"!==t.env.NODE_ENV)var o=n(7),i=n(8),l=n(17),a={};e.exports=r}).call(t,n(0))},function(e,t,n){"use strict";e.exports="SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED"},function(e,t,n){"use strict";(function(t){"production"!==t.env.NODE_ENV&&function(){function t(e,t){var n=e.constructor,r=n&&(n.displayName||n.name)||"ReactClass",o=r+"."+t;Z[o]||(V(!1,"%s(...): Can only update a mounted or mounting component. This usually means you called %s() on an unmounted component. This is a no-op.\n\nPlease check the code for the %s component.",t,t,r),Z[o]=!0)}function r(e,t,n){this.props=e,this.context=t,this.refs=$,this.updater=n||G}function o(e,t,n){this.props=e,this.context=t,this.refs=$,this.updater=n||G}function i(){}function l(e,t,n){this.props=e,this.context=t,this.refs=$,this.updater=n||G}function a(e){if(ie.call(e,"ref")){var t=Object.getOwnPropertyDescriptor(e,"ref").get;if(t&&t.isReactWarning)return!1}return void 0!==e.ref}function u(e){if(ie.call(e,"key")){var t=Object.getOwnPropertyDescriptor(e,"key").get;if(t&&t.isReactWarning)return!1}return void 0!==e.key}function s(e,t){var n=function(){ne||(ne=!0,V(!1,"%s: `key` is not a prop. Trying to access it will result in `undefined` being returned. If you need to access the same value within the child component, you should pass it as a different prop. (https://fb.me/react-special-props)",t))};n.isReactWarning=!0,Object.defineProperty(e,"key",{get:n,configurable:!0})}function c(e,t){var n=function(){re||(re=!0,V(!1,"%s: `ref` is not a prop. Trying to access it will result in `undefined` being returned. If you need to access the same value within the child component, you should pass it as a different prop. (https://fb.me/react-special-props)",t))};n.isReactWarning=!0,Object.defineProperty(e,"ref",{get:n,configurable:!0})}function f(e,t,n){var r,o={},i=null,l=null,f=null,d=null;if(null!=t){a(t)&&(l=t.ref),u(t)&&(i=""+t.key),f=void 0===t.__self?null:t.__self,d=void 0===t.__source?null:t.__source;for(r in t)ie.call(t,r)&&!ae.hasOwnProperty(r)&&(o[r]=t[r])}var h=arguments.length-2;if(1===h)o.children=n;else if(h>1){for(var p=Array(h),y=0;y<h;y++)p[y]=arguments[y+2];Object.freeze&&Object.freeze(p),o.children=p}if(e&&e.defaultProps){var v=e.defaultProps;for(r in v)void 0===o[r]&&(o[r]=v[r])}if((i||l)&&(void 0===o.$$typeof||o.$$typeof!==le)){var m="function"==typeof e?e.displayName||e.name||"Unknown":e;i&&s(o,m),l&&c(o,m)}return ue(e,i,l,f,d,oe.current,o)}function d(e,t){return ue(e.type,t,e.ref,e._self,e._source,e._owner,e.props)}function h(e,t,n){var r,o=H({},e.props),i=e.key,l=e.ref,s=e._self,c=e._source,f=e._owner;if(null!=t){a(t)&&(l=t.ref,f=oe.current),u(t)&&(i=""+t.key);var d;e.type&&e.type.defaultProps&&(d=e.type.defaultProps);for(r in t)ie.call(t,r)&&!ae.hasOwnProperty(r)&&(void 0===t[r]&&void 0!==d?o[r]=d[r]:o[r]=t[r])}var h=arguments.length-2;if(1===h)o.children=n;else if(h>1){for(var p=Array(h),y=0;y<h;y++)p[y]=arguments[y+2];o.children=p}return ue(e.type,i,l,s,c,f,o)}function p(e){return"object"==typeof e&&null!==e&&e.$$typeof===le}function y(e){var t={"=":"=0",":":"=2"};return"$"+(""+e).replace(/[=:]/g,function(e){return t[e]})}function v(e){return(""+e).replace(me,"$&/")}function m(e,t,n,r){if(ge.length){var o=ge.pop();return o.result=e,o.keyPrefix=t,o.func=n,o.context=r,o.count=0,o}return{result:e,keyPrefix:t,func:n,context:r,count:0}}function b(e){e.result=null,e.keyPrefix=null,e.func=null,e.context=null,e.count=0,ge.length<be&&ge.push(e)}function g(e,t,n,r){var o=typeof e;if("undefined"!==o&&"boolean"!==o||(e=null),null===e||"string"===o||"number"===o||"object"===o&&e.$$typeof===de||"object"===o&&e.$$typeof===he)return n(r,e,""===t?pe+S(e,0):t),1;var i,l,a=0,u=""===t?pe:t+ye;if(Array.isArray(e))for(var s=0;s<e.length;s++)i=e[s],l=u+S(i,s),a+=g(i,l,n,r);else{var c=ce&&e[ce]||e[fe];if("function"==typeof c){c===e.entries&&(V(ve,"Using Maps as children is unsupported and will likely yield unexpected results. Convert it to a sequence/iterable of keyed ReactElements instead.%s",se.getStackAddendum()),ve=!0);for(var f,d=c.call(e),h=0;!(f=d.next()).done;)i=f.value,l=u+S(i,h++),a+=g(i,l,n,r)}else if("object"===o){var p="";p=" If you meant to render a collection of children, use an array instead."+se.getStackAddendum();var y=""+e;B(!1,"Objects are not valid as a React child (found: %s).%s","[object Object]"===y?"object with keys {"+Object.keys(e).join(", ")+"}":y,p)}}return a}function w(e,t,n){return null==e?0:g(e,"",t,n)}function S(e,t){return"object"==typeof e&&null!==e&&null!=e.key?y(e.key):t.toString(36)}function O(e,t,n){var r=e.func,o=e.context;r.call(o,t,e.count++)}function E(e,t,n){if(null==e)return e;var r=m(null,null,t,n);w(e,O,r),b(r)}function _(e,t,n){var r=e.result,o=e.keyPrefix,i=e.func,l=e.context,a=i.call(l,t,e.count++);Array.isArray(a)?k(a,r,n,U.thatReturnsArgument):null!=a&&(p(a)&&(a=d(a,o+(!a.key||t&&t.key===a.key?"":v(a.key)+"/")+n)),r.push(a))}function k(e,t,n,r,o){var i="";null!=n&&(i=v(n)+"/");var l=m(t,i,r,o);w(e,_,l),b(l)}function A(e,t,n){if(null==e)return e;var r=[];return k(e,r,null,t,n),r}function T(e,t){return w(e,U.thatReturnsNull,null)}function P(e){var t=[];return k(e,t,null,U.thatReturnsArgument),t}function j(e){return p(e)||B(!1,"React.Children.only expected to receive a single React element child."),e}function N(e){var t=e.type;return"string"==typeof t?t:"function"==typeof t?t.displayName||t.name:null}function R(){if(oe.current){var e=N(oe.current);if(e)return"\n\nCheck the render method of `"+e+"`."}return""}function x(e){if(null!==e&&void 0!==e&&void 0!==e.__source){var t=e.__source;return"\n\nCheck your code at "+t.fileName.replace(/^.*[\\\/]/,"")+":"+t.lineNumber+"."}return""}function C(e){var t=R();if(!t){var n="string"==typeof e?e:e.displayName||e.name;n&&(t="\n\nCheck the top-level render call using <"+n+">.")}return t}function W(e,t){if(e._store&&!e._store.validated&&null==e.key){e._store.validated=!0;var n=C(t);if(!Pe[n]){Pe[n]=!0;var r="";e&&e._owner&&e._owner!==oe.current&&(r=" It was passed a child from "+N(e._owner)+"."),Se=e,V(!1,'Each child in an array or iterator should have a unique "key" prop.%s%s See https://fb.me/react-warning-keys for more information.%s',n,r,Ee()),Se=null}}}function I(e,t){if("object"==typeof e)if(Array.isArray(e))for(var n=0;n<e.length;n++){var r=e[n];p(r)&&W(r,t)}else if(p(e))e._store&&(e._store.validated=!0);else if(e){var o=Ae&&e[Ae]||e[Te];if("function"==typeof o&&o!==e.entries)for(var i,l=o.call(e);!(i=l.next()).done;)p(i.value)&&W(i.value,t)}}function L(e){var t=e.type;if("function"==typeof t){var n=t.displayName||t.name,r=t.propTypes;r&&(Se=e,q(r,e.props,"prop",n,Ee),Se=null),"function"==typeof t.getDefaultProps&&V(t.getDefaultProps.isReactClassApproved,"getDefaultProps is only used on classic React.createClass definitions. Use a static property named `defaultProps` instead.")}}function M(e){Se=e;var t=!0,n=!1,r=void 0;try{for(var o,i=Object.keys(e.props)[Symbol.iterator]();!(t=(o=i.next()).done);t=!0){var l=o.value;if(!ke.has(l)){V(!1,"Invalid prop `%s` supplied to `React.Fragment`. React.Fragment can only have `key` and `children` props.%s",l,Ee());break}}}catch(e){n=!0,r=e}finally{try{!t&&i.return&&i.return()}finally{if(n)throw r}}null!==e.ref&&V(!1,"Invalid attribute `ref` supplied to `React.Fragment`.%s",Ee()),Se=null}function D(e,t,n){var r="string"==typeof e||"function"==typeof e||"symbol"==typeof e||"number"==typeof e;if(!r){var o="";(void 0===e||"object"==typeof e&&null!==e&&0===Object.keys(e).length)&&(o+=" You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.");var i=x(t);o+=i||R(),o+=Ee()||"",V(!1,"React.createElement: type is invalid -- expected a string (for built-in components) or a class/function (for composite components) but got: %s.%s",null==e?e:typeof e,o)}var l=f.apply(this,arguments);if(null==l)return l;if(r)for(var a=2;a<arguments.length;a++)I(arguments[a],e);return"symbol"==typeof e&&e===_e?M(l):L(l),l}function z(e){var t=D.bind(null,e);return t.type=e,Object.defineProperty(t,"type",{enumerable:!1,get:function(){return K(!1,"Factory.type is deprecated. Access the class directly before passing it to createFactory."),Object.defineProperty(this,"type",{value:e}),e}}),t}function F(e,t,n){for(var r=h.apply(this,arguments),o=2;o<arguments.length;o++)I(arguments[o],r.type);return L(r),r}var H=n(9),B=n(7),$=n(6),V=n(8),U=n(2),q=n(16),Y=function(){},X=function(e){for(var t=arguments.length,n=Array(t>1?t-1:0),r=1;r<t;r++)n[r-1]=arguments[r];var o=0,i="Warning: "+e.replace(/%s/g,function(){return n[o++]});"undefined"!=typeof console&&console.warn(i);try{throw new Error(i)}catch(e){}};Y=function(e,t){if(void 0===t)throw new Error("`warning(condition, format, ...args)` requires a warning message argument");if(!e){for(var n=arguments.length,r=Array(n>2?n-2:0),o=2;o<n;o++)r[o-2]=arguments[o];X.apply(void 0,[t].concat(r))}};var K=Y,Z={},G={isMounted:function(e){return!1},enqueueForceUpdate:function(e,n,r){t(e,"forceUpdate")},enqueueReplaceState:function(e,n,r,o){t(e,"replaceState")},enqueueSetState:function(e,n,r,o){t(e,"setState")}};r.prototype.isReactComponent={},r.prototype.setState=function(e,t){"object"!=typeof e&&"function"!=typeof e&&null!=e&&B(!1,"setState(...): takes an object of state variables to update or a function which returns an object of state variables."),this.updater.enqueueSetState(this,e,t,"setState")},r.prototype.forceUpdate=function(e){this.updater.enqueueForceUpdate(this,e,"forceUpdate")};var J={isMounted:["isMounted","Instead, make sure to clean up subscriptions and pending requests in componentWillUnmount to prevent memory leaks."],replaceState:["replaceState","Refactor your code to use setState instead (see https://github.com/facebook/react/issues/3236)."]};for(var Q in J)J.hasOwnProperty(Q)&&function(e,t){Object.defineProperty(r.prototype,e,{get:function(){K(!1,"%s(...) is deprecated in plain JavaScript React classes. %s",t[0],t[1])}})}(Q,J[Q]);i.prototype=r.prototype;var ee=o.prototype=new i;ee.constructor=o,H(ee,r.prototype),ee.isPureReactComponent=!0;var te=l.prototype=new i;te.constructor=l,H(te,r.prototype),te.unstable_isAsyncReactComponent=!0,te.render=function(){return this.props.children};var ne,re,oe={current:null},ie=Object.prototype.hasOwnProperty,le="function"==typeof Symbol&&Symbol.for&&Symbol.for("react.element")||60103,ae={key:!0,ref:!0,__self:!0,__source:!0},ue=function(e,t,n,r,o,i,l){var a={$$typeof:le,type:e,key:t,ref:n,props:l,_owner:i};return a._store={},Object.defineProperty(a._store,"validated",{configurable:!1,enumerable:!1,writable:!0,value:!1}),Object.defineProperty(a,"_self",{configurable:!1,enumerable:!1,writable:!1,value:r}),Object.defineProperty(a,"_source",{configurable:!1,enumerable:!1,writable:!1,value:o}),Object.freeze&&(Object.freeze(a.props),Object.freeze(a)),a},se={};se.getCurrentStack=null,se.getStackAddendum=function(){var e=se.getCurrentStack;return e?e():null};var ce="function"==typeof Symbol&&Symbol.iterator,fe="@@iterator",de="function"==typeof Symbol&&Symbol.for&&Symbol.for("react.element")||60103,he="function"==typeof Symbol&&Symbol.for&&Symbol.for("react.portal")||60106,pe=".",ye=":",ve=!1,me=/\/+/g,be=10,ge=[],we=function(e,t,n){return"\n    in "+(e||"Unknown")+(t?" (at "+t.fileName.replace(/^.*[\\\/]/,"")+":"+t.lineNumber+")":n?" (created by "+n+")":"")},Se=null,Oe=function(e){return null==e?"#empty":"string"==typeof e||"number"==typeof e?"#text":"string"==typeof e.type?e.type:e.type===_e?"React.Fragment":e.type.displayName||e.type.name||"Unknown"},Ee=function(){var e="";if(Se){var t=Oe(Se),n=Se._owner;e+=we(t,Se._source,n&&N(n))}return e+=se.getStackAddendum()||""},_e="function"==typeof Symbol&&Symbol.for&&Symbol.for("react.fragment")||60107,ke=new Map([["children",!0],["key",!0]]),Ae="function"==typeof Symbol&&Symbol.iterator,Te="@@iterator",Pe={},je=("function"==typeof Symbol&&Symbol.for&&Symbol.for("react.fragment"),{Children:{map:A,forEach:E,count:T,toArray:P,only:j},Component:r,PureComponent:o,unstable_AsyncComponent:l,createElement:D,cloneElement:F,createFactory:z,isValidElement:p,version:"16.1.1",__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:{ReactCurrentOwner:oe,assign:H}});H(je.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED,{ReactDebugCurrentFrame:se,ReactComponentTreeHook:{}});var Ne=Object.freeze({default:je}),Re=Ne&&je||Ne,xe=Re.default?Re.default:Re;e.exports=xe}()}).call(t,n(0))},function(e,t,n){"use strict";function r(e){for(var t=arguments.length-1,n="Minified React error #"+e+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant="+e,r=0;r<t;r++)n+="&args[]="+encodeURIComponent(arguments[r+1]);throw t=Error(n+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings."),t.name="Invariant Violation",t.framesToPop=1,t}function o(e,t,n){this.props=e,this.context=t,this.refs=g,this.updater=n||S}function i(e,t,n){this.props=e,this.context=t,this.refs=g,this.updater=n||S}function l(){}function a(e,t,n){this.props=e,this.context=t,this.refs=g,this.updater=n||S}function u(e,t,n){var r,o={},i=null,l=null;if(null!=t)for(r in void 0!==t.ref&&(l=t.ref),void 0!==t.key&&(i=""+t.key),t)k.call(t,r)&&!T.hasOwnProperty(r)&&(o[r]=t[r]);var a=arguments.length-2;if(1===a)o.children=n;else if(1<a){for(var u=Array(a),s=0;s<a;s++)u[s]=arguments[s+2];o.children=u}if(e&&e.defaultProps)for(r in a=e.defaultProps)void 0===o[r]&&(o[r]=a[r]);return{$$typeof:A,type:e,key:i,ref:l,props:o,_owner:_.current}}function s(e){return"object"==typeof e&&null!==e&&e.$$typeof===A}function c(e){var t={"=":"=0",":":"=2"};return"$"+(""+e).replace(/[=:]/g,function(e){return t[e]})}function f(e,t,n,r){if(x.length){var o=x.pop();return o.result=e,o.keyPrefix=t,o.func=n,o.context=r,o.count=0,o}return{result:e,keyPrefix:t,func:n,context:r,count:0}}function d(e){e.result=null,e.keyPrefix=null,e.func=null,e.context=null,e.count=0,10>x.length&&x.push(e)}function h(e,t,n,o){var i=typeof e;if("undefined"!==i&&"boolean"!==i||(e=null),null===e||"string"===i||"number"===i||"object"===i&&e.$$typeof===j||"object"===i&&e.$$typeof===N)return n(o,e,""===t?"."+p(e,0):t),1;var l=0;if(t=""===t?".":t+":",Array.isArray(e))for(var a=0;a<e.length;a++){i=e[a];var u=t+p(i,a);l+=h(i,u,n,o)}else if("function"==typeof(u=P&&e[P]||e["@@iterator"]))for(e=u.call(e),a=0;!(i=e.next()).done;)i=i.value,u=t+p(i,a++),l+=h(i,u,n,o);else"object"===i&&(n=""+e,r("31","[object Object]"===n?"object with keys {"+Object.keys(e).join(", ")+"}":n,""));return l}function p(e,t){return"object"==typeof e&&null!==e&&null!=e.key?c(e.key):t.toString(36)}function y(e,t){e.func.call(e.context,t,e.count++)}function v(e,t,n){var r=e.result,o=e.keyPrefix;e=e.func.call(e.context,t,e.count++),Array.isArray(e)?m(e,r,n,w.thatReturnsArgument):null!=e&&(s(e)&&(t=o+(!e.key||t&&t.key===e.key?"":(""+e.key).replace(R,"$&/")+"/")+n,e={$$typeof:A,type:e.type,key:t,ref:e.ref,props:e.props,_owner:e._owner}),r.push(e))}function m(e,t,n,r,o){var i="";null!=n&&(i=(""+n).replace(R,"$&/")+"/"),t=f(t,i,r,o),null==e||h(e,"",v,t),d(t)}var b=n(9),g=n(6),w=n(2),S={isMounted:function(){return!1},enqueueForceUpdate:function(){},enqueueReplaceState:function(){},enqueueSetState:function(){}};o.prototype.isReactComponent={},o.prototype.setState=function(e,t){"object"!=typeof e&&"function"!=typeof e&&null!=e&&r("85"),this.updater.enqueueSetState(this,e,t,"setState")},o.prototype.forceUpdate=function(e){this.updater.enqueueForceUpdate(this,e,"forceUpdate")},l.prototype=o.prototype;var O=i.prototype=new l;O.constructor=i,b(O,o.prototype),O.isPureReactComponent=!0;var E=a.prototype=new l;E.constructor=a,b(E,o.prototype),E.unstable_isAsyncReactComponent=!0,E.render=function(){return this.props.children};var _={current:null},k=Object.prototype.hasOwnProperty,A="function"==typeof Symbol&&Symbol.for&&Symbol.for("react.element")||60103,T={key:!0,ref:!0,__self:!0,__source:!0},P="function"==typeof Symbol&&Symbol.iterator,j="function"==typeof Symbol&&Symbol.for&&Symbol.for("react.element")||60103,N="function"==typeof Symbol&&Symbol.for&&Symbol.for("react.portal")||60106,R=/\/+/g,x=[];"function"==typeof Symbol&&Symbol.for&&Symbol.for("react.fragment");var C={Children:{map:function(e,t,n){if(null==e)return e;var r=[];return m(e,r,null,t,n),r},forEach:function(e,t,n){if(null==e)return e;t=f(null,null,t,n),null==e||h(e,"",y,t),d(t)},count:function(e){return null==e?0:h(e,"",w.thatReturnsNull,null)},toArray:function(e){var t=[];return m(e,t,null,w.thatReturnsArgument),t},only:function(e){return s(e)||r("143"),e}},Component:o,PureComponent:i,unstable_AsyncComponent:a,createElement:u,cloneElement:function(e,t,n){var r=b({},e.props),o=e.key,i=e.ref,l=e._owner;if(null!=t){if(void 0!==t.ref&&(i=t.ref,l=_.current),void 0!==t.key&&(o=""+t.key),e.type&&e.type.defaultProps)var a=e.type.defaultProps;for(u in t)k.call(t,u)&&!T.hasOwnProperty(u)&&(r[u]=void 0===t[u]&&void 0!==a?a[u]:t[u])}var u=arguments.length-2;if(1===u)r.children=n;else if(1<u){a=Array(u);for(var s=0;s<u;s++)a[s]=arguments[s+2];r.children=a}return{$$typeof:A,type:e.type,key:o,ref:i,props:r,_owner:l}},createFactory:function(e){var t=u.bind(null,e);return t.type=e,t},isValidElement:s,version:"16.1.1",__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:{ReactCurrentOwner:_,assign:b}},W=Object.freeze({default:C}),I=W&&C||W;e.exports=I.default?I.default:I},function(e,t,n){var r,o,i;!function(n,l){o=[],r=l,void 0!==(i="function"==typeof r?r.apply(t,o):r)&&(e.exports=i)}(0,function(){"use strict";function t(e){var t=this;if(Object.keys(e).forEach(function(n){if(o[n])return void(t[n]=e[n]);throw new Error("unknown options for ScrollSwipe: "+n)}),!e.target)throw new Error("must provide DOM target element to ScrollSwipe");return(!this.scrollSensitivity||this.scrollSensitivity<0)&&(this.scrollSensitivity=0),(!this.touchSensitivity||this.touchSensitivity<0)&&(this.touchSensitivity=0),this.startTouchEvent=null,this.latestTouchEvent=null,this.latestTouch=null,this.startScrollEvent=null,this.latestScrollEvent=null,this.latestScroll=null,this.intent=0,this.currentDirection=r,this.touchArr=[],this.xArr=[],this.yArr=[],this.touchArrX=[],this.touchArrY=[],this.scrollPending=!1,this.target.style&&(this.target.style.touchAction="none"),this.scrollCb&&this.initScroll(),this.touchCb&&this.initTouch(),this}function n(e,t){this.previousIntent=this.currentIntent,this.currentIntent=e,this.previousDirection=this.currentDirection,this.currentDirection=t}var r="VERTICAL",o={target:!0,scrollSensitivity:!0,touchSensitivity:!0,scrollCb:!0,touchCb:!0,scrollPreventDefault:!0,touchPreventDefault:!0};return e.exports=t,t.prototype.listen=function(){return this.flush(),this.scrollPending=!1,this},t.prototype.onWheel=function(e){var t=this;if(this.scrollPreventDefault&&e.preventDefault(),!this.scrollPending){this.startScrollEvent=e;var n=e.deltaX,r=e.deltaY;this.addXScroll(n),this.addYScroll(r),this.scrollFulfilled(function(n,r,o){if(n){t.latestScrollEvent=e;var i={startEvent:e,lastEvent:t.latestScrollEvent,scrollPending:t.scrollPending,direction:r,intent:o};t.scrollCb(i)}})}},t.prototype.initScroll=function(){return this.newOnWheel=this.onWheel.bind(this),this.target.addEventListener("wheel",this.newOnWheel,!1),this},t.prototype.touchMove=function(e){this.touchPreventDefault&&e.preventDefault();var t=e.changedTouches[0],n=t.clientX,r=t.clientY;this.startTouchEvent=e,this.addXTouch(n),this.addYTouch(r)},t.prototype.touchEnd=function(e){var t=this;this.touchFulfilled(e,function(e,n,r){if(e){var o={startEvent:t.startTouchEvent,lastEvent:t.latestTouchEvent,scrollPending:t.scrollPending,direction:n,intent:r};t.touchCb(o)}})},t.prototype.initTouch=function(){return this.newTouchMove=this.touchMove.bind(this),this.newTouchEnd=this.touchEnd.bind(this),this.target.addEventListener("touchmove",this.newTouchMove,!1),this.target.addEventListener("touchend",this.newTouchEnd,!1),this},t.prototype.touchFulfilled=function(e,t){if(!e)throw new Error("must provide event to touchFulfilled");if(!t)throw new Error("must provide callback to touchFulfilled");var o=this.touchSensitivity,i=this.touchArrX,l=this.touchArrY;if(!(i.length>o&&l.length>o))return t(!1,null);var a=e.changedTouches[0],u=i[0],s=l[0],c=a.clientX,f=a.clientY,d=u<c?0:1,h=s<f?0:1,p=r;Math.abs(u-c)>Math.abs(s-f)&&(p="HORIZONTAL");var y=p===r?h:d;return n.call(this,y,p),this.resetTouches(),this.scrollPending=!0,this.latestTouchEvent=e,t(this.scrollPending,this.currentDirection,this.currentIntent),this},t.prototype.getTouch=function(e){return this.touchArr[e]},t.prototype.addXTouch=function(e){return this.pending()?this:(this.latestTouch=e,this.touchArrX.push(e),this)},t.prototype.addYTouch=function(e){return this.pending()?this:(this.latestTouch=e,this.touchArrY.push(e),this)},t.prototype.resetTouches=function(){return this.touchArrX=[],this.touchArrY=[],this},t.prototype.addXScroll=function(e){return this.pending()?this:(this.latestScroll=e,this.xArr.push(e),this)},t.prototype.addYScroll=function(e){return this.pending()?this:(this.latestScroll=e,this.yArr.push(e),this)},t.prototype.getDirection=function(){return this.currentDirection},t.prototype.resetScroll=function(){return this.xArr=[],this.yArr=[],this},t.prototype.flush=function(){return this.resetScroll(),this.resetTouches(),this},t.prototype.scrollFulfilled=function(e){if(!e)throw new Error("must provide callback to scrollFulfilled");var t=this.xArr,r=this.yArr,o=this.scrollSensitivity,i=t.length>o&&r.length>o,l=this.evalScrollDirection(),a=l.direction,u=l.intent;return i&&(n.call(this,u,a),this.resetScroll(),this.scrollPending=!0),e(this.scrollPending,this.currentDirection,this.currentIntent),this},t.prototype.evalScrollDirection=function(){var e=this.getSums(),t=e.x,n=e.y,o=e.xIntent,i=e.yIntent,l=t>n?"HORIZONTAL":r,a=l===r?i:o,u=0;return a>0&&(u=1),{direction:l,intent:u}},t.prototype.getSums=function(){var e=this.xArr,t=this.yArr,n=0,r=0;return{x:e.reduce(function(e,t){return n+=t,e+=Math.abs(t)},0),y:t.reduce(function(e,t){return r+=t,e+=Math.abs(t)},0),xIntent:n,yIntent:r}},t.prototype.getScrollDirection=function(){return this.currentDirection},t.prototype.pending=function(){return this.scrollPending},t.prototype.killScroll=function(){return this.target.removeEventListener("wheel",this.newOnWheel,!1),this},t.prototype.killTouch=function(){return this.target.removeEventListener("touchmove",this.newTouchMove,!1),this.target.removeEventListener("touchend",this.newTouchEnd,!1),this},t.prototype.killAll=function(){return this.killScroll().killTouch(),this},t})}])});
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory(require("React"));
+	else if(typeof define === 'function' && define.amd)
+		define("FullpageReact", ["React"], factory);
+	else if(typeof exports === 'object')
+		exports["FullpageReact"] = factory(require("React"));
+	else
+		root["FullpageReact"] = factory(root["React"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_1__) {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "/";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var HorizontalSlide = 'HorizontalSlide';
+var VerticalSlide = 'VerticalSlide';
+
+var Slide = function Slide(props) {
+  var render = props.render,
+      className = props.className,
+      window = props.window,
+      horizontal = props.horizontal,
+      horizontalSliderName = props.horizontalSliderName;
+
+
+  if (!render) {
+    return null;
+  }
+
+  var children = Array.isArray(props.children) ? props.children : [props.children];
+  var innerWidth = window.innerWidth,
+      innerHeight = window.innerHeight;
+
+  var style = props.style || {};
+
+  var styles = Object.assign({
+    overflow: 'hidden', width: innerWidth, height: innerHeight, position: 'relative'
+  }, style);
+
+  var slideClassName = horizontal ? [HorizontalSlide] : [VerticalSlide];
+  if (className) {
+    slideClassName.push(className);
+  }
+  slideClassName = slideClassName.join(' ');
+
+  var attrs = {
+    'data-slide': horizontal ? HorizontalSlide : VerticalSlide,
+    'data-horizontal-slider': horizontalSliderName || null
+  };
+
+  return _react2.default.createElement(
+    'div',
+    _extends({ className: slideClassName, id: props.id }, attrs, { style: styles }),
+    children
+  );
+};
+
+exports.default = Slide;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _slide = __webpack_require__(0);
+
+var _slide2 = _interopRequireDefault(_slide);
+
+var _utils = __webpack_require__(3);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var HorizontalSlider = function (_React$Component) {
+  _inherits(HorizontalSlider, _React$Component);
+
+  function HorizontalSlider(props) {
+    _classCallCheck(this, HorizontalSlider);
+
+    var _this = _possibleConstructorReturn(this, (HorizontalSlider.__proto__ || Object.getPrototypeOf(HorizontalSlider)).call(this, props));
+
+    _this.name = _this.props.name;
+    return _this;
+  }
+
+  _createClass(HorizontalSlider, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _props = this.props,
+          activeSlide = _props.activeSlide,
+          document = _props.document,
+          name = _props.name,
+          cache = _props.cache;
+
+      cache(this);
+
+      var nodes = (0, _utils.getNodes)(document, 'data-horizontal-slider="' + name + '"');
+      (0, _utils.hideAllButActive)(activeSlide, nodes);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      var p = this.props;
+      var name = p.name,
+          children = p.children,
+          window = p.window;
+
+
+      if (!name) {
+        throw new Error('name is a required prop for HorizontalSlider');
+      }
+
+      var elements = p.slides.reduce(function (result, sl) {
+        if (!sl) {
+          return result;
+        }
+
+        if (typeof sl.type !== 'function') {
+          result.other.push(sl);
+        } else {
+          result.slides.push(sl);
+        }
+
+        return result;
+      }, { slides: [], other: [] });
+
+      var other = elements.other,
+          slides = elements.slides;
+      var innerWidth = window.innerWidth,
+          innerHeight = window.innerHeight;
+
+      var attrs = {
+        'data-slide': 'HorizontalSlider',
+        'data-name': name
+      };
+
+      var className = (p.className || '') + 'HorizontalSlider';
+      var overflowX = p.hideScrollBars ? 'hidden' : 'auto';
+
+      var horizontalSliderStyle = Object.assign({}, p.style, { height: window.innerHeight, width: innerWidth, position: 'relative', overflowX: overflowX, whiteSpace: 'nowrap', padding: '0px', margin: '0' });
+      var horizontalSlideStyle = { overflow: 'hidden', whiteSpace: 'normal', display: 'inline-block', height: innerHeight, width: innerWidth };
+
+      return _react2.default.createElement(
+        'div',
+        _extends({ ref: function ref(node) {
+            return _this2.node = node;
+          }, className: className, id: p.id }, attrs, { style: horizontalSliderStyle }),
+        other.map(function (o, i) {
+          var p = o.props || {};
+          return _react2.default.createElement('div', _extends({ key: i }, p));
+        }),
+        slides.map(function (s, i) {
+          if (!s) {
+            return null;
+          }
+
+          var sStyle = Object.assign({}, horizontalSlideStyle, slideStyle);
+          var hSlideProps = s.props || {};
+          var slideStyle = hSlideProps.style || {};
+
+          return _react2.default.createElement(
+            _slide2.default,
+            _extends({ render: true, key: i, horizontalSliderName: name, slide: s, id: hSlideProps.id, className: hSlideProps.className || '', window: window, horizontal: true, style: sStyle }, hSlideProps),
+            hSlideProps.children
+          );
+        }),
+        children
+      );
+    }
+  }]);
+
+  return HorizontalSlider;
+}(_react2.default.Component);
+
+exports.default = HorizontalSlider;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.detectBrowser = exports.getNodes = exports.scrollTo = exports.renderUtils = exports.INTENT_MAP = exports.hideAllButActive = exports.showAll = exports.constants = exports.composedPath = undefined;
+
+var _renderUtils = __webpack_require__(8);
+
+var renderUtils = _interopRequireWildcard(_renderUtils);
+
+var _scrollTo = __webpack_require__(9);
+
+var _scrollTo2 = _interopRequireDefault(_scrollTo);
+
+var _constants = __webpack_require__(6);
+
+var constants = _interopRequireWildcard(_constants);
+
+var _detectOS = __webpack_require__(7);
+
+var _detectOS2 = _interopRequireDefault(_detectOS);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function composedPath(el) {
+	var path = [];
+
+	while (el) {
+		path.push(el);
+
+		if (el.tagName === 'HTML') {
+			path.push(document);
+			path.push(window);
+			return path;
+		}
+
+		el = el.parentElement;
+	}
+}
+
+function getNodes(document, sel) {
+	return document.querySelectorAll('[' + sel + ']');
+}
+
+function hideAllButActive(activeSlide, nodes) {
+	Array.prototype.forEach.call(nodes, function (n, i) {
+		if (i === activeSlide) {
+			n.style.display = 'inline-block';
+		} else {
+			n.style.display = 'none';
+		}
+	});
+}
+
+function showAll(nodes) {
+	Array.prototype.forEach.call(nodes, function (n) {
+		n.style.display = 'inline-block';
+	});
+}
+
+var INTENT_MAP = {
+	'VERTICAL': {
+		0: 'UP',
+		1: 'DOWN'
+	},
+	'HORIZONTAL': {
+		0: 'LEFT',
+		1: 'RIGHT'
+	}
+};
+
+function detectBrowser(userAgentString) {
+	if (!userAgentString) {
+		return null;
+	}
+
+	var browsers = [['edge', /Edge\/([0-9\._]+)/], ['yandexbrowser', /YaBrowser\/([0-9\._]+)/], ['vivaldi', /Vivaldi\/([0-9\.]+)/], ['kakaotalk', /KAKAOTALK\s([0-9\.]+)/], ['chrome', /(?!Chrom.*OPR)Chrom(?:e|ium)\/([0-9\.]+)(:?\s|$)/], ['phantomjs', /PhantomJS\/([0-9\.]+)(:?\s|$)/], ['crios', /CriOS\/([0-9\.]+)(:?\s|$)/], ['firefox', /Firefox\/([0-9\.]+)(?:\s|$)/], ['fxios', /FxiOS\/([0-9\.]+)/], ['opera', /Opera\/([0-9\.]+)(?:\s|$)/], ['opera', /OPR\/([0-9\.]+)(:?\s|$)$/], ['ie', /Trident\/7\.0.*rv\:([0-9\.]+).*\).*Gecko$/], ['ie', /MSIE\s([0-9\.]+);.*Trident\/[4-7].0/], ['ie', /MSIE\s(7\.0)/], ['bb10', /BB10;\sTouch.*Version\/([0-9\.]+)/], ['android', /Android\s([0-9\.]+)/], ['ios', /Version\/([0-9\._]+).*Mobile.*Safari.*/], ['safari', /Version\/([0-9\._]+).*Safari/]];
+
+	return browsers.map(function (rule) {
+		if (rule[1].test(userAgentString)) {
+			var match = rule[1].exec(userAgentString);
+			var version = match && match[1].split(/[._]/).slice(0, 3);
+
+			if (version && version.length < 3) {
+				Array.prototype.push.apply(version, version.length == 1 ? [0, 0] : [0]);
+			}
+
+			return {
+				name: rule[0],
+				version: version.join('.'),
+				os: (0, _detectOS2.default)(userAgentString)
+			};
+		}
+	}).filter(Boolean).shift();
+}
+
+exports.composedPath = composedPath;
+exports.constants = constants;
+exports.showAll = showAll;
+exports.hideAllButActive = hideAllButActive;
+exports.INTENT_MAP = INTENT_MAP;
+exports.renderUtils = renderUtils;
+exports.scrollTo = _scrollTo2.default;
+exports.getNodes = getNodes;
+exports.detectBrowser = detectBrowser;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _scrollSwipe = __webpack_require__(10);
+
+var _scrollSwipe2 = _interopRequireDefault(_scrollSwipe);
+
+var _index = __webpack_require__(3);
+
+var utils = _interopRequireWildcard(_index);
+
+var _slide = __webpack_require__(0);
+
+var _slide2 = _interopRequireDefault(_slide);
+
+var _horizontalSlider = __webpack_require__(2);
+
+var _horizontalSlider2 = _interopRequireDefault(_horizontalSlider);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var constants = utils.constants,
+    scrollTo = utils.scrollTo,
+    renderUtils = utils.renderUtils,
+    INTENT_MAP = utils.INTENT_MAP,
+    getNodes = utils.getNodes,
+    showAll = utils.showAll,
+    hideAllButActive = utils.hideAllButActive,
+    composedPath = utils.composedPath;
+var noOp = constants.noOp;
+var KEY_IDX = renderUtils.KEY_IDX;
+
+
+var _fp = {};
+var global = {};
+
+function generateState() {
+  var activeSlide = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+  return {
+    activeSlide: activeSlide,
+    lastActive: activeSlide - 1
+  };
+}
+
+var Fullpage = function (_React$Component) {
+  _inherits(Fullpage, _React$Component);
+
+  function Fullpage(props) {
+    _classCallCheck(this, Fullpage);
+
+    var _this = _possibleConstructorReturn(this, (Fullpage.__proto__ || Object.getPrototypeOf(Fullpage)).call(this, props));
+
+    var p = _this.props;
+
+    if (p.infinite && p.resetSlides) {
+      throw new Error('Fullpage Component cannot have both infinite and resetSlides as truthy props');
+    }
+
+    var slides = p.slides,
+        window = p.window;
+
+
+    if (!slides || !slides.length) {
+      throw new Error('Please provide slides for Fullpage');
+    }
+
+    if (window) {
+      global.window = window;
+      global.document = global.window.document;
+    }
+
+    var horizontalMap = {};
+    // generate state for horizontals;
+    var horizontals = slides.reduce(function (result, s, i) {
+      var name = s.props.name;
+
+
+      if (s.props.slides && name) {
+        result[name] = generateState(0);
+        horizontalMap[i] = name;
+      }
+
+      return result;
+    }, {});
+    horizontals.horizontalMap = horizontalMap;
+
+    _this.name = 'Fullpage';
+    var activeSlide = p.activeSlide || 0;
+    _this.scrollSensitivity = p.scrollSensitivity || 10;
+    _this.touchSensitivity = p.touchSensitivity || 10;
+
+    _this.scrollSpeed = p.scrollSpeed || 500;
+
+    _this.node = null;
+    _this.ss = null;
+    _this.verticalRoot = determineVerticalRoot();
+
+    _this.onHorizontalChange = p.onHorizontalChange || noOp;
+    _this.onSlideChangeStart = p.onSlideChangeStart || noOp;
+    _this.onSlideChangeEnd = p.onSlideChangeEnd || noOp;
+
+    _this.onScrollAction = _this.onScrollAction.bind(_this);
+    _this.onVerticalScroll = _this.onVerticalScroll.bind(_this);
+    _this.onHorizontalScroll = _this.onHorizontalScroll.bind(_this);
+    _this.resize = _this.resize.bind(_this);
+    _this.isLocked = false;
+    _this.handleScroll = _this.handleScroll.bind(_this);
+    _this.hSlideCache = {};
+    _this.cacheHslide = function (slide) {
+      _this.hSlideCache[slide.name] = slide;
+    };
+
+    _fp = _this;
+
+    _this.state = Object.assign({
+      scrollPending: false,
+      window: null,
+      document: null
+    }, horizontals, generateState(activeSlide));
+    return _this;
+  }
+
+  _createClass(Fullpage, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      if (!global.window) {
+        global.window = window || this.props.window || null;
+        global.document = global.window ? global.window.document : null;
+      }
+
+      if (!global.window) {
+        throw new Error('Window is not available at componentDidMount, please provide a stub and pass window into props when available');
+      }
+
+      this.setState({
+        window: global.window,
+        document: global.document
+      }, function () {
+        _this2.init.call(_this2);
+      });
+    }
+  }, {
+    key: 'init',
+    value: function init() {
+      var window = this.state.window;
+
+      window.addEventListener('resize', this.resize.bind(this, window));
+      this.resize(window);
+    }
+  }, {
+    key: 'hideScrollBars',
+    value: function hideScrollBars() {
+      var hideScrollBars = this.props.hideScrollBars;
+      var document = this.state.document;
+
+
+      if (hideScrollBars && !this.isWithinBreakpoint.call(this)) {
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+      }
+    }
+  }, {
+    key: 'showScrollBars',
+    value: function showScrollBars() {
+      var document = this.state.document;
+
+      document.documentElement.style.overflow = 'auto';
+      document.body.style.overflow = 'auto';
+    }
+  }, {
+    key: 'lockScroll',
+    value: function lockScroll() {
+      var node = this.node;
+      var enableArrowKeys = this.props.enableArrowKeys;
+
+
+      if (enableArrowKeys) {
+        window.addEventListener('keydown', this.checkKey.bind(this));
+      }
+
+      var ss = new _scrollSwipe2.default({
+        target: node,
+        scrollSensitivity: this.scrollSensitivity * 3,
+        touchSensitivity: this.touchSensitivity * 3,
+        scrollPreventDefault: true,
+        touchPreventDefault: true,
+        scrollCb: this.onScrollAction,
+        touchCb: this.onScrollAction
+      });
+      this.ss = ss;
+      this.isLocked = true;
+    }
+  }, {
+    key: 'unlockScroll',
+    value: function unlockScroll() {
+      var enableArrowKeys = this.props.enableArrowKeys;
+
+      var ss = this.ss || ssStub();
+      ss.killAll();
+      this.ss = null;
+
+      if (enableArrowKeys) {
+        window.removeEventListener('keydown', this.checkKey.bind(this));
+      }
+      this.isLocked = false;
+    }
+  }, {
+    key: 'isWithinBreakpoint',
+    value: function isWithinBreakpoint() {
+      var breakpoint = this.props.breakpoint;
+
+
+      if (!breakpoint) {
+        return false;
+      }
+
+      var innerWidth = this.state.window.innerWidth || Infinity;
+      return breakpoint && breakpoint >= innerWidth;
+    }
+  }, {
+    key: 'resize',
+    value: function resize(window) {
+      this.setState({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+
+      var within = this.isWithinBreakpoint.call(this);
+
+      if (within && this.isLocked) {
+        this.unlockScroll.call(this);
+        return;
+      }
+
+      if (!within && !this.isLocked) {
+        this.lockScroll.call(this);
+      }
+    }
+  }, {
+    key: 'onScrollAction',
+    value: function onScrollAction(_ref) {
+      var direction = _ref.direction,
+          intent = _ref.intent,
+          startEvent = _ref.startEvent;
+
+      var s = this.state;
+      var ss = this.ss || ssStub();
+
+      if (s.scrollPending) {
+        return ss.listen();
+      }
+
+      var dir = INTENT_MAP[direction];
+
+      // at this point we are dedicating
+      if (direction === 'VERTICAL') {
+        return this.onVerticalScroll(dir[intent], startEvent);
+      }
+
+      var path = startEvent.path || startEvent.composedPath || composedPath(startEvent.target);
+      var isHorizontal = path.find(function (p) {
+        if (!p.dataset) {
+          return false;
+        }
+
+        return p.dataset.slide === 'HorizontalSlider';
+      });
+
+      if (!isHorizontal) {
+        return ss.listen();
+      }
+
+      this.onHorizontalScroll(dir[intent], isHorizontal);
+    }
+  }, {
+    key: 'onVerticalScroll',
+    value: function onVerticalScroll(intent) {
+      var _this3 = this;
+
+      var s = this.state;
+      var window = s.window,
+          document = s.document,
+          activeSlide = s.activeSlide;
+      var slides = this.props.slides;
+
+
+      var next = intent === 'DOWN' ? activeSlide + 1 : activeSlide - 1;
+      if (next < 0 || next > slides.length - 1) {
+        var ss = this.ss || ssStub();
+        return ss.listen();
+      }
+
+      var to = next * window.innerHeight;
+      var newState = {
+        activeSlide: next,
+        lastActive: activeSlide
+      };
+
+      this.setState({ scrollPending: true }, function () {
+        _this3.handleScroll(_this3.verticalRoot, 'scrollTop', to, newState, _this3.name);
+      });
+    }
+  }, {
+    key: 'onHorizontalScroll',
+    value: function onHorizontalScroll(intent, node) {
+      var name = node.dataset.name;
+      var activeSlide = this.state[name].activeSlide;
+
+      var next = intent === 'RIGHT' ? activeSlide + 1 : activeSlide - 1;
+      var innerWidth = this.state.window.innerWidth;
+
+
+      var comp = _fp.hSlideCache[name];
+      var hp = comp.props;
+      var infinite = hp.infinite;
+
+
+      var nodes = getNodes(this.state.document, 'data-horizontal-slider="' + name + '"');
+
+      var leftVal = activeSlide * innerWidth;
+      var to = next * innerWidth;
+
+      var result = this.determineHSlide(comp, activeSlide, next, leftVal, to, nodes);
+
+      leftVal = result.leftVal;
+      next = result.next;
+      to = result.to;
+
+      var newState = _defineProperty({}, name, {
+        activeSlide: next,
+        lastActive: activeSlide
+      });
+
+      this.handleHorizontal(name, node, nodes, leftVal, to, next, newState, infinite);
+    }
+  }, {
+    key: 'determineHSlide',
+    value: function determineHSlide(comp, activeSlide, next, leftVal, to, nodes) {
+      var hp = comp.props;
+      var infinite = hp.infinite,
+          resetSlides = hp.resetSlides;
+      var innerWidth = this.state.window.innerWidth;
+
+      var ss = this.ss || ssStub();
+
+      var len = nodes.length;
+
+      var infStart = activeSlide === 0 && next === -1;
+      var infEnd = activeSlide === len - 1 && next === len;
+
+      if (!infinite && !resetSlides && (infStart || infEnd)) {
+        return ss.listen();
+      }
+
+      if (infinite && infStart) {
+        // simulate last <- 0
+        next = len - 1;
+        lastToFirst(nodes);
+        leftVal = innerWidth;
+        to = 0;
+      } else if (infinite && infEnd) {
+        // simulate last -> 0
+        next = 0;
+        lastToFirst(nodes);
+        leftVal = 0;
+        to = innerWidth;
+      }
+
+      var result = { next: next, leftVal: leftVal, to: to };
+      return result;
+    }
+  }, {
+    key: 'handleHorizontal',
+    value: function handleHorizontal(name, node, nodes, leftVal, to, next, newState, infinite) {
+      var _this4 = this;
+
+      showAll(nodes);
+      node.scrollLeft = leftVal;
+
+      //show, reset window
+      //scroll
+      //hide
+
+      this.setState({ scrollPending: true }, function () {
+        _this4.handleScroll(node, 'scrollLeft', to, newState, name, function () {
+          if (infinite) {
+            firstToLast(nodes);
+            node.scrollLeft = innerWidth * next;
+          }
+          hideAllButActive(next, nodes);
+        });
+      });
+    }
+  }, {
+    key: 'handleScroll',
+    value: function handleScroll(node, winProp, to, newState, compName) {
+      var _this5 = this;
+
+      var cb = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : noOp;
+
+      var ss = this.ss || ssStub();
+      ss.flush();
+      this.onSlideChangeStart(compName, this.props, this.state, newState[compName] || newState);
+
+      scrollTo(node, winProp, to, this.scrollSpeed, function () {
+        newState.scrollPending = false;
+        _this5.setState(newState, function () {
+          cb();
+          _this5.onSlideChangeEnd(compName, _this5.props, _this5.state, newState[compName] || newState);
+          setTimeout(function () {
+            ss.flush();
+            ss.listen();
+          }, 200);
+        });
+      });
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      var ss = this.ss || ssStub();
+      ss.killAll();
+      this.ss = null;
+
+      var window = this.state.window;
+
+
+      window.removeEventListener('resize', this.resize.bind(this));
+      if (this.props.enableArrowKeys) {
+        window.removeEventListener('keydown', this.checkKey.bind(this));
+      }
+    }
+  }, {
+    key: 'checkKey',
+    value: function checkKey(e) {
+      var direction = KEY_IDX[e.keyCode];
+      if (!direction) {
+        return;
+      }
+
+      var intent = direction === 'UP' || direction === 'LEFT' ? -1 : 1;
+      var context = direction === 'UP' || direction === 'DOWN' ? 'VERTICAL' : 'HORIZONTAL';
+
+      if (context === 'VERTICAL') {
+        Fullpage.changeFullpageSlide(this.state.activeSlide + intent);
+        return;
+      }
+
+      var horizontalName = this.state.horizontalMap[this.state.activeSlide];
+      if (!horizontalName) {
+        return;
+      }
+
+      var activeSlide = this.state[horizontalName].activeSlide;
+
+      Fullpage.changeHorizontalSlide(horizontalName, activeSlide + intent);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this6 = this;
+
+      var s = this.state;
+      var p = this.props;
+      var window = s.window,
+          document = s.document;
+
+
+      var children = p.children || null;
+
+      if (!window) {
+        return children;
+      }
+
+      var elements = p.slides.reduce(function (result, sl) {
+        if (!sl) {
+          return result;
+        }
+
+        if (typeof sl.type !== 'function') {
+          result.other.push(sl);
+        } else {
+          result.slides.push(sl);
+        }
+
+        return result;
+      }, { slides: [], other: [] });
+
+      var other = elements.other,
+          slides = elements.slides;
+
+
+      return _react2.default.createElement(
+        'div',
+        { ref: function ref(node) {
+            return _this6.node = node;
+          }, className: 'Fullpage' },
+        children,
+        other.map(function (o, i) {
+          var op = o.props || {};
+          return _react2.default.createElement('div', _extends({ key: i }, op));
+        }),
+        slides.map(function (sl, i) {
+          var sp = sl.props || {};
+          var children = sp.children;
+
+          if (sp.slides) {
+            var name = sp.name;
+
+            return _react2.default.createElement(
+              _horizontalSlider2.default,
+              _extends({ cache: _this6.cacheHslide.bind(_this6), window: window, document: document, activeSlide: s[name].activeSlide, hideScrollBars: p.hideScrollBars }, sp, { key: i }),
+              children
+            );
+          }
+
+          return _react2.default.createElement(
+            _slide2.default,
+            _extends({ render: true, className: sp.className || '', id: sp.id, window: window, document: document, key: i }, sp),
+            children
+          );
+        })
+      );
+    }
+  }], [{
+    key: 'changeHorizontalSlide',
+    value: function changeHorizontalSlide(name, next) {
+      next = +next;
+
+      var comp = _fp.hSlideCache[name];
+      if (!comp) {
+        throw Error('cannt find HorizontalSlider by name', name);
+      }
+
+      var node = comp.node,
+          props = comp.props;
+      var infinite = props.infinite;
+
+      var eligible = isElibile(next, props, _fp.state);
+
+      if (!eligible) {
+        return;
+      }
+
+      var activeSlide = _fp.state[name].activeSlide;
+
+
+      var nodes = getNodes(_fp.state.document, 'data-horizontal-slider="' + name + '"');
+      var leftVal = activeSlide * innerWidth;
+      var to = next * innerWidth;
+
+      // TODO: NOW IMPLEMENT THIS ON BUTTON CLICKS DOWN LOW
+      var result = _fp.determineHSlide.call(_fp, comp, activeSlide, next, leftVal, to, nodes);
+
+      leftVal = result.leftVal;
+      next = result.next;
+      to = result.to;
+
+      var newState = _defineProperty({}, name, {
+        activeSlide: next,
+        lastActive: activeSlide
+      });
+
+      _fp.handleHorizontal.call(_fp, name, node, nodes, leftVal, to, next, newState, infinite);
+    }
+  }, {
+    key: 'changeFullpageSlide',
+    value: function changeFullpageSlide(idx) {
+      var t = _fp;
+      var props = t.props,
+          state = t.state;
+      var activeSlide = state.activeSlide,
+          window = state.window,
+          document = state.document;
+
+
+      var eligible = isElibile(idx, props, state);
+
+      if (!eligible) {
+        return;
+      }
+
+      var newState = {
+        activeSlide: idx,
+        lastActive: activeSlide
+      };
+
+      var to = idx * window.innerHeight;
+
+      t.setState({ scrollPending: true }, function () {
+        t.handleScroll(t.verticalRoot, 'scrollTop', to, newState, t.name);
+      });
+    }
+  }]);
+
+  return Fullpage;
+}(_react2.default.Component);
+
+function swap(nodes, o, i) {
+  nodes[o || i].parentNode.insertBefore(nodes[i], nodes[o]);
+  return nodes;
+}
+
+function lastToFirst(nodes) {
+  swap(nodes, 0, nodes.length - 1);
+}
+
+function firstToLast(nodes) {
+  swap(nodes, null, nodes.length - 1);
+}
+
+function isElibile(idx, props, state) {
+  var slides = props.slides;
+  var activeSlide = state.activeSlide;
+
+
+  if (state.scrollPending) {
+    return false;
+  }
+
+  if (props.infinite) {
+    return true;
+  }
+
+  if (idx > slides.length - 1 || idx < 0) {
+    return false;
+  }
+
+  if (idx == activeSlide) {
+    return false;
+  }
+
+  return true;
+}
+
+function ssStub() {
+  return {
+    flush: noOp,
+    killAll: noOp,
+    listen: noOp
+  };
+}
+
+function determineVerticalRoot() {
+  var agent = void 0;
+
+  if (typeof navigator !== 'undefined' && navigator) {
+    agent = navigator.userAgent;
+  }
+
+  if (!agent) {
+    return document.body;
+  }
+
+  var _utils$detectBrowser = utils.detectBrowser(agent),
+      name = _utils$detectBrowser.name,
+      version = _utils$detectBrowser.version,
+      os = _utils$detectBrowser.os;
+
+  var _version$split = version.split('.'),
+      _version$split2 = _slicedToArray(_version$split, 3),
+      major = _version$split2[0],
+      minor = _version$split2[1],
+      patch = _version$split2[2];
+
+  var docElementSet = new Set(['firefox', 'chrome']);
+
+  if (docElementSet.has(name)) {
+    return document.documentElement;
+  }
+
+  // safari, etc
+  return document.body;
+}
+exports.default = Fullpage;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.HorizontalSlider = exports.Slide = exports.Fullpage = undefined;
+
+var _fullpage = __webpack_require__(4);
+
+var _fullpage2 = _interopRequireDefault(_fullpage);
+
+var _slide = __webpack_require__(0);
+
+var _slide2 = _interopRequireDefault(_slide);
+
+var _horizontalSlider = __webpack_require__(2);
+
+var _horizontalSlider2 = _interopRequireDefault(_horizontalSlider);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.Fullpage = _fullpage2.default;
+exports.Slide = _slide2.default;
+exports.HorizontalSlider = _horizontalSlider2.default;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var INCREMENT = 'INCREMENT';
+var DECREMENT = 'DECREMENT';
+var VERTICAL = 'VERTICAL';
+var HORIZONTAL = 'HORIZONTAL';
+var HEAD = 'HEAD';
+var TAIL = 'TAIL';
+var I_BLOCK = 'inline-block';
+var BLOCK = 'block';
+var NONE = 'none';
+var noOp = function noOp() {};
+
+exports.INCREMENT = INCREMENT;
+exports.DECREMENT = DECREMENT;
+exports.VERTICAL = VERTICAL;
+exports.HORIZONTAL = HORIZONTAL;
+exports.I_BLOCK = I_BLOCK;
+exports.HEAD = HEAD;
+exports.TAIL = TAIL;
+exports.BLOCK = BLOCK;
+exports.NONE = NONE;
+exports.noOp = noOp;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function detectOS(userAgentString) {
+    var operatingSystems = [{
+        name: 'iOS',
+        rule: /iP(hone|od|ad)/
+    }, {
+        name: 'Android OS',
+        rule: /Android/
+    }, {
+        name: 'BlackBerry OS',
+        rule: /BlackBerry|BB10/
+    }, {
+        name: 'Windows Mobile',
+        rule: /IEMobile/
+    }, {
+        name: 'Amazon OS',
+        rule: /Kindle/
+    }, {
+        name: 'Windows 3.11',
+        rule: /Win16/
+    }, {
+        name: 'Windows 95',
+        rule: /(Windows 95)|(Win95)|(Windows_95)/
+    }, {
+        name: 'Windows 98',
+        rule: /(Windows 98)|(Win98)/
+    }, {
+        name: 'Windows 2000',
+        rule: /(Windows NT 5.0)|(Windows 2000)/
+    }, {
+        name: 'Windows XP',
+        rule: /(Windows NT 5.1)|(Windows XP)/
+    }, {
+        name: 'Windows Server 2003',
+        rule: /(Windows NT 5.2)/
+    }, {
+        name: 'Windows Vista',
+        rule: /(Windows NT 6.0)/
+    }, {
+        name: 'Windows 7',
+        rule: /(Windows NT 6.1)/
+    }, {
+        name: 'Windows 8',
+        rule: /(Windows NT 6.2)/
+    }, {
+        name: 'Windows 8.1',
+        rule: /(Windows NT 6.3)/
+    }, {
+        name: 'Windows 10',
+        rule: /(Windows NT 10.0)/
+    }, {
+        name: 'Windows ME',
+        rule: /Windows ME/
+    }, {
+        name: 'Open BSD',
+        rule: /OpenBSD/
+    }, {
+        name: 'Sun OS',
+        rule: /SunOS/
+    }, {
+        name: 'Linux',
+        rule: /(Linux)|(X11)/
+    }, {
+        name: 'Mac OS',
+        rule: /(Mac_PowerPC)|(Macintosh)/
+    }, {
+        name: 'QNX',
+        rule: /QNX/
+    }, {
+        name: 'BeOS',
+        rule: /BeOS/
+    }, {
+        name: 'OS/2',
+        rule: /OS\/2/
+    }, {
+        name: 'Search Bot',
+        rule: /(nuhk)|(Googlebot)|(Yammybot)|(Openbot)|(Slurp)|(MSNBot)|(Ask Jeeves\/Teoma)|(ia_archiver)/
+    }];
+
+    var detected = operatingSystems.filter(function (os) {
+        if (userAgentString.match(os.rule)) {
+            return true;
+        }
+    });
+
+    return detected && detected[0] ? detected[0].name : null;
+};
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var KEY_IDX = {
+  37: 'LEFT',
+  38: 'UP',
+  39: 'RIGHT',
+  40: 'DOWN'
+};
+
+exports.KEY_IDX = KEY_IDX;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function scrollTo(element, elementBoundary, to, duration, callback) {
+  var start = element[elementBoundary],
+      change = to - start,
+      increment = 10;
+
+  var currentTime = 0;
+  var globalId = requestAnimationFrame(repeatOften);
+  function repeatOften() {
+    currentTime += increment;
+    var val = easeInOutQuad(currentTime, start, change, duration);
+    element[elementBoundary] = val;
+
+    if (currentTime >= duration) {
+      cancelAnimationFrame(globalId);
+      return callback();
+    }
+    globalId = requestAnimationFrame(repeatOften);
+  }
+}
+
+//t = current time
+//b = start value
+//c = change in value
+//d = duration
+function easeInOutQuad(t, b, c, d) {
+  t /= d;
+  return -c * t * (t - 2) + b;
+}
+
+exports.default = scrollTo;
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;;(function(root, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else if (typeof exports === 'object') {
+    module.exports = factory();
+  } else {
+    root.ScrollSwipe = factory();
+  }
+}(this, function() {
+'use strict';
+
+var VERTICAL = 'VERTICAL';
+var HORIZONTAL = 'HORIZONTAL';
+
+var noOp = function noOp() {};
+
+var acceptedParams = {
+  target: true,
+  scrollSensitivity: true,
+  touchSensitivity: true,
+  scrollCb: true,
+  touchCb: true,
+  scrollPreventDefault: true,
+  touchPreventDefault: true
+};
+
+if (true) {
+  module.exports = ScrollSwipe;
+}
+
+function ScrollSwipe(opts) {
+  var _this = this;
+
+  Object.keys(opts).forEach(function (key) {
+    if (acceptedParams[key]) {
+      _this[key] = opts[key];
+      return;
+    }
+
+    throw new Error('unknown options for ScrollSwipe: ' + key);
+  });
+
+  if (!opts.target) {
+    throw new Error('must provide DOM target element to ScrollSwipe');
+  }
+
+  if (!this.scrollSensitivity || this.scrollSensitivity < 0) {
+    this.scrollSensitivity = 0;
+  }
+
+  if (!this.touchSensitivity || this.touchSensitivity < 0) {
+    this.touchSensitivity = 0;
+  }
+
+  this.startTouchEvent = null;
+  this.latestTouchEvent = null;
+  this.latestTouch = null;
+
+  this.startScrollEvent = null;
+  this.latestScrollEvent = null;
+  this.latestScroll = null;
+
+  this.intent = 0;
+  this.currentDirection = VERTICAL;
+  this.touchArr = [];
+  this.xArr = [];
+  this.yArr = [];
+  this.touchArrX = [];
+  this.touchArrY = [];
+
+  this.scrollPending = false;
+
+  if (this.target.style) {
+    this.target.style.touchAction = 'none';
+  }
+
+  //these should only init if true
+  if (this.scrollCb) {
+    this.initScroll();
+  }
+
+  if (this.touchCb) {
+    this.initTouch();
+  }
+
+  return this;
+}
+
+ScrollSwipe.prototype.listen = function listen() {
+  this.flush();
+  this.scrollPending = false;
+  return this;
+};
+
+ScrollSwipe.prototype.onWheel = function onWheel(e) {
+  var _this2 = this;
+
+  if (this.scrollPreventDefault) {
+    e.preventDefault();
+  }
+
+  if (this.scrollPending) {
+    return;
+  }
+
+  this.startScrollEvent = e;
+
+  var x = e.deltaX;
+  var y = e.deltaY;
+
+  this.addXScroll(x);
+  this.addYScroll(y);
+
+  this.scrollFulfilled(function (fulfilled, direction, intent) {
+    if (!fulfilled) {
+      return;
+    }
+
+    _this2.latestScrollEvent = e;
+
+    var result = {
+      startEvent: e,
+      lastEvent: _this2.latestScrollEvent,
+      scrollPending: _this2.scrollPending,
+      direction: direction,
+      intent: intent
+    };
+
+    _this2.scrollCb(result);
+  });
+};
+
+ScrollSwipe.prototype.initScroll = function initScroll() {
+  this.newOnWheel = this.onWheel.bind(this);
+  this.target.addEventListener('wheel', this.newOnWheel, false);
+  return this;
+};
+
+ScrollSwipe.prototype.touchMove = function touchMove(e) {
+  if (this.touchPreventDefault) {
+    e.preventDefault();
+  }
+
+  var changedTouches = e.changedTouches[0];
+  var x = changedTouches.clientX;
+  var y = changedTouches.clientY;
+
+  this.startTouchEvent = e;
+  this.addXTouch(x);
+  this.addYTouch(y);
+};
+
+ScrollSwipe.prototype.touchEnd = function touchEnd(e) {
+  var _this3 = this;
+
+  this.touchFulfilled(e, function (fulfilled, direction, intent) {
+    if (!fulfilled) {
+      return;
+    }
+
+    var result = {
+      startEvent: _this3.startTouchEvent,
+      lastEvent: _this3.latestTouchEvent,
+      scrollPending: _this3.scrollPending,
+      direction: direction,
+      intent: intent
+    };
+
+    _this3.touchCb(result);
+  });
+};
+
+ScrollSwipe.prototype.initTouch = function initTouch() {
+  this.newTouchMove = this.touchMove.bind(this);
+  this.newTouchEnd = this.touchEnd.bind(this);
+  this.target.addEventListener('touchmove', this.newTouchMove, false);
+  this.target.addEventListener('touchend', this.newTouchEnd, false);
+  return this;
+};
+
+//touch events
+ScrollSwipe.prototype.touchFulfilled = function touchFulfilled(e, cb) {
+  if (!e) {
+    throw new Error('must provide event to touchFulfilled');
+  }
+
+  if (!cb) {
+    throw new Error('must provide callback to touchFulfilled');
+  }
+
+  var touchSensitivity = this.touchSensitivity,
+      touchArrX = this.touchArrX,
+      touchArrY = this.touchArrY;
+
+
+  var bool = touchArrX.length > touchSensitivity && touchArrY.length > touchSensitivity;
+
+  if (!bool) {
+    return cb(false, null);
+  }
+
+  var changedTouches = e.changedTouches[0];
+
+  var xStart = touchArrX[0];
+  var yStart = touchArrY[0];
+
+  var xEnd = changedTouches.clientX;
+  var yEnd = changedTouches.clientY;
+
+  var xIntent = xStart < xEnd ? 0 : 1;
+  var yIntent = yStart < yEnd ? 0 : 1;
+
+  var direction = VERTICAL;
+
+  //determine vertical or horizontal based on the greatest difference
+  if (Math.abs(xStart - xEnd) > Math.abs(yStart - yEnd)) {
+    direction = HORIZONTAL;
+  }
+
+  var intent = direction === VERTICAL ? yIntent : xIntent;
+
+  swap.call(this, intent, direction);
+  this.resetTouches();
+  this.scrollPending = true;
+  this.latestTouchEvent = e;
+
+  cb(this.scrollPending, this.currentDirection, this.currentIntent);
+  return this;
+};
+
+ScrollSwipe.prototype.getTouch = function getTouch(idx) {
+  return this.touchArr[idx];
+};
+
+ScrollSwipe.prototype.addXTouch = function addTouch(touch) {
+  if (this.pending()) {
+    return this;
+  }
+
+  this.latestTouch = touch;
+  this.touchArrX.push(touch);
+  return this;
+};
+
+ScrollSwipe.prototype.addYTouch = function addTouch(touch) {
+  if (this.pending()) {
+    return this;
+  }
+
+  this.latestTouch = touch;
+  this.touchArrY.push(touch);
+  return this;
+};
+
+ScrollSwipe.prototype.resetTouches = function resetTouches() {
+  this.touchArrX = [];
+  this.touchArrY = [];
+  return this;
+};
+
+//wheel events
+ScrollSwipe.prototype.addXScroll = function addXScroll(s) {
+  if (this.pending()) {
+    return this;
+  }
+
+  this.latestScroll = s;
+  this.xArr.push(s);
+  return this;
+};
+
+ScrollSwipe.prototype.addYScroll = function addYScroll(s) {
+  if (this.pending()) {
+    return this;
+  }
+
+  this.latestScroll = s;
+  this.yArr.push(s);
+  return this;
+};
+
+ScrollSwipe.prototype.getDirection = function getDirection() {
+  return this.currentDirection;
+};
+
+ScrollSwipe.prototype.resetScroll = function resetScroll() {
+  this.xArr = [];
+  this.yArr = [];
+  return this;
+};
+
+ScrollSwipe.prototype.flush = function flush() {
+  this.resetScroll();
+  this.resetTouches();
+  return this;
+};
+
+ScrollSwipe.prototype.scrollFulfilled = function scrollFulfilled(cb) {
+  if (!cb) {
+    throw new Error('must provide callback to scrollFulfilled');
+  }
+
+  var xArr = this.xArr,
+      yArr = this.yArr,
+      scrollSensitivity = this.scrollSensitivity;
+
+
+  var bool = xArr.length > scrollSensitivity && yArr.length > scrollSensitivity;
+
+  var _evalScrollDirection = this.evalScrollDirection(),
+      direction = _evalScrollDirection.direction,
+      intent = _evalScrollDirection.intent;
+
+  if (bool) {
+    swap.call(this, intent, direction);
+    this.resetScroll();
+    this.scrollPending = true;
+  }
+
+  cb(this.scrollPending, this.currentDirection, this.currentIntent);
+  return this;
+};
+
+ScrollSwipe.prototype.evalScrollDirection = function evalScrollDirection() {
+  var _getSums = this.getSums(),
+      x = _getSums.x,
+      y = _getSums.y,
+      xIntent = _getSums.xIntent,
+      yIntent = _getSums.yIntent;
+
+  var direction = x > y ? HORIZONTAL : VERTICAL;
+  var base = direction === VERTICAL ? yIntent : xIntent;
+
+  var intent = 0;
+
+  if (base > 0) {
+    intent = 1;
+  }
+
+  return { direction: direction, intent: intent };
+};
+
+ScrollSwipe.prototype.getSums = function getSums() {
+  var xArr = this.xArr,
+      yArr = this.yArr;
+
+
+  var xIntent = 0;
+  var yIntent = 0;
+
+  var x = xArr.reduce(function (result, curr) {
+    xIntent = xIntent + curr;
+    return result += Math.abs(curr);
+  }, 0);
+
+  var y = yArr.reduce(function (result, curr) {
+    yIntent = yIntent + curr;
+    return result += Math.abs(curr);
+  }, 0);
+
+  return { x: x, y: y, xIntent: xIntent, yIntent: yIntent };
+};
+
+ScrollSwipe.prototype.getScrollDirection = function getScrollDirection() {
+  return this.currentDirection;
+};
+
+ScrollSwipe.prototype.pending = function pending() {
+  return this.scrollPending;
+};
+
+ScrollSwipe.prototype.killScroll = function killScroll() {
+  this.target.removeEventListener('wheel', this.newOnWheel, false);
+  return this;
+};
+
+ScrollSwipe.prototype.killTouch = function killTouch() {
+  this.target.removeEventListener('touchmove', this.newTouchMove, false);
+  this.target.removeEventListener('touchend', this.newTouchEnd, false);
+  return this;
+};
+
+ScrollSwipe.prototype.killAll = function teardown() {
+  this.killScroll().killTouch();
+  return this;
+};
+
+function swap(intent, direction) {
+  this.previousIntent = this.currentIntent;
+  this.currentIntent = intent;
+  this.previousDirection = this.currentDirection;
+  this.currentDirection = direction;
+}
+return ScrollSwipe;
+}));
+
+
+/***/ })
+/******/ ]);
+});
 //# sourceMappingURL=FullpageReact.js.map

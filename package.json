@@ -2,7 +2,7 @@
   "name": "fullpage-react",
   "version": "3.0.10",
   "description": "Stateful fullpage.js inspired scrolling for React",
-  "main": "./FullpageReact.js",
+  "main": "./lib/index",
   "eslintConfig": "./.eslint.json",
   "scripts": {
     "start": "./node_modules/.bin/webpack-dev-server",

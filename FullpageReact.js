@@ -1,12 +1,12 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("React"));
+		module.exports = factory(require("react"));
 	else if(typeof define === 'function' && define.amd)
-		define("FullpageReact", ["React"], factory);
+		define("FullpageReact", ["react"], factory);
 	else if(typeof exports === 'object')
-		exports["FullpageReact"] = factory(require("React"));
+		exports["FullpageReact"] = factory(require("react"));
 	else
-		root["FullpageReact"] = factory(root["React"]);
+		root["FullpageReact"] = factory(root["react"]);
 })(this, function(__WEBPACK_EXTERNAL_MODULE_1__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache

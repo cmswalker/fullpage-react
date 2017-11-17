@@ -1,0 +1,147 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FullpageReact with HorizontalSlides should support horizontal slides 1`] = `
+<div
+  className="Fullpage"
+>
+  <div
+    className="VerticalSlide"
+    data-horizontal-slider={null}
+    data-slide="VerticalSlide"
+    id={undefined}
+    style={
+      Object {
+        "backgroundColor": "blue",
+        "height": 768,
+        "overflow": "hidden",
+        "position": "relative",
+        "width": 1024,
+      }
+    }
+  >
+    <p>
+      1
+    </p>
+  </div>
+  <div
+    className="HorizontalSlider"
+    data-name="horizontal1"
+    data-slide="HorizontalSlider"
+    id={undefined}
+    style={
+      Object {
+        "height": 768,
+        "margin": "0",
+        "overflowX": "hidden",
+        "padding": "0px",
+        "position": "relative",
+        "whiteSpace": "nowrap",
+        "width": 1024,
+      }
+    }
+  >
+    <div
+      className="HorizontalSlide"
+      data-horizontal-slider="horizontal1"
+      data-slide="HorizontalSlide"
+      id={undefined}
+      style={
+        Object {
+          "backgroundColor": "red",
+          "height": 768,
+          "overflow": "hidden",
+          "position": "relative",
+          "width": 1024,
+        }
+      }
+    >
+      <p>
+        Horizontal 1
+      </p>
+    </div>
+    <div
+      className="HorizontalSlide"
+      data-horizontal-slider="horizontal1"
+      data-slide="HorizontalSlide"
+      id={undefined}
+      style={
+        Object {
+          "backgroundColor": "yellow",
+          "height": 768,
+          "overflow": "hidden",
+          "position": "relative",
+          "width": 1024,
+        }
+      }
+    >
+      <p>
+        Horizontal 2
+      </p>
+    </div>
+    <div
+      className="HorizontalSlide"
+      data-horizontal-slider="horizontal1"
+      data-slide="HorizontalSlide"
+      id={undefined}
+      style={
+        Object {
+          "backgroundColor": "green",
+          "height": 768,
+          "overflow": "hidden",
+          "position": "relative",
+          "width": 1024,
+        }
+      }
+    >
+      <p>
+        Horizontal 3
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`FullpageReact with Slides should support vertical slides 1`] = `
+<div
+  className="Fullpage"
+>
+  <div
+    className="VerticalSlide"
+    data-horizontal-slider={null}
+    data-slide="VerticalSlide"
+    id={undefined}
+    style={
+      Object {
+        "backgroundColor": "blue",
+        "height": 768,
+        "overflow": "hidden",
+        "position": "relative",
+        "width": 1024,
+      }
+    }
+  >
+    <p>
+      1
+    </p>
+  </div>
+  <div
+    className="VerticalSlide"
+    data-horizontal-slider={null}
+    data-slide="VerticalSlide"
+    id={undefined}
+    style={
+      Object {
+        "backgroundColor": "pink",
+        "height": 768,
+        "overflow": "hidden",
+        "position": "relative",
+        "width": 1024,
+      }
+    }
+  >
+    <p>
+      2
+    </p>
+  </div>
+</div>
+`;

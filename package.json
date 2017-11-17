@@ -8,7 +8,7 @@
     "start": "./node_modules/.bin/webpack-dev-server",
     "build": "NODE_ENV=production ./node_modules/.bin/webpack",
     "babel-version": "./node_modules/.bin/babel --version",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "cmswalker",
   "license": "MIT",
@@ -57,8 +57,10 @@
     "eslint-plugin-react": "^6.6.0",
     "html-loader": "^0.4.5",
     "html-webpack-plugin": "^2.28.0",
+    "jest": "^21.2.1",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
+    "react-test-renderer": "^16.1.1",
     "style-loader": "^0.18.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",

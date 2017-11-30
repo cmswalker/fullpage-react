@@ -1,5 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
 const HtmlwebpackPlugin = require('html-webpack-plugin');
 
 const ENV = process.env.NODE_ENV || 'development';
@@ -41,7 +40,7 @@ const config = {
     ]
   },
 
-  target: 'web', // enum
+  target: 'web',
   stats: 'errors-only',
 
   devServer: {
@@ -49,14 +48,13 @@ const config = {
     contentBase: path.join(__dirname, 'public'), // boolean | string | array, static file location
     compress: true, // enable gzip compression
     historyApiFallback: true, // true for index.html upon 404, object for multiple paths
-    // hot: true, // hot module replacement. Depends on HotModuleReplacementPlugin
     https: false, // true for self-signed, object for cert authority
-    noInfo: true, // only errors & warns on hot reload
+    noInfo: true // only errors & warns on hot reload
   },
 
   plugins: [],
   // Don't follow/bundle these modules, but request them at runtime from the environment
-  externals: [],
+  externals: {},
 
   devtool: 'source-map'
 }
@@ -86,6 +84,6 @@ if (isProduction) {
   }));
 }
 
-console.log('config', config);
+console.log('webpack config', config);
 
 module.exports = config;

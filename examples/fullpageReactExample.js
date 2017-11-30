@@ -8,13 +8,8 @@ require('./skeleton.css');
 require('./exampleStyles.styl');
 
 const fullPageOptions = {
-  // for mouse/wheel events
-  // represents the level of force required to generate a slide change on non-mobile, 10 is default
-  scrollSensitivity: 7,
-
-  // for touchStart/touchEnd/mobile scrolling
-  // represents the level of force required to generate a slide change on mobile, 10 is default
-  touchSensitivity: -3,
+  scrollSensitivity: 0,
+  touchSensitivity: 0,
   scrollSpeed: 500,
   resetSlides: true,
   hideScrollBars: true,
@@ -121,23 +116,19 @@ class FullpageReact extends React.Component {
       </div>
     );
 
-    const horizontalSlides = [
+    horizontalSliderProps.slides = [
       <Slide style={{backgroundColor: 'red'}}><p>Horizontal 1</p></Slide>,
       <Slide style={{backgroundColor: 'yellow'}}><p>Horizontal 2</p></Slide>,
       <Slide style={{backgroundColor: 'green'}}><p>Horizontal 3</p></Slide>
     ];
-    horizontalSliderProps.slides = horizontalSlides;
 
-    const horizontalSlider = <HorizontalSlider id='horizontal-slider-1' {...horizontalSliderProps}>{horizontalNav}</HorizontalSlider>;
-
-    const verticalSlides = [
-      <Slide style={{backgroundColor: 'blue'}}>
-        <p>Slide 1</p>
-      </Slide>,
-      horizontalSlider,
+    fullPageOptions.slides = [
+      <Slide style={{backgroundColor: 'blue'}}><p>Slide 1</p></Slide>,
+      <HorizontalSlider id='horizontal-slider-1' {...horizontalSliderProps}>
+        {horizontalNav}
+      </HorizontalSlider>,
       <Slide style={{backgroundColor: 'pink'}}><p>Slide 3</p></Slide>
     ];
-    fullPageOptions.slides = verticalSlides;
 
     return (
       <Fullpage onSlideChangeStart={this.onSlideChangeStart} onSlideChangeEnd={this.onSlideChangeEnd} {...fullPageOptions}>

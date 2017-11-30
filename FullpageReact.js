@@ -317,19 +317,21 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function composedPath(el) {
-	var path = [];
+	var paths = [];
 
 	while (el) {
-		path.push(el);
+		paths.push(el);
 
 		if (el.tagName === 'HTML') {
-			path.push(document);
-			path.push(window);
-			return path;
+			paths.push(document);
+			paths.push(window);
+			return paths;
 		}
 
 		el = el.parentElement;
 	}
+
+	return paths;
 }
 
 function getNodes(document, sel) {
@@ -688,7 +690,13 @@ var Fullpage = function (_React$Component) {
         return this.onVerticalScroll(dir[intent], startEvent);
       }
 
-      var path = startEvent.path || startEvent.composedPath || composedPath(startEvent.target);
+      var path = startEvent.path || startEvent.composedPath();
+
+      if (!path) {
+        var polyFillPath = composedPath(startEvent.target);
+        path = polyFillPath;
+      }
+
       var isHorizontal = path.find(function (p) {
         if (!p.dataset) {
           return false;
@@ -1082,10 +1090,15 @@ function determineVerticalRoot() {
     return document.body;
   }
 
-  var _utils$detectBrowser = utils.detectBrowser(agent),
-      name = _utils$detectBrowser.name,
-      version = _utils$detectBrowser.version,
-      os = _utils$detectBrowser.os;
+  var browser = utils.detectBrowser(agent);
+
+  if (!browser) {
+    return document.body;
+  }
+
+  var name = browser.name,
+      version = browser.version,
+      os = browser.os;
 
   var _version$split = version.split('.'),
       _version$split2 = _slicedToArray(_version$split, 3),

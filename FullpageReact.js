@@ -231,7 +231,7 @@ var HorizontalSlider = function (_React$Component) {
       var overflowX = p.hideScrollBars ? 'hidden' : 'auto';
 
       var horizontalSliderStyle = Object.assign({}, p.style, { height: window.innerHeight, width: innerWidth, position: 'relative', overflowX: overflowX, whiteSpace: 'nowrap', padding: '0px', margin: '0' });
-      var horizontalSlideStyle = { overflow: 'hidden', whiteSpace: 'normal', display: 'inline-block', height: innerHeight, width: innerWidth, position: 'absolute', top: '0px' };
+      var horizontalSlideStyle = { overflow: 'hidden', whiteSpace: 'normal', display: 'inline-block', height: innerHeight, width: innerWidth };
 
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',

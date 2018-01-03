@@ -38,6 +38,7 @@
     "react-slideshow"
   ],
   "dependencies": {
+    "react-fns": "^1.3.0",
     "scroll-swipe": "0.0.9"
   },
   "peerDependencies": {

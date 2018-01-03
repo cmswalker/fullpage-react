@@ -12,10 +12,10 @@ exports[`FullpageReact with HorizontalSlides should support horizontal slides 1`
     style={
       Object {
         "backgroundColor": "blue",
-        "height": 768,
+        "height": "0px",
         "overflow": "hidden",
         "position": "relative",
-        "width": 1024,
+        "width": "0px",
       }
     }
   >
@@ -30,13 +30,13 @@ exports[`FullpageReact with HorizontalSlides should support horizontal slides 1`
     id={undefined}
     style={
       Object {
-        "height": 768,
+        "height": "0px",
         "margin": "0",
         "overflowX": "hidden",
         "padding": "0px",
         "position": "relative",
         "whiteSpace": "nowrap",
-        "width": 1024,
+        "width": "0px",
       }
     }
   >
@@ -48,10 +48,10 @@ exports[`FullpageReact with HorizontalSlides should support horizontal slides 1`
       style={
         Object {
           "backgroundColor": "red",
-          "height": 768,
+          "height": "0px",
           "overflow": "hidden",
           "position": "relative",
-          "width": 1024,
+          "width": "0px",
         }
       }
     >
@@ -67,10 +67,10 @@ exports[`FullpageReact with HorizontalSlides should support horizontal slides 1`
       style={
         Object {
           "backgroundColor": "yellow",
-          "height": 768,
+          "height": "0px",
           "overflow": "hidden",
           "position": "relative",
-          "width": 1024,
+          "width": "0px",
         }
       }
     >
@@ -86,10 +86,10 @@ exports[`FullpageReact with HorizontalSlides should support horizontal slides 1`
       style={
         Object {
           "backgroundColor": "green",
-          "height": 768,
+          "height": "0px",
           "overflow": "hidden",
           "position": "relative",
-          "width": 1024,
+          "width": "0px",
         }
       }
     >
@@ -113,10 +113,10 @@ exports[`FullpageReact with Slides should support vertical slides 1`] = `
     style={
       Object {
         "backgroundColor": "blue",
-        "height": 768,
+        "height": "0px",
         "overflow": "hidden",
         "position": "relative",
-        "width": 1024,
+        "width": "0px",
       }
     }
   >
@@ -132,10 +132,10 @@ exports[`FullpageReact with Slides should support vertical slides 1`] = `
     style={
       Object {
         "backgroundColor": "pink",
-        "height": 768,
+        "height": "0px",
         "overflow": "hidden",
         "position": "relative",
-        "width": 1024,
+        "width": "0px",
       }
     }
   >

@@ -5,9 +5,8 @@
   "main": "./FullpageReact.js",
   "eslintConfig": "./.eslint.json",
   "scripts": {
-    "start": "./node_modules/.bin/webpack-dev-server",
-    "build": "NODE_ENV=production ./node_modules/.bin/webpack",
-    "babel-version": "./node_modules/.bin/babel --version",
+    "start": "webpack-dev-server",
+    "build": "NODE_ENV=production webpack",
     "test": "npm run build && jest"
   },
   "author": "cmswalker",
@@ -18,9 +17,6 @@
   },
   "bugs": {
     "url": "https://github.com/cmswalker/fullpage-react/issues"
-  },
-  "engines": {
-    "node": ">=6.9.1"
   },
   "keywords": [
     "react",
@@ -39,7 +35,7 @@
   ],
   "dependencies": {
     "react-fns": "^1.3.0",
-    "scroll-swipe": "0.0.9"
+    "scroll-swipe": "^0.0.12"
   },
   "peerDependencies": {
     "react": "^16.1.1",

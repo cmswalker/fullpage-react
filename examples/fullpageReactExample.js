@@ -9,17 +9,19 @@ require('./exampleStyles.styl');
 
 const fullPageOptions = {
   // for mouse/wheel events
-  // represents the level of force required to generate a slide change on non-mobile, 10 is default
-  scrollSensitivity: 7,
+  // represents the level of force required to generate a slide change on non-mobile, 0 is default
+  scrollSensitivity: 2,
 
   // for touchStart/touchEnd/mobile scrolling
-  // represents the level of force required to generate a slide change on mobile, 10 is default
-  touchSensitivity: -3,
+  // represents the level of force required to generate a slide change on mobile, 0 is default
+  touchSensitivity: 2,
   scrollSpeed: 500,
   resetSlides: true,
   hideScrollBars: true,
   enableArrowKeys: true,
-  breakpoint: 375
+
+  // optional, set the initial vertical slide
+  activeSlide: 0
 };
 
 const topNavStyle = {

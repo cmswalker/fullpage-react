@@ -8,4 +8,4 @@ install:
 cache:
   - yarn
 script:
-  - npm test
+  - yarn test

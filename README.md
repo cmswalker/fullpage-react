@@ -42,8 +42,7 @@ const fullPageOptions = {
   touchSensitivity: 7,
   scrollSpeed: 500,
   hideScrollBars: true,
-  enableArrowKeys: true,
-  breakpoint: 375 // Disable FullpageReact and get standard scroll behavior back when this breakpoint (or below) is reached
+  enableArrowKeys: true
 };
 
 const horizontalSliderProps = {

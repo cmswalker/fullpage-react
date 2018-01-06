@@ -1,5 +1,5 @@
 import React from 'react';
-import { Fullpage, Slide, HorizontalSlider } from '../lib';
+import { Fullpage, Slide, HorizontalSlider } from '../FullpageReact';
 import renderer from 'react-test-renderer';
 
 const fullPageOptions = {
@@ -8,8 +8,7 @@ const fullPageOptions = {
 	scrollSpeed: 500,
 	resetSlides: true,
 	hideScrollBars: true,
-	enableArrowKeys: true,
-	breakpoint: 375
+	enableArrowKeys: true
 };
 
 function createNodeMock(element) {

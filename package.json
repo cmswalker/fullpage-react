@@ -8,7 +8,7 @@
     "start": "./node_modules/.bin/webpack-dev-server",
     "build": "NODE_ENV=production ./node_modules/.bin/webpack",
     "babel-version": "./node_modules/.bin/babel --version",
-    "test": "jest"
+    "test": "npm run build && jest"
   },
   "author": "cmswalker",
   "license": "MIT",

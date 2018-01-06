@@ -3,11 +3,9 @@
   "version": "0.0.1",
   "description": "full page scrolling for react",
   "main": "./static/index.js",
-  "eslintConfig": "./.eslint.json",
   "scripts": {
-    "start": "./node_modules/.bin/webpack-dev-server",
-    "build": "NODE_ENV=production ./node_modules/.bin/webpack",
-    "babel-version": "./node_modules/.bin/babel --version",
+    "start": "webpack-dev-server",
+    "build": "NODE_ENV=production webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "cmswalker",
@@ -19,9 +17,6 @@
   "bugs": {
     "url": "https://github.com/cmswalker/fullpage-react/issues"
   },
-  "engines": {
-    "node": ">=6.9.1"
-  },
   "keywords": [
     "react",
     "react-fullpage",
@@ -31,7 +26,7 @@
     "slider"
   ],
   "dependencies": {
-    "fullpage-react": "^3.0.14",
+    "fullpage-react": "^3.0.20",
     "normalize-css": "^2.3.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"

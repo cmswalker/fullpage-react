@@ -2805,8 +2805,10 @@ var Fullpage = function (_React$Component) {
     _this.onScrollAction = _this.onScrollAction.bind(_this);
     _this.onVerticalScroll = _this.onVerticalScroll.bind(_this);
     _this.onHorizontalScroll = _this.onHorizontalScroll.bind(_this);
-    _this.isLocked = false;
+    _this.lockScroll = _this.lockScroll.bind(_this);
     _this.handleScroll = _this.handleScroll.bind(_this);
+
+    _this.isLocked = false;
     _this.hSlideCache = {};
     _this.cacheHslide = function (slide) {
       _this.hSlideCache[slide.name] = slide;
@@ -2836,15 +2838,8 @@ var Fullpage = function (_React$Component) {
         window: global.window,
         document: global.document
       }, function () {
-        _this2.init.call(_this2);
+        _this2.lockScroll();
       });
-    }
-  }, {
-    key: 'init',
-    value: function init() {
-      if (!this.isLocked) {
-        this.lockScroll.call(this);
-      }
     }
   }, {
     key: 'hideScrollBars',
@@ -2869,18 +2864,19 @@ var Fullpage = function (_React$Component) {
   }, {
     key: 'lockScroll',
     value: function lockScroll() {
-      var node = this.node;
+      var node = this.node,
+          checkKey = this.checkKey;
       var enableArrowKeys = this.props.enableArrowKeys;
 
 
       if (enableArrowKeys) {
-        window.addEventListener('keydown', this.checkKey.bind(this));
+        window.addEventListener('keydown', checkKey.bind(this));
       }
 
       var ss = new __WEBPACK_IMPORTED_MODULE_1_scroll_swipe___default.a({
         target: node,
-        scrollSensitivity: this.scrollSensitivity * 3,
-        touchSensitivity: this.touchSensitivity * 3,
+        scrollSensitivity: this.scrollSensitivity,
+        touchSensitivity: this.touchSensitivity,
         scrollPreventDefault: true,
         touchPreventDefault: true,
         scrollCb: this.onScrollAction,
@@ -2888,20 +2884,6 @@ var Fullpage = function (_React$Component) {
       });
       this.ss = ss;
       this.isLocked = true;
-    }
-  }, {
-    key: 'unlockScroll',
-    value: function unlockScroll() {
-      var enableArrowKeys = this.props.enableArrowKeys;
-
-      var ss = this.ss || ssStub();
-      ss.killAll();
-      this.ss = null;
-
-      if (enableArrowKeys) {
-        window.removeEventListener('keydown', this.checkKey.bind(this));
-      }
-      this.isLocked = false;
     }
   }, {
     key: 'onScrollAction',
@@ -3344,6 +3326,10 @@ function determineVerticalRoot() {
     return document.body;
   }
 
+  // NOTE: various browsers and devTools handle this differently as the userAgent source of truth
+  // To get the root scrollable element we have to play around with OS and browser to find the right
+  // root to return. If need be we can be specific about version
+
   var name = browser.name,
       version = browser.version,
       os = browser.os;
@@ -3354,7 +3340,8 @@ function determineVerticalRoot() {
       minor = _version$split2[1],
       patch = _version$split2[2];
 
-  var docElementSet = new Set(['firefox', 'chrome']);
+  var docElementSet = new Set(['firefox', 'chrome', 'crios' // chrome ios
+  ]);
 
   if (docElementSet.has(name)) {
     return document.documentElement;
@@ -3548,10 +3535,10 @@ function scrollTo(element, elementBoundary, to, duration, callback) {
 //b = start value
 //c = change in value
 //d = duration
-function easeInOutQuad(t, b, c, d) {
+var easeInOutQuad = function easeInOutQuad(t, b, c, d) {
   t /= d;
   return -c * t * (t - 2) + b;
-}
+};
 
 /* harmony default export */ __webpack_exports__["a"] = (scrollTo);
 
@@ -5102,10 +5089,6 @@ function ScrollSwipe(opts) {
 
   this.scrollPending = false;
 
-  if (this.target.style) {
-    this.target.style.touchAction = 'none';
-  }
-
   //these should only init if true
   if (this.scrollCb) {
     this.initScroll();
@@ -5148,6 +5131,7 @@ ScrollSwipe.prototype.onWheel = function onWheel(e) {
       return;
     }
 
+    _this2.lockout();
     _this2.latestScrollEvent = e;
 
     var result = {
@@ -5159,6 +5143,7 @@ ScrollSwipe.prototype.onWheel = function onWheel(e) {
     };
 
     _this2.scrollCb(result);
+    _this2.undoLockout();
   });
 };
 
@@ -5271,6 +5256,7 @@ ScrollSwipe.prototype.addXTouch = function addTouch(touch) {
 
   this.latestTouch = touch;
   this.touchArrX.push(touch);
+
   return this;
 };
 
@@ -5281,6 +5267,7 @@ ScrollSwipe.prototype.addYTouch = function addTouch(touch) {
 
   this.latestTouch = touch;
   this.touchArrY.push(touch);
+
   return this;
 };
 
@@ -5318,12 +5305,38 @@ ScrollSwipe.prototype.getDirection = function getDirection() {
 ScrollSwipe.prototype.resetScroll = function resetScroll() {
   this.xArr = [];
   this.yArr = [];
+
   return this;
 };
 
 ScrollSwipe.prototype.flush = function flush() {
   this.resetScroll();
   this.resetTouches();
+
+  return this;
+};
+
+ScrollSwipe.prototype.lockout = function lockout() {
+  this.originalAddXTouch = this.addXTouch;
+  this.originalAddYTouch = this.addYTouch;
+
+  this.originalAddXScroll = this.addXScroll;
+  this.originalAddYScroll = this.addYScroll;
+
+  this.addXScroll = function () {};
+  this.addYScroll = function () {};
+  this.addXTouch = function () {};
+  this.addYTouch = function () {};
+
+  return this;
+};
+
+ScrollSwipe.prototype.undoLockout = function undoLockout() {
+  this.addXScroll = this.originalAddXScroll;
+  this.addYScroll = this.originalAddYScroll;
+  this.addXTouch = this.originalAddXTouch;
+  this.addYTouch = this.originalAddYTouch;
+
   return this;
 };
 

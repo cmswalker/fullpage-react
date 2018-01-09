@@ -893,6 +893,8 @@ var Fullpage = function (_React$Component) {
         global.document = global.window.document;
       }
 
+      this.hideScrollBars();
+
       this.setState({
         window: global.window,
         document: global.document
@@ -904,13 +906,14 @@ var Fullpage = function (_React$Component) {
     key: 'hideScrollBars',
     value: function hideScrollBars() {
       var hideScrollBars = this.props.hideScrollBars;
-      var document = this.state.document;
 
 
-      if (hideScrollBars) {
-        document.documentElement.style.overflow = 'hidden';
-        document.body.style.overflow = 'hidden';
-      }
+      if (!hideScrollBars) return;
+
+      var document = global.document;
+
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
     }
   }, {
     key: 'showScrollBars',

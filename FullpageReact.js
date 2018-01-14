@@ -792,6 +792,8 @@ var KEY_IDX = __WEBPACK_IMPORTED_MODULE_4__utils__["d" /* renderUtils */].KEY_ID
 var _fp = {};
 var global = {};
 
+var TIMEOUT = 200;
+
 var documentStub = function documentStub() {
   var style = {};
   return {
@@ -968,9 +970,12 @@ var Fullpage = function (_React$Component) {
           startEvent = _ref.startEvent;
 
       var s = this.state;
-      var ss = this.ss || ssStub();
+      var _ss = this.ss,
+          ss = _ss === undefined ? ssStub() : _ss;
+
 
       if (s.scrollPending) {
+        ss.flush();
         return ss.listen();
       }
 
@@ -997,6 +1002,7 @@ var Fullpage = function (_React$Component) {
       });
 
       if (!isHorizontal) {
+        ss.flush();
         return ss.listen();
       }
 
@@ -1009,14 +1015,16 @@ var Fullpage = function (_React$Component) {
 
       var s = this.state;
       var window = s.window,
-          document = s.document,
           activeSlide = s.activeSlide;
       var slides = this.props.slides;
 
 
       var next = intent === 'DOWN' ? activeSlide + 1 : activeSlide - 1;
       if (next < 0 || next > slides.length - 1) {
-        var ss = this.ss || ssStub();
+        var _ss2 = this.ss,
+            ss = _ss2 === undefined ? ssStub() : _ss2;
+
+        ss.flush();
         return ss.listen();
       }
 
@@ -1038,6 +1046,8 @@ var Fullpage = function (_React$Component) {
 
       var next = intent === 'RIGHT' ? activeSlide + 1 : activeSlide - 1;
       var innerWidth = this.state.window.innerWidth;
+      var _ss3 = this.ss,
+          ss = _ss3 === undefined ? ssStub() : _ss3;
 
 
       var comp = _fp.hSlideCache[name];
@@ -1051,6 +1061,14 @@ var Fullpage = function (_React$Component) {
       var to = next * innerWidth;
 
       var result = this.determineHSlide(comp, activeSlide, next, leftVal, to, nodes);
+
+      if (!result) {
+        setTimeout(function () {
+          ss.flush();
+          ss.listen();
+        }, TIMEOUT);
+        return;
+      }
 
       leftVal = result.leftVal;
       next = result.next;
@@ -1071,7 +1089,6 @@ var Fullpage = function (_React$Component) {
           resetSlides = hp.resetSlides;
       var innerWidth = this.state.window.innerWidth;
 
-      var ss = this.ss || ssStub();
 
       var len = nodes.length;
 
@@ -1079,7 +1096,7 @@ var Fullpage = function (_React$Component) {
       var infEnd = activeSlide === len - 1 && next === len;
 
       if (!infinite && !resetSlides && (infStart || infEnd)) {
-        return ss.listen();
+        return null;
       }
 
       if (infinite && infStart) {
@@ -1140,7 +1157,7 @@ var Fullpage = function (_React$Component) {
           setTimeout(function () {
             ss.flush();
             ss.listen();
-          }, 200);
+          }, TIMEOUT);
         });
       });
     }

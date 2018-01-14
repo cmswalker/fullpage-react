@@ -876,11 +876,9 @@ var Fullpage = function (_React$Component) {
     _this.onSlideChangeStart = p.onSlideChangeStart || noOp;
     _this.onSlideChangeEnd = p.onSlideChangeEnd || noOp;
 
-    _this.onScrollAction = _this.onScrollAction.bind(_this);
-    _this.onVerticalScroll = _this.onVerticalScroll.bind(_this);
-    _this.onHorizontalScroll = _this.onHorizontalScroll.bind(_this);
-    _this.lockScroll = _this.lockScroll.bind(_this);
-    _this.handleScroll = _this.handleScroll.bind(_this);
+    ['onScrollAction', 'onVerticalScroll', 'onHorizontalScroll', 'lockScroll', 'handleScroll', 'checkKey'].forEach(function (f) {
+      return _this[f] = _this[f].bind(_this);
+    });
 
     _this.isLocked = false;
     _this.hSlideCache = {};
@@ -905,6 +903,9 @@ var Fullpage = function (_React$Component) {
 
       this.hideScrollBars();
 
+      this.window = global.window;
+      this.document = global.document;
+
       this.setState({
         window: global.window,
         document: global.document
@@ -918,7 +919,9 @@ var Fullpage = function (_React$Component) {
       var hideScrollBars = this.props.hideScrollBars;
 
 
-      if (!hideScrollBars) return;
+      if (!hideScrollBars) {
+        return;
+      }
 
       var document = global.document;
 
@@ -1151,9 +1154,8 @@ var Fullpage = function (_React$Component) {
       var window = this.state.window;
 
 
-      window.removeEventListener('resize', this.resize.bind(this));
       if (this.props.enableArrowKeys) {
-        window.removeEventListener('keydown', this.checkKey.bind(this));
+        window.removeEventListener('keydown', this.checkKey);
       }
     }
   }, {

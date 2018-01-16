@@ -36,7 +36,7 @@
   ],
   "dependencies": {
     "react-fns": "^1.3.0",
-    "scroll-swipe": "^0.0.12",
+    "scroll-swipe": "0.0.13",
     "window-or-global": "^1.0.1"
   },
   "peerDependencies": {

@@ -101,6 +101,53 @@ exports[`FullpageReact with HorizontalSlides should support horizontal slides 1`
 </div>
 `;
 
+exports[`FullpageReact with SSR should mount via SSR 1`] = `
+<div
+  className="Fullpage"
+>
+  <div
+    className="VerticalSlide"
+    data-horizontal-slider={null}
+    data-slide="VerticalSlide"
+    id={undefined}
+    style={
+      Object {
+        "backgroundColor": "blue",
+        "height": "0px",
+        "overflow": "hidden",
+        "position": "relative",
+        "width": "0px",
+      }
+    }
+  >
+    <p>
+      1
+    </p>
+  </div>
+  <div
+    className="VerticalSlide"
+    data-horizontal-slider={null}
+    data-slide="VerticalSlide"
+    id={undefined}
+    style={
+      Object {
+        "backgroundColor": "pink",
+        "height": "0px",
+        "overflow": "hidden",
+        "position": "relative",
+        "width": "0px",
+      }
+    }
+  >
+    <p>
+      2
+    </p>
+  </div>
+</div>
+`;
+
+exports[`FullpageReact with SSR should unmount via SSR 1`] = `null`;
+
 exports[`FullpageReact with Slides should support vertical slides 1`] = `
 <div
   className="Fullpage"

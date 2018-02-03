@@ -1325,12 +1325,11 @@ var Fullpage = function (_React$Component) {
   }, {
     key: 'changeFullpageSlide',
     value: function changeFullpageSlide(idx) {
-      var t = _fp;
-      var props = t.props,
-          state = t.state;
+      var _fp2 = _fp,
+          props = _fp2.props,
+          state = _fp2.state;
       var activeSlide = state.activeSlide,
-          window = state.window,
-          document = state.document;
+          window = state.window;
 
 
       var eligible = isElibile(idx, props, state);
@@ -1346,8 +1345,9 @@ var Fullpage = function (_React$Component) {
 
       var to = idx * window.innerHeight;
 
-      t.setState({ scrollPending: true }, function () {
-        t.handleScroll(t.verticalRoot, 'scrollTop', to, newState, t.name);
+      _fp.setState({ scrollPending: true }, function () {
+        _fp.onSlideChange(newState);
+        _fp.handleScroll(_fp.verticalRoot, 'scrollTop', to, newState, _fp.name);
       });
     }
   }]);

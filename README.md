@@ -17,20 +17,21 @@ You can either require this module in your own bundler/build chain or use it dir
 
 ### Basic Setup
 
-```
+```shell
+// NPM
 npm install fullpage-react --save
+
+// Yarn
 yarn add fullpage-react
 
 ```
-
-Inline component styles are supported by default.
 
 ---
 
 ###### Component Boilerplate
 
 ```jsx
-const { Fullpage, Slide, HorizontalSlider } = require('fullpage-react');
+import { Fullpage, Slide, HorizontalSlider } from 'fullpage-react';
 
 const fullPageOptions = {
   // for mouse/wheel events
@@ -51,14 +52,14 @@ const horizontalSliderProps = {
 };
 
 const horizontalSlides = [
-  <Slide> Slide 2.1 </Slide>
+  <Slide> Slide 2.1 </Slide>,
   <Slide> Slide 2.2 </Slide>
 ];
 horizontalSliderProps.slides = horizontalSlides;
 
 const slides = [
-  <Slide> Slide 1 </Slide>
-  <HorizontalSlider {...horizontalSliderProps}></HorizontalSlider>
+  <Slide> Slide 1 </Slide>,
+  <HorizontalSlider {...horizontalSliderProps}></HorizontalSlider>,
   <Slide> Slide 3 </Slide>
 ];
 fullPageOptions.slides = slides;
@@ -69,5 +70,8 @@ fullPageOptions.slides = slides;
 
 ###### Events API
 
-There are two functions located on the `Fullpage` class. These are used for manually changing the vertical and horizontal slides via UI.
+There are two functions located on the `Fullpage` class. These are used for manually changing the vertical and horizontal slides via UI events.
+
+There are also two optional props for `<Fullpage/>` that will send data `onSlideChangeStart` and `onSlideChangeEnd`
+
 An example can be found here [here](https://github.com/cmswalker/fullpage-react/blob/master/examples/fullpageReactExample.js)

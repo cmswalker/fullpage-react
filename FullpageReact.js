@@ -1327,7 +1327,9 @@ var Fullpage = function (_React$Component) {
     value: function changeFullpageSlide(idx) {
       var _fp2 = _fp,
           props = _fp2.props,
-          state = _fp2.state;
+          state = _fp2.state,
+          name = _fp2.name,
+          verticalRoot = _fp2.verticalRoot;
       var activeSlide = state.activeSlide,
           window = state.window;
 
@@ -1346,8 +1348,8 @@ var Fullpage = function (_React$Component) {
       var to = idx * window.innerHeight;
 
       _fp.setState({ scrollPending: true }, function () {
-        _fp.onSlideChange(newState);
-        _fp.handleScroll(_fp.verticalRoot, 'scrollTop', to, newState, _fp.name);
+        _fp.onSlideChangeStart(name, props, state, newState);
+        _fp.handleScroll(verticalRoot, 'scrollTop', to, newState, name);
       });
     }
   }]);

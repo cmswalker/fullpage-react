@@ -1296,7 +1296,7 @@ var Fullpage = function (_React$Component) {
           props = comp.props;
       var infinite = props.infinite;
 
-      var eligible = isElibile(next, props, _fp.state);
+      var eligible = isEligible(next, props, _fp.state);
 
       if (!eligible) {
         return;
@@ -1334,7 +1334,7 @@ var Fullpage = function (_React$Component) {
           window = state.window;
 
 
-      var eligible = isElibile(idx, props, state);
+      var eligible = isEligible(idx, props, state);
 
       if (!eligible) {
         return;
@@ -1370,7 +1370,7 @@ function firstToLast(nodes) {
   swap(nodes, null, nodes.length - 1);
 }
 
-function isElibile(idx, props, state) {
+function isEligible(idx, props, state) {
   var slides = props.slides;
   var activeSlide = state.activeSlide;
 
@@ -1403,20 +1403,23 @@ function ssStub() {
 }
 
 function determineVerticalRoot() {
-  var agent = void 0;
+  var userAgent = void 0,
+      platform = void 0;
 
   var document = global.document;
 
 
   if (typeof navigator !== 'undefined' && navigator) {
-    agent = navigator.userAgent;
+    var _navigator = navigator;
+    userAgent = _navigator.userAgent;
+    platform = _navigator.platform;
   }
 
-  if (!agent) {
+  if (!userAgent) {
     return document.body;
   }
 
-  var browser = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__utils__["i" /* detectBrowser */])(agent);
+  var browser = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__utils__["i" /* detectBrowser */])(userAgent);
 
   if (!browser) {
     return document.body;
@@ -1428,22 +1431,28 @@ function determineVerticalRoot() {
 
   var name = browser.name,
       version = browser.version,
-      os = browser.os;
+      os = browser.os; // eslint-disable-line no-unused-vars
 
   var _version$split = version.split('.'),
       _version$split2 = _slicedToArray(_version$split, 3),
       major = _version$split2[0],
       minor = _version$split2[1],
-      patch = _version$split2[2];
+      patch = _version$split2[2]; // eslint-disable-line no-unused-vars
 
-  var docElementSet = new Set(['firefox', 'chrome', 'crios' // chrome ios
+  var docElementSet = new Set(['firefox', 'chrome', 'ios', // iPad (chrome devtools)
+  'crios' // chrome ios (chrome devtools)
   ]);
 
-  if (docElementSet.has(name)) {
+  // Some platforms conflict with the devtools when it comes to supporting document.body
+  // In order to support both user-agents in chrome devtools and the native device we need to
+  // check for both browser name and device platform
+  var conflictingPlatforms = new Set(['iPhone', 'iPad']);
+
+  if (docElementSet.has(name) && !conflictingPlatforms.has(platform)) {
     return document.documentElement;
   }
 
-  // safari, etc
+  // safari, chrome ios etc
   return document.body;
 }
 /* harmony default export */ __webpack_exports__["a"] = (Fullpage);

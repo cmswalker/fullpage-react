@@ -507,8 +507,7 @@ var HorizontalSlider = function (_React$Component) {
       var name = p.name,
           children = p.children,
           height = p.height,
-          width = p.width,
-          window = p.window;
+          width = p.width;
 
 
       if (!name) {
@@ -540,8 +539,9 @@ var HorizontalSlider = function (_React$Component) {
 
       var className = (p.className || '') + 'HorizontalSlider';
       var overflowX = p.hideScrollBars ? 'hidden' : 'auto';
+      var overflowY = overflowX;
 
-      var horizontalSliderStyle = Object.assign({}, p.style, { height: height + 'px', width: width + 'px', position: 'relative', overflowX: overflowX, whiteSpace: 'nowrap', padding: '0px', margin: '0' });
+      var horizontalSliderStyle = Object.assign({}, p.style, { height: height + 'px', width: width + 'px', position: 'relative', overflowX: overflowX, overflowY: overflowY, whiteSpace: 'nowrap', padding: '0px', margin: '0' });
       var horizontalSlideStyle = { overflow: 'hidden', whiteSpace: 'normal', display: 'inline-block' };
 
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -1147,7 +1147,11 @@ var Fullpage = function (_React$Component) {
 
       var ss = this.ss || ssStub();
       ss.flush();
-      this.onSlideChangeStart(compName, this.props, this.state, newState[compName] || newState);
+      var cancellable = this.onSlideChangeStart(compName, this.props, this.state, newState[compName] || newState);
+
+      if (cancellable === true) {
+        return;
+      }
 
       __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__utils__["h" /* scrollTo */])(node, winProp, to, this.scrollSpeed, function () {
         newState.scrollPending = false;
@@ -1303,6 +1307,7 @@ var Fullpage = function (_React$Component) {
       }
 
       var activeSlide = _fp.state[name].activeSlide;
+      var innerWidth = _fp.state.window.innerWidth;
 
 
       var nodes = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__utils__["a" /* getNodes */])(_fp.state.document, 'data-horizontal-slider="' + name + '"');

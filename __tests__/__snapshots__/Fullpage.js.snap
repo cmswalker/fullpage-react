@@ -33,6 +33,7 @@ exports[`FullpageReact with HorizontalSlides should support horizontal slides 1`
         "height": "0px",
         "margin": "0",
         "overflowX": "hidden",
+        "overflowY": "hidden",
         "padding": "0px",
         "position": "relative",
         "whiteSpace": "nowrap",

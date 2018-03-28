@@ -74,4 +74,6 @@ There are two functions located on the `Fullpage` class. These are used for manu
 
 There are also two optional props for `<Fullpage/>` that will send data `onSlideChangeStart` and `onSlideChangeEnd`
 
+Sliding can be cancelled in the event that you want the user to stay fixed on a slide for some reason. If the function passed to `onSlideChangeStart` returns `true`, sliding can be cancellabe until it returns falsy.
+
 An example can be found here [here](https://github.com/cmswalker/fullpage-react/blob/master/examples/fullpageReactExample.js)

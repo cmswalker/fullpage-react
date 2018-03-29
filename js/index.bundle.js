@@ -2448,8 +2448,7 @@ var HorizontalSlider = function (_React$Component) {
       var name = p.name,
           children = p.children,
           height = p.height,
-          width = p.width,
-          window = p.window;
+          width = p.width;
 
 
       if (!name) {
@@ -2481,8 +2480,9 @@ var HorizontalSlider = function (_React$Component) {
 
       var className = (p.className || '') + 'HorizontalSlider';
       var overflowX = p.hideScrollBars ? 'hidden' : 'auto';
+      var overflowY = overflowX;
 
-      var horizontalSliderStyle = Object.assign({}, p.style, { height: height + 'px', width: width + 'px', position: 'relative', overflowX: overflowX, whiteSpace: 'nowrap', padding: '0px', margin: '0' });
+      var horizontalSliderStyle = Object.assign({}, p.style, { height: height + 'px', width: width + 'px', position: 'relative', overflowX: overflowX, overflowY: overflowY, whiteSpace: 'nowrap', padding: '0px', margin: '0' });
       var horizontalSlideStyle = { overflow: 'hidden', whiteSpace: 'normal', display: 'inline-block' };
 
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -2697,10 +2697,12 @@ module.exports = warning;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_scroll_swipe__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_scroll_swipe___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_scroll_swipe__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_fns__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Slide__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__HorizontalSlider__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_window_or_global__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_window_or_global___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_window_or_global__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_fns__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Slide__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__HorizontalSlider__ = __webpack_require__(6);
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -2723,12 +2725,30 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-var noOp = __WEBPACK_IMPORTED_MODULE_3__utils__["c" /* constants */].noOp;
-var KEY_IDX = __WEBPACK_IMPORTED_MODULE_3__utils__["d" /* renderUtils */].KEY_IDX;
+
+var noOp = __WEBPACK_IMPORTED_MODULE_4__utils__["c" /* constants */].noOp;
+var KEY_IDX = __WEBPACK_IMPORTED_MODULE_4__utils__["d" /* renderUtils */].KEY_IDX;
 
 
 var _fp = {};
 var global = {};
+
+var TIMEOUT = 200;
+
+var documentStub = function documentStub() {
+  var style = {};
+  return {
+    querySelectorAll: function querySelectorAll() {
+      return [__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', null)];
+    },
+    documentElement: {
+      style: style
+    },
+    body: {
+      style: style
+    }
+  };
+};
 
 function generateState() {
   var activeSlide = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
@@ -2749,21 +2769,18 @@ var Fullpage = function (_React$Component) {
 
     var p = _this.props;
 
+    global.window = __WEBPACK_IMPORTED_MODULE_2_window_or_global___default.a;
+    global.document = global.window.document || documentStub();
+
     if (p.infinite && p.resetSlides) {
       throw new Error('Fullpage Component cannot have both infinite and resetSlides as truthy props');
     }
 
-    var slides = p.slides,
-        window = p.window;
+    var slides = p.slides;
 
 
     if (!slides || !slides.length) {
       throw new Error('Please provide slides for Fullpage');
-    }
-
-    if (window) {
-      global.window = window;
-      global.document = global.window.document;
     }
 
     var horizontalMap = {};
@@ -2802,11 +2819,9 @@ var Fullpage = function (_React$Component) {
     _this.onSlideChangeStart = p.onSlideChangeStart || noOp;
     _this.onSlideChangeEnd = p.onSlideChangeEnd || noOp;
 
-    _this.onScrollAction = _this.onScrollAction.bind(_this);
-    _this.onVerticalScroll = _this.onVerticalScroll.bind(_this);
-    _this.onHorizontalScroll = _this.onHorizontalScroll.bind(_this);
-    _this.lockScroll = _this.lockScroll.bind(_this);
-    _this.handleScroll = _this.handleScroll.bind(_this);
+    ['onScrollAction', 'onVerticalScroll', 'onHorizontalScroll', 'lockScroll', 'handleScroll', 'checkKey'].forEach(function (f) {
+      return _this[f] = _this[f].bind(_this);
+    });
 
     _this.isLocked = false;
     _this.hSlideCache = {};
@@ -2829,10 +2844,10 @@ var Fullpage = function (_React$Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      if (!global.window) {
-        global.window = window || this.props.window || window;
-        global.document = global.window.document;
-      }
+      this.hideScrollBars();
+
+      this.window = global.window;
+      this.document = global.document;
 
       this.setState({
         window: global.window,
@@ -2845,18 +2860,21 @@ var Fullpage = function (_React$Component) {
     key: 'hideScrollBars',
     value: function hideScrollBars() {
       var hideScrollBars = this.props.hideScrollBars;
-      var document = this.state.document;
 
 
-      if (hideScrollBars) {
-        document.documentElement.style.overflow = 'hidden';
-        document.body.style.overflow = 'hidden';
+      if (!hideScrollBars) {
+        return;
       }
+
+      var document = global.document;
+
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
     }
   }, {
     key: 'showScrollBars',
     value: function showScrollBars() {
-      var document = this.state.document;
+      var document = global.document;
 
       document.documentElement.style.overflow = 'auto';
       document.body.style.overflow = 'auto';
@@ -2893,13 +2911,16 @@ var Fullpage = function (_React$Component) {
           startEvent = _ref.startEvent;
 
       var s = this.state;
-      var ss = this.ss || ssStub();
+      var _ss = this.ss,
+          ss = _ss === undefined ? ssStub() : _ss;
+
 
       if (s.scrollPending) {
+        ss.flush();
         return ss.listen();
       }
 
-      var dir = __WEBPACK_IMPORTED_MODULE_3__utils__["e" /* INTENT_MAP */][direction];
+      var dir = __WEBPACK_IMPORTED_MODULE_4__utils__["e" /* INTENT_MAP */][direction];
 
       // at this point we are dedicating
       if (direction === 'VERTICAL') {
@@ -2909,7 +2930,7 @@ var Fullpage = function (_React$Component) {
       var path = startEvent.path || startEvent.composedPath();
 
       if (!path) {
-        var polyFillPath = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__utils__["f" /* composedPath */])(startEvent.target);
+        var polyFillPath = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__utils__["f" /* composedPath */])(startEvent.target);
         path = polyFillPath;
       }
 
@@ -2922,6 +2943,7 @@ var Fullpage = function (_React$Component) {
       });
 
       if (!isHorizontal) {
+        ss.flush();
         return ss.listen();
       }
 
@@ -2934,14 +2956,16 @@ var Fullpage = function (_React$Component) {
 
       var s = this.state;
       var window = s.window,
-          document = s.document,
           activeSlide = s.activeSlide;
       var slides = this.props.slides;
 
 
       var next = intent === 'DOWN' ? activeSlide + 1 : activeSlide - 1;
       if (next < 0 || next > slides.length - 1) {
-        var ss = this.ss || ssStub();
+        var _ss2 = this.ss,
+            ss = _ss2 === undefined ? ssStub() : _ss2;
+
+        ss.flush();
         return ss.listen();
       }
 
@@ -2963,6 +2987,8 @@ var Fullpage = function (_React$Component) {
 
       var next = intent === 'RIGHT' ? activeSlide + 1 : activeSlide - 1;
       var innerWidth = this.state.window.innerWidth;
+      var _ss3 = this.ss,
+          ss = _ss3 === undefined ? ssStub() : _ss3;
 
 
       var comp = _fp.hSlideCache[name];
@@ -2970,12 +2996,20 @@ var Fullpage = function (_React$Component) {
       var infinite = hp.infinite;
 
 
-      var nodes = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__utils__["a" /* getNodes */])(this.state.document, 'data-horizontal-slider="' + name + '"');
+      var nodes = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__utils__["a" /* getNodes */])(this.state.document, 'data-horizontal-slider="' + name + '"');
 
       var leftVal = activeSlide * innerWidth;
       var to = next * innerWidth;
 
       var result = this.determineHSlide(comp, activeSlide, next, leftVal, to, nodes);
+
+      if (!result) {
+        setTimeout(function () {
+          ss.flush();
+          ss.listen();
+        }, TIMEOUT);
+        return;
+      }
 
       leftVal = result.leftVal;
       next = result.next;
@@ -2996,7 +3030,6 @@ var Fullpage = function (_React$Component) {
           resetSlides = hp.resetSlides;
       var innerWidth = this.state.window.innerWidth;
 
-      var ss = this.ss || ssStub();
 
       var len = nodes.length;
 
@@ -3004,7 +3037,7 @@ var Fullpage = function (_React$Component) {
       var infEnd = activeSlide === len - 1 && next === len;
 
       if (!infinite && !resetSlides && (infStart || infEnd)) {
-        return ss.listen();
+        return null;
       }
 
       if (infinite && infStart) {
@@ -3029,7 +3062,7 @@ var Fullpage = function (_React$Component) {
     value: function handleHorizontal(name, node, nodes, leftVal, to, next, newState, infinite) {
       var _this4 = this;
 
-      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__utils__["g" /* showAll */])(nodes);
+      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__utils__["g" /* showAll */])(nodes);
       node.scrollLeft = leftVal;
 
       //show, reset window
@@ -3042,7 +3075,7 @@ var Fullpage = function (_React$Component) {
             firstToLast(nodes);
             node.scrollLeft = innerWidth * next;
           }
-          __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__utils__["b" /* hideAllButActive */])(next, nodes);
+          __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__utils__["b" /* hideAllButActive */])(next, nodes);
         });
       });
     }
@@ -3055,9 +3088,13 @@ var Fullpage = function (_React$Component) {
 
       var ss = this.ss || ssStub();
       ss.flush();
-      this.onSlideChangeStart(compName, this.props, this.state, newState[compName] || newState);
+      var cancellable = this.onSlideChangeStart(compName, this.props, this.state, newState[compName] || newState);
 
-      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__utils__["h" /* scrollTo */])(node, winProp, to, this.scrollSpeed, function () {
+      if (cancellable === true) {
+        return;
+      }
+
+      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__utils__["h" /* scrollTo */])(node, winProp, to, this.scrollSpeed, function () {
         newState.scrollPending = false;
         _this5.setState(newState, function () {
           cb();
@@ -3065,7 +3102,7 @@ var Fullpage = function (_React$Component) {
           setTimeout(function () {
             ss.flush();
             ss.listen();
-          }, 200);
+          }, TIMEOUT);
         });
       });
     }
@@ -3079,9 +3116,8 @@ var Fullpage = function (_React$Component) {
       var window = this.state.window;
 
 
-      window.removeEventListener('resize', this.resize.bind(this));
       if (this.props.enableArrowKeys) {
-        window.removeEventListener('keydown', this.checkKey.bind(this));
+        window.removeEventListener('keydown', this.checkKey);
       }
     }
   }, {
@@ -3146,7 +3182,7 @@ var Fullpage = function (_React$Component) {
 
       // TODO: sub other for children
 
-      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_fns__["a" /* WindowSize */], {
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_fns__["a" /* WindowSize */], {
         render: function render(_ref2) {
           var width = _ref2.width,
               height = _ref2.height;
@@ -3175,14 +3211,14 @@ var Fullpage = function (_React$Component) {
                 var name = sp.name;
 
                 return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                  __WEBPACK_IMPORTED_MODULE_5__HorizontalSlider__["a" /* default */],
+                  __WEBPACK_IMPORTED_MODULE_6__HorizontalSlider__["a" /* default */],
                   _extends({ cache: _this6.cacheHslide.bind(_this6), width: width, height: height, window: window, document: document, activeSlide: s[name].activeSlide, hideScrollBars: p.hideScrollBars }, sp, { key: i }),
                   children
                 );
               }
 
               return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                __WEBPACK_IMPORTED_MODULE_4__Slide__["a" /* default */],
+                __WEBPACK_IMPORTED_MODULE_5__Slide__["a" /* default */],
                 _extends({ render: true, className: sp.className || '', id: sp.id, width: width, height: height, key: i }, sp),
                 children
               );
@@ -3205,16 +3241,17 @@ var Fullpage = function (_React$Component) {
           props = comp.props;
       var infinite = props.infinite;
 
-      var eligible = isElibile(next, props, _fp.state);
+      var eligible = isEligible(next, props, _fp.state);
 
       if (!eligible) {
         return;
       }
 
       var activeSlide = _fp.state[name].activeSlide;
+      var innerWidth = _fp.state.window.innerWidth;
 
 
-      var nodes = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__utils__["a" /* getNodes */])(_fp.state.document, 'data-horizontal-slider="' + name + '"');
+      var nodes = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__utils__["a" /* getNodes */])(_fp.state.document, 'data-horizontal-slider="' + name + '"');
       var leftVal = activeSlide * innerWidth;
       var to = next * innerWidth;
 
@@ -3234,15 +3271,16 @@ var Fullpage = function (_React$Component) {
   }, {
     key: 'changeFullpageSlide',
     value: function changeFullpageSlide(idx) {
-      var t = _fp;
-      var props = t.props,
-          state = t.state;
+      var _fp2 = _fp,
+          props = _fp2.props,
+          state = _fp2.state,
+          name = _fp2.name,
+          verticalRoot = _fp2.verticalRoot;
       var activeSlide = state.activeSlide,
-          window = state.window,
-          document = state.document;
+          window = state.window;
 
 
-      var eligible = isElibile(idx, props, state);
+      var eligible = isEligible(idx, props, state);
 
       if (!eligible) {
         return;
@@ -3255,8 +3293,9 @@ var Fullpage = function (_React$Component) {
 
       var to = idx * window.innerHeight;
 
-      t.setState({ scrollPending: true }, function () {
-        t.handleScroll(t.verticalRoot, 'scrollTop', to, newState, t.name);
+      _fp.setState({ scrollPending: true }, function () {
+        _fp.onSlideChangeStart(name, props, state, newState);
+        _fp.handleScroll(verticalRoot, 'scrollTop', to, newState, name);
       });
     }
   }]);
@@ -3277,7 +3316,7 @@ function firstToLast(nodes) {
   swap(nodes, null, nodes.length - 1);
 }
 
-function isElibile(idx, props, state) {
+function isEligible(idx, props, state) {
   var slides = props.slides;
   var activeSlide = state.activeSlide;
 
@@ -3310,17 +3349,23 @@ function ssStub() {
 }
 
 function determineVerticalRoot() {
-  var agent = void 0;
+  var userAgent = void 0,
+      platform = void 0;
+
+  var document = global.document;
+
 
   if (typeof navigator !== 'undefined' && navigator) {
-    agent = navigator.userAgent;
+    var _navigator = navigator;
+    userAgent = _navigator.userAgent;
+    platform = _navigator.platform;
   }
 
-  if (!agent) {
+  if (!userAgent) {
     return document.body;
   }
 
-  var browser = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__utils__["i" /* detectBrowser */])(agent);
+  var browser = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__utils__["i" /* detectBrowser */])(userAgent);
 
   if (!browser) {
     return document.body;
@@ -3332,22 +3377,28 @@ function determineVerticalRoot() {
 
   var name = browser.name,
       version = browser.version,
-      os = browser.os;
+      os = browser.os; // eslint-disable-line no-unused-vars
 
   var _version$split = version.split('.'),
       _version$split2 = _slicedToArray(_version$split, 3),
       major = _version$split2[0],
       minor = _version$split2[1],
-      patch = _version$split2[2];
+      patch = _version$split2[2]; // eslint-disable-line no-unused-vars
 
-  var docElementSet = new Set(['firefox', 'chrome', 'crios' // chrome ios
+  var docElementSet = new Set(['firefox', 'chrome', 'ios', // iPad (chrome devtools)
+  'crios' // chrome ios (chrome devtools)
   ]);
 
-  if (docElementSet.has(name)) {
+  // Some platforms conflict with the devtools when it comes to supporting document.body
+  // In order to support both user-agents in chrome devtools and the native device we need to
+  // check for both browser name and device platform
+  var conflictingPlatforms = new Set(['iPhone', 'iPad']);
+
+  if (docElementSet.has(name) && !conflictingPlatforms.has(platform)) {
     return document.documentElement;
   }
 
-  // safari, etc
+  // safari, chrome ios etc
   return document.body;
 }
 /* harmony default export */ __webpack_exports__["a"] = (Fullpage);
@@ -5031,8 +5082,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 var VERTICAL = 'VERTICAL';
 var HORIZONTAL = 'HORIZONTAL';
 
-var noOp = function noOp() {};
-
 var acceptedParams = {
   target: true,
   scrollSensitivity: true,
@@ -5149,7 +5198,11 @@ ScrollSwipe.prototype.onWheel = function onWheel(e) {
 
 ScrollSwipe.prototype.initScroll = function initScroll() {
   this.newOnWheel = this.onWheel.bind(this);
-  this.target.addEventListener('wheel', this.newOnWheel, false);
+
+  if (this.target && this.target.addEventListener) {
+    this.target.addEventListener('wheel', this.newOnWheel, false);
+  }
+
   return this;
 };
 
@@ -5190,8 +5243,12 @@ ScrollSwipe.prototype.touchEnd = function touchEnd(e) {
 ScrollSwipe.prototype.initTouch = function initTouch() {
   this.newTouchMove = this.touchMove.bind(this);
   this.newTouchEnd = this.touchEnd.bind(this);
-  this.target.addEventListener('touchmove', this.newTouchMove, false);
-  this.target.addEventListener('touchend', this.newTouchEnd, false);
+
+  if (this.target && this.target.addEventListener) {
+    this.target.addEventListener('touchmove', this.newTouchMove, false);
+    this.target.addEventListener('touchend', this.newTouchEnd, false);
+  }
+
   return this;
 };
 
@@ -5415,13 +5472,19 @@ ScrollSwipe.prototype.pending = function pending() {
 };
 
 ScrollSwipe.prototype.killScroll = function killScroll() {
-  this.target.removeEventListener('wheel', this.newOnWheel, false);
+  if (this.target && this.target.removeEventListener) {
+    this.target.removeEventListener('wheel', this.newOnWheel, false);
+  }
+
   return this;
 };
 
 ScrollSwipe.prototype.killTouch = function killTouch() {
-  this.target.removeEventListener('touchmove', this.newTouchMove, false);
-  this.target.removeEventListener('touchend', this.newTouchEnd, false);
+  if (this.target && this.target.removeEventListener) {
+    this.target.removeEventListener('touchmove', this.newTouchMove, false);
+    this.target.removeEventListener('touchend', this.newTouchEnd, false);
+  }
+
   return this;
 };
 
@@ -5453,6 +5516,45 @@ var camel2hyphen = function (str) {
 };
 
 module.exports = camel2hyphen;
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {
+module.exports = (typeof self === 'object' && self.self === self && self) ||
+  (typeof global === 'object' && global.global === global && global) ||
+  this
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(26)))
 
 /***/ })
 /******/ ]);

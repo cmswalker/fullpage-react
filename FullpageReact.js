@@ -1445,8 +1445,8 @@ function determineVerticalRoot() {
       patch = _version$split2[2]; // eslint-disable-line no-unused-vars
 
   var docElementSet = new Set(['firefox', 'chrome', 'ios', // iPad (chrome devtools)
-  'crios' // chrome ios (chrome devtools)
-  ]);
+  'crios', // chrome ios (chrome devtools)
+  'ie']);
 
   // Some platforms conflict with the devtools when it comes to supporting document.body
   // In order to support both user-agents in chrome devtools and the native device we need to

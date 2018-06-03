@@ -1,6 +1,6 @@
 {
   "name": "fullpage-react",
-  "version": "3.0.32",
+  "version": "3.0.33",
   "description": "Stateful fullpage.js inspired scrolling for React",
   "main": "./FullpageReact.js",
   "eslintConfig": "./.eslint.json",
@@ -37,7 +37,7 @@
   ],
   "dependencies": {
     "react-fns": "^1.4.0",
-    "scroll-swipe": "^0.0.15",
+    "scroll-swipe": "0.0.17",
     "window-or-global": "^1.0.1"
   },
   "peerDependencies": {

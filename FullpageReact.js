@@ -1178,6 +1178,10 @@ var Fullpage = function (_React$Component) {
       if (this.props.enableArrowKeys) {
         window.removeEventListener('keydown', this.checkKey);
       }
+
+      if (this.props.hideScrollBars) {
+        this.showScrollBars();
+      }
     }
   }, {
     key: 'checkKey',

@@ -986,7 +986,7 @@ var Fullpage = function (_React$Component) {
         return this.onVerticalScroll(dir[intent], startEvent);
       }
 
-      var path = startEvent.path || startEvent.composedPath();
+      var path = startEvent.path || startEvent.composedPath && startEvent.composedPath();
 
       if (!path) {
         var polyFillPath = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__utils__["f" /* composedPath */])(startEvent.target);
@@ -1421,6 +1421,11 @@ function determineVerticalRoot() {
   }
 
   if (!userAgent) {
+    return document.body;
+  }
+
+  // http://developer.samsung.com/technical-doc/view.do?v=T000000203
+  if (/SAMSUNG.*Build\//.test(userAgent)) {
     return document.body;
   }
 

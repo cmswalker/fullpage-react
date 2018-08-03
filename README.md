@@ -1,34 +1,26 @@
-# [Fullpage-React](https://cmswalker.github.io/fullpage-react/)
+# **[Fullpage-React](https://cmswalker.github.io/fullpage-react/)**
 
 Stateful fullpage.js inspired scrolling for React
 
-100% React Components and vanilla JS. No other Dependencies.
+## **This package is no longer maintained, and has been moved under the official [fullpage.js](https://github.com/alvarotrigo/fullpage.js/) project! Please use the official [react-fullpage](https://github.com/alvarotrigo/react-fullpage) package!**
+
+---
 
 ### Demo can be found [here](https://cmswalker.github.io/fullpage-react/) along with the [source code](https://github.com/cmswalker/fullpage-react/blob/master/examples/fullpageReactExample.js)
 
 ### [Starter Example](https://github.com/cmswalker/fullpage-react/tree/master/examples)
 
-### On [NPM](https://www.npmjs.com/package/fullpage-react)
-
-#### Compliant with ESModules & UMD
-You can either require this module in your own bundler/build chain or use it directly in the browser via a [script](https://raw.githubusercontent.com/cmswalker/fullpage-react/master/FullpageReact.js). If dropped directly into the browser, there will be a global variable named `FullpageReact`.
-
----
-
 ### Basic Setup
 
-```shell
+```sh
 // NPM
-npm install fullpage-react --save
+npm i fullpage-react --save
 
 // Yarn
 yarn add fullpage-react
-
 ```
 
----
-
-###### Component Boilerplate
+#### Component Boilerplate
 
 ```jsx
 import { Fullpage, Slide, HorizontalSlider } from 'fullpage-react';
@@ -68,7 +60,7 @@ fullPageOptions.slides = slides;
 
 ```
 
-###### Events API
+#### Events API
 
 There are two functions located on the `Fullpage` class. These are used for manually changing the vertical and horizontal slides via UI events.
 
